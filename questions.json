@@ -1,0 +1,144 @@
+{
+  "questions": [
+    {
+      "id": "q001",
+      "subject": "calculus",
+      "topic": "chain_rule",
+      "difficulty": "easy",
+      "question": "Find dy/dx if y = sin(x^2)",
+      "options": {
+        "A": "2x · cos(x^2)",
+        "B": "cos(x^2)",
+        "C": "2x · sin(x^2)",
+        "D": "-2x · cos(x^2)"
+      },
+      "correct": "A",
+      "derivation_steps": [
+        {
+          "latex": "y = \\sin(x^2)",
+          "narration": "We start with y equals sine of x squared. This is a composite function, so we need the chain rule."
+        },
+        {
+          "latex": "\\frac{dy}{dx} = \\cos(x^2) \\cdot \\frac{d}{dx}(x^2)",
+          "narration": "By the chain rule, the derivative of sine of u is cosine of u, times the derivative of u. Here, u is x squared."
+        },
+        {
+          "latex": "\\frac{d}{dx}(x^2) = 2x",
+          "narration": "The derivative of x squared is 2x, using the power rule."
+        },
+        {
+          "latex": "\\frac{dy}{dx} = 2x\\cos(x^2)",
+          "narration": "Multiplying these together, we get 2x times cosine of x squared. That's option A."
+        }
+      ]
+    },
+    {
+      "id": "q002",
+      "subject": "calculus",
+      "topic": "product_rule",
+      "difficulty": "medium",
+      "question": "Find dy/dx if y = x^2 · e^x",
+      "options": {
+        "A": "2x · e^x",
+        "B": "x^2 · e^x",
+        "C": "(2x + x^2) · e^x",
+        "D": "(x^2 - 2x) · e^x"
+      },
+      "correct": "C",
+      "derivation_steps": [
+        {
+          "latex": "y = x^2 \\cdot e^x",
+          "narration": "We have a product of two functions: x squared and e to the x. We need the product rule."
+        },
+        {
+          "latex": "\\frac{d}{dx}(uv) = u'v + uv'",
+          "narration": "The product rule says the derivative of u times v equals u-prime v plus u v-prime."
+        },
+        {
+          "latex": "u = x^2,\\ u' = 2x \\qquad v = e^x,\\ v' = e^x",
+          "narration": "Let u be x squared, so u-prime is 2x. Let v be e to the x, which is its own derivative."
+        },
+        {
+          "latex": "\\frac{dy}{dx} = 2x \\cdot e^x + x^2 \\cdot e^x",
+          "narration": "Plugging in: 2x times e to the x, plus x squared times e to the x."
+        },
+        {
+          "latex": "\\frac{dy}{dx} = (2x + x^2)e^x",
+          "narration": "Factor out e to the x, and we get 2x plus x squared, times e to the x. That's option C."
+        }
+      ]
+    },
+    {
+      "id": "q003",
+      "subject": "calculus",
+      "topic": "integration_by_parts",
+      "difficulty": "medium",
+      "question": "Evaluate ∫ x · e^x dx",
+      "options": {
+        "A": "x · e^x + C",
+        "B": "(x - 1) · e^x + C",
+        "C": "(x + 1) · e^x + C",
+        "D": "x^2 · e^x / 2 + C"
+      },
+      "correct": "B",
+      "derivation_steps": [
+        {
+          "latex": "\\int x \\cdot e^x\\, dx",
+          "narration": "We need to integrate x times e to the x. Since this is a product, we use integration by parts."
+        },
+        {
+          "latex": "\\int u\\, dv = uv - \\int v\\, du",
+          "narration": "The integration by parts formula: integral of u dv equals u v minus integral of v du."
+        },
+        {
+          "latex": "u = x,\\ du = dx \\qquad dv = e^x dx,\\ v = e^x",
+          "narration": "We pick u as x so du is dx, and dv as e to the x dx so v is e to the x."
+        },
+        {
+          "latex": "\\int x e^x\\, dx = x e^x - \\int e^x\\, dx",
+          "narration": "Substituting: x times e to the x, minus the integral of e to the x dx."
+        },
+        {
+          "latex": "= x e^x - e^x + C = (x-1)e^x + C",
+          "narration": "The integral of e to the x is just e to the x. Factor it out: x minus 1, times e to the x, plus C. That's option B."
+        }
+      ]
+    },
+    {
+      "id": "q004",
+      "subject": "physics",
+      "topic": "gravitation",
+      "difficulty": "medium",
+      "question": "What is gravity?",
+      "options": {
+        "A": "A mutual force of attraction between any two objects that have mass",
+        "B": "A force that only the Earth exerts on objects near its surface",
+        "C": "A magnetic effect produced by the Earth's iron core",
+        "D": "A push objects feel only while they are in physical contact"
+      },
+      "correct": "A",
+      "derivation_steps": [
+        {
+          "latex": "F \\propto m_1 \\quad\\text{and}\\quad F \\propto m_2",
+          "narration": "Gravity is a mutual attraction between any two masses. Experiment shows the force grows in proportion to each of the two masses involved."
+        },
+        {
+          "latex": "F \\propto \\dfrac{1}{r^2}",
+          "narration": "It also weakens with distance. Observation of orbits shows the force falls off as the inverse square of the separation between the two masses."
+        },
+        {
+          "latex": "F \\propto \\dfrac{m_1 m_2}{r^2}",
+          "narration": "Combining both results, the force is proportional to the product of the masses divided by the square of the distance between them."
+        },
+        {
+          "latex": "F = G\\,\\dfrac{m_1 m_2}{r^2}",
+          "narration": "Replacing the proportionality with a constant gives Newton's law of universal gravitation. G is the universal gravitational constant."
+        },
+        {
+          "latex": "G = 6.674 \\times 10^{-11}\\ \\text{N·m}^2/\\text{kg}^2",
+          "narration": "The constant G was first measured by Cavendish, and equals about 6.674 times ten to the minus eleven newton meter squared per kilogram squared. So gravity is the attraction between any two masses, which is option A."
+        }
+      ]
+    }
+  ]
+}

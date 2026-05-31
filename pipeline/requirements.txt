@@ -1,0 +1,17 @@
+# Exam Tool — open-source video pipeline (all free, runs locally)
+#
+# Python deps:
+manim>=0.18           # animation engine (renders LaTeX steps) — needs a TeX distro + ffmpeg
+kokoro>=0.9           # open-source TTS (narration -> voice)
+soundfile>=0.12       # write WAV files
+numpy>=1.24           # audio array handling
+requests>=2.31        # talk to local Ollama LLM (derivation step generation)
+#
+# System deps (install once, NOT via pip):
+#   brew install ffmpeg            # video/audio merge
+#   brew install espeak-ng         # phonemes for Kokoro TTS
+#   brew install --cask basictex   # LaTeX for Manim  (then: sudo tlmgr install standalone preview doublestroke)
+#
+# LLM (open-source, local) — for auto-generating derivation_steps:
+#   brew install ollama            # or download from ollama.com
+#   ollama pull qwen2.5:7b         # math-capable open model (use qwen2.5:32b if you have the RAM)
