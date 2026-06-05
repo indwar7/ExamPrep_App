@@ -250,7 +250,13 @@
             </div>
         </div>
 
-        <h2>The Wonderful World of Science - Complete Learning Guide</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin: 0;">The Wonderful World of Science - Complete Learning Guide</h2>
+            <div style="display: flex; gap: 10px;">
+                <button id="playBtn" onclick="playLessonNarration()" style="background: #1a472a; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">▶ Play Narration</button>
+                <button onclick="stopLessonNarration()" style="background: #d4a574; color: #1a472a; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Stop</button>
+            </div>
+        </div>
 
         <div class="highlight" style="background: #e3f2fd; border-left-color: #1a472a;">
             <h3 style="margin-top: 0; color: #1a472a;">What is Science, Really?</h3>
@@ -1292,6 +1298,50 @@
         const scrollPercent = (scrolled / windowHeight) * 100;
         document.getElementById('progressBar').style.width = scrollPercent + '%';
     });
+
+    // Lesson Narration with Play/Pause Controls
+    let currentUtterance = null;
+    let isPaused = false;
+
+    window.playLessonNarration = function() {
+        // Get lesson text
+        const lessonContent = document.getElementById('lesson');
+        if (!lessonContent) return;
+
+        const textToRead = lessonContent.innerText;
+
+        // Stop previous speech
+        window.speechSynthesis.cancel();
+        isPaused = false;
+
+        // Create utterance
+        currentUtterance = new SpeechSynthesisUtterance(textToRead);
+        currentUtterance.rate = 0.9;
+        currentUtterance.pitch = 1;
+        currentUtterance.volume = 1;
+
+        // Speak
+        window.speechSynthesis.speak(currentUtterance);
+        document.getElementById('playBtn').textContent = '⏸ Pause';
+    };
+
+    window.pauseLessonNarration = function() {
+        if (!isPaused) {
+            window.speechSynthesis.pause();
+            isPaused = true;
+            document.getElementById('playBtn').textContent = '▶ Resume';
+        } else {
+            window.speechSynthesis.resume();
+            isPaused = false;
+            document.getElementById('playBtn').textContent = '⏸ Pause';
+        }
+    };
+
+    window.stopLessonNarration = function() {
+        window.speechSynthesis.cancel();
+        isPaused = false;
+        document.getElementById('playBtn').textContent = '▶ Play Narration';
+    };
 </script>
 
 </body>
