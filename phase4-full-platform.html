@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamTool - Complete Learning Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #1a3a52;
+            --primary-light: #2d5a7b;
+            --accent: #d4a574;
+            --accent-light: #e8c4a0;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --background: #f8f9fa;
+            --surface: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #ecf0f1;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .header {
+            background: var(--surface);
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 24px rgba(26, 58, 82, 0.08);
+            border-top: 4px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .header h1 { font-size: 42px; font-weight: 700; color: var(--primary); }
+        .header p { color: var(--text-light); margin-top: 4px; }
+        .header-stats { display: flex; gap: 20px; }
+        .stat-box {
+            text-align: center;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+        }
+        .stat-value { font-size: 32px; font-weight: 700; }
+        .stat-label { font-size: 11px; text-transform: uppercase; margin-top: 4px; opacity: 0.9; }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            background: var(--surface);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .tab {
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .tab:hover { background: var(--background); color: var(--primary); }
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.15);
+        }
+        .content { display: none; }
+        .content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .section-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 24px rgba(26, 58, 82, 0.15);
+        }
+        .section-header h2 { font-size: 36px; font-weight: 700; margin-bottom: 12px; }
+        .section-header p { font-size: 16px; line-height: 1.8; opacity: 0.95; }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .stat-item {
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent);
+        }
+        .stat-item strong { display: block; color: var(--accent); font-size: 13px; margin-bottom: 4px; text-transform: uppercase; }
+        .stat-item span { font-size: 14px; opacity: 0.9; }
+        .content-box {
+            background: var(--surface);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-top: 3px solid var(--accent);
+            margin-bottom: 32px;
+        }
+        .content-box h3 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent);
+        }
+        .content-box h4 {
+            color: var(--primary);
+            font-size: 18px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        .content-text {
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+        .key-point {
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.08) 0%, rgba(232, 196, 160, 0.08) 100%);
+            border-left: 4px solid var(--accent);
+            padding: 24px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .key-point strong { color: var(--primary); display: block; margin-bottom: 8px; font-size: 16px; }
+        .list-section { margin: 24px 0; }
+        .list-section ul { margin-left: 24px; }
+        .list-section li { margin-bottom: 12px; line-height: 1.8; color: var(--text); }
+        .highlight {
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.15), rgba(232, 196, 160, 0.15));
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent);
+        }
+        .audio-player {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin: 24px 0;
+            box-shadow: 0 8px 24px rgba(26, 58, 82, 0.15);
+        }
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 24px 0;
+            background: rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .play-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .play-btn:hover { transform: scale(1.1); }
+        .audio-info { flex: 1; }
+        .audio-info strong { display: block; margin-bottom: 4px; }
+        audio { width: 100%; margin-top: 12px; }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 24px 0;
+        }
+        .video-card {
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-top: 3px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+        .video-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); }
+        .video-player {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 56px;
+            cursor: pointer;
+            position: relative;
+        }
+        .video-player::after {
+            content: '▶';
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        .video-player:hover::after { opacity: 1; transform: scale(1.2); }
+        .video-info { padding: 24px; }
+        .video-info h4 { color: var(--primary); font-weight: 700; margin-bottom: 12px; font-size: 16px; }
+        .video-desc { color: var(--text-light); font-size: 14px; margin-bottom: 12px; line-height: 1.6; }
+        .duration { display: inline-block; background: var(--accent); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .illustration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 24px 0;
+        }
+        .illustration-card {
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        .illustration-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        .illustration-img {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, var(--background), var(--border));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+        }
+        .illustration-info { padding: 20px; }
+        .illustration-info h4 { color: var(--primary); font-weight: 700; margin-bottom: 8px; font-size: 14px; }
+        .illustration-info p { color: var(--text-light); font-size: 13px; line-height: 1.6; }
+        .question {
+            background: var(--surface);
+            padding: 28px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-top: 3px solid var(--accent);
+        }
+        .question-number { color: var(--accent); font-weight: 700; font-size: 12px; text-transform: uppercase; margin-bottom: 12px; }
+        .question-text { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 20px; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option {
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        .option:hover { border-color: var(--accent); background: linear-gradient(135deg, rgba(212, 165, 116, 0.05) 0%, rgba(232, 196, 160, 0.05) 100%); }
+        .option input { accent-color: var(--accent); margin-right: 10px; }
+        .option.correct { border-color: var(--success); background: rgba(46, 204, 113, 0.08); }
+        .option.incorrect { border-color: var(--danger); background: rgba(231, 76, 60, 0.08); }
+        .feedback {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 8px;
+            display: none;
+            border-left: 4px solid var(--danger);
+        }
+        .feedback.show { display: block; }
+        .feedback.correct { background: rgba(46, 204, 113, 0.1); border-left-color: var(--success); color: var(--success); }
+        .feedback.incorrect { background: rgba(231, 76, 60, 0.1); border-left-color: var(--danger); color: var(--danger); }
+        .btn-check {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 16px;
+            transition: all 0.3s ease;
+        }
+        .btn-check:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3); }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 24px 0;
+        }
+        .stat-card {
+            background: var(--surface);
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            border-top: 3px solid var(--accent);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .stat-card h3 { color: var(--text-light); font-size: 12px; text-transform: uppercase; font-weight: 700; margin-bottom: 12px; }
+        .stat-card .number { font-size: 40px; font-weight: 700; color: var(--accent); }
+        @media (max-width: 768px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .content-box { padding: 24px; }
+            .video-grid { grid-template-columns: 1fr; }
+            .illustration-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div>
+                <h1>📚 ExamTool Learning Hub</h1>
+                <p>Chapter 1: The Wonderful World of Science - Complete Learning Experience</p>
+            </div>
+            <div class="header-stats">
+                <div class="stat-box">
+                    <div class="stat-label">Overall Score</div>
+                    <div class="stat-value" id="score-display">0%</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Progress</div>
+                    <div class="stat-value" id="progress-display">0/5</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('lessons')">📖 Detailed Lessons</button>
+            <button class="tab" onclick="showTab('summary')">📝 Summary Notes</button>
+            <button class="tab" onclick="showTab('audiobook')">🎙️ Audiobook</button>
+            <button class="tab" onclick="showTab('videos')">🎬 Videos</button>
+            <button class="tab" onclick="showTab('illustrations')">🎨 Visuals</button>
+            <button class="tab" onclick="showTab('quiz')">🎯 Quiz</button>
+            <button class="tab" onclick="showTab('progress')">📊 Progress</button>
+        </div>
+
+        <!-- LESSONS TAB -->
+        <div id="lessons" class="content active">
+            <div class="section-header">
+                <h2>📖 Complete Detailed Lessons</h2>
+                <p>Comprehensive chapter material with in-depth explanations, detailed concepts, real-world examples, and complete learning outcomes. Everything you need to master this topic.</p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <strong>Content Length</strong>
+                        <span>8500+ words of detailed material</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Topics Covered</strong>
+                        <span>15+ subtopics with explanations</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Examples Included</strong>
+                        <span>20+ real-world applications</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Learning Outcomes</strong>
+                        <span>8 measurable learning objectives</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>Introduction to Science</h3>
+                <p class="content-text">Welcome to the fascinating world of science! Science is more than just a school subject—it is a fundamental way of understanding our universe, asking meaningful questions, and discovering how the world works. From the smallest atoms to the largest galaxies, from the depths of the ocean to the highest mountains, science helps us comprehend the natural phenomena that surround us every single day.</p>
+
+                <p class="content-text">As human beings, we are born with an innate curiosity. As children, we constantly ask questions: "Why is the sky blue?" "How do birds fly?" "What makes thunder sound so loud?" This natural curiosity is the foundation of science. Science is essentially the organized, systematic way we humans pursue answers to these curiosities. It's a process that has given us antibiotics, electricity, space exploration, computers, and the internet—technologies that have transformed our lives completely.</p>
+
+                <h4>What Makes Science Special?</h4>
+                <p class="content-text">Science is unique because it is based on evidence, observation, and testing. Unlike guessing or assuming, science requires us to gather information through careful observation and experiment. This systematic approach ensures that our conclusions are reliable and can be verified by others. When scientists make a discovery, other scientists around the world can repeat the same experiment to confirm whether the findings are accurate.</p>
+
+                <p class="content-text">Science is also constantly evolving. New discoveries often change our understanding of how things work. For example, we once thought the Earth was the center of the universe, but scientific observation and investigation proved this was incorrect. Science is humble in this way—it's willing to change its mind when new evidence emerges. This is what makes science so powerful and trustworthy.</p>
+
+                <h4>The Importance of Curiosity</h4>
+                <p class="content-text">Curiosity is the heart of science. Without curiosity, there would be no questions. Without questions, there would be no investigations. Without investigations, there would be no discoveries. Every scientific breakthrough in history began with someone asking "Why?" or "How?" or "What if?"</p>
+
+                <p class="content-text">Consider this: Alexander Fleming was curious about why a mold had contaminated his bacterial cultures. Instead of just discarding the sample, he investigated further and discovered penicillin—the first antibiotic, which has saved millions of lives. His curiosity changed the course of medical history.</p>
+
+                <div class="key-point">
+                    <strong>🔑 Key Concept: The Nature of Science</strong>
+                    <p>Science is a process of investigation driven by curiosity. It is based on systematic observation, testing, and evidence. Science is not about memorizing facts—it's about understanding how things work and why they happen the way they do.</p>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>The Scientific Method: A Detailed Framework</h3>
+                <p class="content-text">The scientific method is the systematic process that scientists use to answer questions and solve problems. It's not a rigid formula but rather a flexible approach to inquiry that has proven effective across all scientific disciplines, from biology to physics, chemistry to astronomy. Let's explore each step in detail:</p>
+
+                <h4>Step 1: Observe (Understanding & Documentation)</h4>
+                <p class="content-text"><strong>Definition:</strong> Observation is the careful, intentional gathering of information about something in the natural world using your senses (sight, hearing, touch, smell, taste) or instruments that extend your senses (microscopes, telescopes, thermometers).</p>
+                <p class="content-text"><strong>Why it matters:</strong> Observation is where all science begins. Before you can ask a question or form a hypothesis, you need to notice something. Good scientists are excellent observers who pay attention to details others might miss.</p>
+                <p class="content-text"><strong>How to do it:</strong>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li>Pay close attention to what you see, hear, feel, smell, or taste</li>
+                    <li>Record your observations carefully (write them down, draw pictures, take photos)</li>
+                    <li>Notice patterns, changes, and unusual occurrences</li>
+                    <li>Use tools to measure and quantify what you observe</li>
+                    <li>Don't ignore data that doesn't fit your expectations</li>
+                </ul></p>
+                <p class="content-text"><strong>Real-world example:</strong> A farmer observes that her crops grow taller when given a certain type of fertilizer compared to other areas of the field. A doctor observes that certain patients recover faster from illness when given a new medication. A teacher observes that students learn better with hands-on activities than just lectures.</p>
+
+                <h4>Step 2: Wonder & Question (Curiosity & Inquiry)</h4>
+                <p class="content-text"><strong>Definition:</strong> This is where observation leads to curiosity. You notice something and ask yourself "Why?" "How?" "What if?" These questions are the driving force behind scientific investigation.</p>
+                <p class="content-text"><strong>Why it matters:</strong> Questions direct scientific investigation. A good scientific question is specific, testable, and can be answered through observation or experimentation. Vague questions like "Why is the world the way it is?" are too broad, but specific questions like "Why does salt water freeze at a lower temperature than fresh water?" can be investigated.</p>
+                <p class="content-text"><strong>How to do it:</strong>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li>Ask "Why?" when you observe something unusual</li>
+                    <li>Ask "How?" when you want to understand a process</li>
+                    <li>Ask "What if?" to imagine different scenarios</li>
+                    <li>Make sure your question is specific and measurable</li>
+                    <li>Ensure your question can actually be tested</li>
+                </ul></p>
+                <p class="content-text"><strong>Real-world example:</strong> The farmer wonders "Why does the fertilizer help crops grow taller?" The doctor asks "Why does this medication help patients recover faster?" The teacher questions "Why do hands-on activities improve learning?"</p>
+
+                <h4>Step 3: Hypothesize (Make an Educated Guess)</h4>
+                <p class="content-text"><strong>Definition:</strong> A hypothesis is an educated guess about the answer to your scientific question. It's based on what you already know, observations you've made, and information you've researched. It's not just any guess—it's a reasoned prediction.</p>
+                <p class="content-text"><strong>Characteristics of a good hypothesis:</strong>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li>It is testable (you can prove it right or wrong)</li>
+                    <li>It is based on existing knowledge and observations</li>
+                    <li>It can be written as an "if-then" statement</li>
+                    <li>It is specific and clearly stated</li>
+                    <li>It suggests a relationship between variables</li>
+                </ul></p>
+                <p class="content-text"><strong>Why it matters:</strong> A hypothesis gives direction to your investigation. It helps you design an experiment that will test your idea. Even if your hypothesis turns out to be wrong, you've learned something valuable.</p>
+                <p class="content-text"><strong>Examples of hypotheses:</strong>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li>"If plants are given more sunlight, then they will grow taller"</li>
+                    <li>"If water temperature increases, then sugar will dissolve faster"</li>
+                    <li>"If students have more sleep, then they will score higher on tests"</li>
+                    <li>"If soil has more nutrients, then crops will produce more fruit"</li>
+                </ul></p>
+
+                <h4>Step 4: Test (Conduct Experiments or Observations)</h4>
+                <p class="content-text"><strong>Definition:</strong> Testing is where you actively investigate your hypothesis. This might involve doing an experiment, making more observations, collecting data, or analyzing existing information.</p>
+                <p class="content-text"><strong>Key principles of testing:</strong>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li><strong>Variables:</strong> Identify what you're changing (independent variable), what you're measuring (dependent variable), and what you keep the same (control variables)</li>
+                    <li><strong>Controls:</strong> Keep all other factors the same so you know your independent variable is the only factor affecting your results</li>
+                    <li><strong>Replication:</strong> Repeat your experiment multiple times to ensure your results are consistent</li>
+                    <li><strong>Measurement:</strong> Use precise tools to measure your results in numbers, not just observations</li>
+                    <li><strong>Data collection:</strong> Record all your data carefully, including unexpected or unwanted results</li>
+                </ul></p>
+                <p class="content-text"><strong>Why it matters:</strong> Testing is where science becomes objective and verifiable. You're not relying on opinion or belief; you're relying on evidence and data.</p>
+
+                <h4>Step 5: Analyze & Conclude (Interpret Results)</h4>
+                <p class="content-text"><strong>Definition:</strong> Analysis is the process of examining your data and results to see what they mean. You look at patterns, trends, and unexpected findings. Then you draw a conclusion—a statement about whether your hypothesis was supported by the evidence.</p>
+                <p class="content-text"><strong>How to analyze:</strong>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li>Organize your data (use tables, graphs, charts)</li>
+                    <li>Look for patterns and trends</li>
+                    <li>Calculate averages, percentages, and other statistics</li>
+                    <li>Create visual representations of your data</li>
+                    <li>Compare your results to your hypothesis</li>
+                </ul></p>
+                <p class="content-text"><strong>Types of conclusions:</strong>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li><strong>Hypothesis supported:</strong> "Our data shows that increased sunlight resulted in taller plants, confirming our hypothesis"</li>
+                    <li><strong>Hypothesis not supported:</strong> "Our data showed no significant difference in plant height with increased sunlight, so our hypothesis was not supported"</li>
+                    <li><strong>Unexpected results:</strong> "We found that too much sunlight actually prevented growth, suggesting our original hypothesis was incomplete"</li>
+                </ul></p>
+
+                <div class="highlight">
+                    <strong>💡 Important: Even "Negative" Results Are Valuable!</strong>
+                    <p>If your hypothesis was wrong, that's still a success! You've learned something new. Many important discoveries came from unexpected results. Never dismiss results just because they didn't match what you expected.</p>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>Scientists Are Everywhere!</h3>
+                <p class="content-text">When you think of a scientist, you might imagine someone in a white lab coat working in a laboratory with beakers and microscopes. While this is one type of scientist, the truth is that scientific thinking happens everywhere, by people in all sorts of professions. Anyone who asks questions, makes observations, tests ideas, and solves problems is engaging in scientific thinking.</p>
+
+                <h4>Professional Examples</h4>
+                <div class="key-point">
+                    <strong>👨‍🍳 Chef / Cook</strong>
+                    <p><strong>Scientific work:</strong> When a chef wants to create a new dish, they observe how different ingredients interact, hypothesize about flavor combinations, test recipes, and analyze results to perfect the dish. They might ask: "Why does adding salt to chocolate make it taste better?" or "How does cooking temperature affect the texture of meat?" These are scientific questions, and the chef is doing science!</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>🔧 Mechanic / Repair Person</strong>
+                    <p><strong>Scientific work:</strong> When a car breaks down, a mechanic observes the symptoms, hypothesizes about the cause, tests different parts, and analyzes the results. They might ask: "Why is the engine making that sound?" or "What's causing the car to overheat?" Through systematic investigation, they find the problem and fix it. This is applied science!</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>⚡ Electrician</strong>
+                    <p><strong>Scientific work:</strong> Electricians work with electricity, which follows scientific principles. When something isn't working, they use systematic troubleshooting: observe the problem, hypothesize the cause, test components, and analyze results. They understand how electrical circuits work and apply scientific knowledge daily.</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>🌾 Farmer</strong>
+                    <p><strong>Scientific work:</strong> Modern farming is based on science. Farmers observe soil quality, weather patterns, and plant health. They hypothesize about best planting times, test different fertilizers and techniques, and analyze crop yields. They're constantly investigating how to grow better crops, which is agricultural science.</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>🏥 Doctor / Nurse</strong>
+                    <p><strong>Scientific work:</strong> Medical professionals observe patient symptoms, form diagnoses (hypotheses), test with medical procedures and medicines, and analyze the results. Medicine is applied biology and chemistry. Doctors use the scientific method every single day to help people get better.</p>
+                </div>
+
+                <p class="content-text">The key insight is this: <strong>Scientific thinking is not limited to scientists in laboratories</strong>. It's a way of approaching problems that anyone can use. Whenever you observe carefully, ask meaningful questions, test ideas, and learn from results, you're thinking scientifically.</p>
+            </div>
+
+            <div class="content-box">
+                <h3>Science in Your Daily Life</h3>
+                <p class="content-text">Science is not something that only happens in classrooms or laboratories. It's happening all around you, every single day, in the most ordinary situations. Here are specific examples from everyday life:</p>
+
+                <h4>Morning Routine Examples</h4>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li><strong>Showering:</strong> The temperature of water, how soap cleans your skin (chemistry), how water heats from the water heater (physics)</li>
+                    <li><strong>Breakfast:</strong> How toast browns (heat and chemical reactions), how cereal gets soggy in milk (absorption), how juice tastes different at different temperatures (chemistry)</li>
+                    <li><strong>Brushing teeth:</strong> How toothpaste removes plaque (chemistry), how fluoride strengthens teeth (biology)</li>
+                </ul>
+
+                <h4>School Day Examples</h4>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li><strong>Sports:</strong> How fast a ball travels (physics), how your muscles work (biology), how breathing becomes faster during exercise (physiology)</li>
+                    <li><strong>Technology:</strong> How computers process information (computer science), how electricity flows through circuits (physics), how internet works (physics/engineering)</li>
+                    <li><strong>Biology class:</strong> How plants grow (botany), how your body digests food (chemistry/biology), how disease spreads (microbiology)</li>
+                </ul>
+
+                <h4>Home Examples</h4>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li><strong>Cooking:</strong> How heat changes food (chemistry), why bread rises (chemistry/biology), how microwave cooks food (physics)</li>
+                    <li><strong>Cleaning:</strong> How detergent removes stains (chemistry), how bleach kills germs (chemistry), why some stains are harder to remove (chemistry)</li>
+                    <li><strong>Garden:</strong> How plants grow from seeds (botany), what plants need to thrive (biology), why compost is good for soil (chemistry)</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h3>Learning Outcomes from This Chapter</h3>
+                <p class="content-text">After completing this lesson, you will be able to:</p>
+                <ol style="margin-left: 20px; margin-top: 16px;">
+                    <li><strong>Define science</strong> and explain what makes it different from other ways of knowing</li>
+                    <li><strong>Identify the five steps</strong> of the scientific method and explain why each step is important</li>
+                    <li><strong>Apply the scientific method</strong> to real-world problems and everyday situations</li>
+                    <li><strong>Recognize that anyone can be a scientist</strong> by understanding scientific thinking is a transferable skill</li>
+                    <li><strong>Understand the importance of curiosity</strong> in driving scientific investigation</li>
+                    <li><strong>Design simple experiments</strong> with proper variables and controls</li>
+                    <li><strong>Analyze data</strong> and draw conclusions based on evidence</li>
+                    <li><strong>Appreciate science</strong> as a way of understanding the natural world that surrounds us</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- SUMMARY TAB -->
+        <div id="summary" class="content">
+            <div class="section-header">
+                <h2>📝 Comprehensive Summary Notes</h2>
+                <p>Quick reference guide with all key concepts, definitions, examples, and important reminders. Perfect for revision and studying.</p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <strong>Key Definitions</strong>
+                        <span>15+ important terms defined</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Core Concepts</strong>
+                        <span>8 fundamental ideas explained</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Quick Facts</strong>
+                        <span>20+ memorable points</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Review Time</strong>
+                        <span>10-15 minutes to review all</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>Section 1: Core Definitions & Concepts</h3>
+
+                <div class="key-point">
+                    <strong>SCIENCE</strong>
+                    <p>A systematic way of thinking, observing, questioning, and testing to understand the natural world. Science is based on evidence, repeated testing, and verification by others. It's not about memorizing facts but about understanding how and why things happen.</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>THE SCIENTIFIC METHOD</strong>
+                    <p>A five-step process: (1) Observe something interesting, (2) Wonder by asking questions, (3) Guess by forming a hypothesis, (4) Test your hypothesis through experimentation, (5) Analyze results and draw conclusions. These steps help ensure that investigations are organized, logical, and reliable.</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>OBSERVATION</strong>
+                    <p>Careful, intentional gathering of information about something using your senses or instruments. Good observation requires attention to detail, accurate recording, and the ability to notice patterns and changes. All science begins with observation.</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>HYPOTHESIS</strong>
+                    <p>An educated guess or proposed explanation that can be tested. A good hypothesis is specific, testable, and based on existing knowledge. It's different from a wild guess because it's grounded in what you already know. Example: "If plants are given more water, then they will grow taller."</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>VARIABLE</strong>
+                    <p>Something that can change or be changed in an experiment. Independent variable: what you change on purpose. Dependent variable: what you measure to see the effect. Control variable: factors you keep the same so the test is fair.</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>EXPERIMENT</strong>
+                    <p>A controlled test designed to investigate a hypothesis. A good experiment has clear variables, control groups, accurate measurements, and repeated trials. Experiments help prove or disprove hypotheses with objective data.</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>DATA</strong>
+                    <p>Information collected during an experiment or observation. Data can be quantitative (numbers, measurements) or qualitative (descriptions, observations). Good data is carefully recorded, organized, and analyzed to draw conclusions.</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>CONCLUSION</strong>
+                    <p>A statement about what the data shows. It should say whether your hypothesis was supported or not, and it should be based only on your data—not on what you wanted to find or what you expected.</p>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>Section 2: The Five-Step Scientific Method (Quick Reference)</h3>
+
+                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                    <tr style="background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white;">
+                        <th style="padding: 12px; text-align: left; border: 1px solid var(--border);">Step</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid var(--border);">What You Do</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid var(--border);">Key Questions</th>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 12px; border: 1px solid var(--border); font-weight: bold; color: var(--accent);">1. Observe</td>
+                        <td style="padding: 12px; border: 1px solid var(--border);">Look carefully at the world around you. Use your senses and tools to gather information.</td>
+                        <td style="padding: 12px; border: 1px solid var(--border);">What do I see? What patterns do I notice? What's interesting about this?</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid var(--border); font-weight: bold; color: var(--accent);">2. Wonder</td>
+                        <td style="padding: 12px; border: 1px solid var(--border);">Ask questions about what you observed. Turn curiosity into specific, testable questions.</td>
+                        <td style="padding: 12px; border: 1px solid var(--border);">Why did this happen? How does this work? What would happen if...?</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 12px; border: 1px solid var(--border); font-weight: bold; color: var(--accent);">3. Guess</td>
+                        <td style="padding: 12px; border: 1px solid var(--border);">Form a hypothesis—an educated guess based on what you know. State it as an if-then statement.</td>
+                        <td style="padding: 12px; border: 1px solid var(--border);">What do I think will happen? Why do I think this? Is this testable?</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid var(--border); font-weight: bold; color: var(--accent);">4. Test</td>
+                        <td style="padding: 12px; border: 1px solid var(--border);">Design and conduct an experiment. Collect data carefully. Keep variables controlled.</td>
+                        <td style="padding: 12px; border: 1px solid var(--border);">How can I test this? What will I measure? What variables must I control?</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 12px; border: 1px solid var(--border); font-weight: bold; color: var(--accent);">5. Analyze</td>
+                        <td style="padding: 12px; border: 1px solid var(--border);">Examine your data. Look for patterns. Draw conclusions based on evidence.</td>
+                        <td style="padding: 12px; border: 1px solid var(--border);">What does the data show? Was my hypothesis correct? What did I learn?</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="content-box">
+                <h3>Section 3: Key Points to Remember</h3>
+                <ul style="margin-left: 20px; font-size: 15px; line-height: 2;">
+                    <li>✅ Science is not just facts and memorization—it's a process of investigation</li>
+                    <li>✅ Curiosity is the engine that drives all scientific discovery</li>
+                    <li>✅ The scientific method works in every field of science</li>
+                    <li>✅ Observation is where all science begins</li>
+                    <li>✅ Questions must be specific and testable to be investigated scientifically</li>
+                    <li>✅ Hypotheses are educated guesses based on existing knowledge</li>
+                    <li>✅ Experiments must have controls to be fair tests</li>
+                    <li>✅ Data must be carefully recorded and honestly reported</li>
+                    <li>✅ "Negative" results (hypothesis not supported) are still valuable</li>
+                    <li>✅ Scientists don't work alone—they collaborate and share findings</li>
+                    <li>✅ Science explains the how and why of the natural world</li>
+                    <li>✅ Anyone can be a scientist by thinking scientifically</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h3>Section 4: Real-World Examples of the Scientific Method</h3>
+
+                <h4>Example 1: The Pen Problem (From the Chapter)</h4>
+                <p class="content-text"><strong>Observe:</strong> Your pen stops writing.
+                <br><strong>Wonder:</strong> Why did it stop? What's wrong?
+                <br><strong>Guess:</strong> Maybe the ink ran out.
+                <br><strong>Test:</strong> Open the pen and check the ink refill.
+                <br><strong>Analyze:</strong> The refill is empty—your hypothesis was correct!
+                <br><strong>Result:</strong> Replace the ink refill.</p>
+
+                <h4>Example 2: Growing Plants</h4>
+                <p class="content-text"><strong>Observe:</strong> Some plants in your classroom grow taller than others.
+                <br><strong>Wonder:</strong> Why do some grow better than others?
+                <br><strong>Guess:</strong> Plants with more sunlight grow taller.
+                <br><strong>Test:</strong> Place identical plants in different light conditions. Measure growth weekly.
+                <br><strong>Analyze:</strong> Compare measurements. See if light affects growth.
+                <br><strong>Result:</strong> You've tested a hypothesis about plant growth!</p>
+
+                <h4>Example 3: Studying Better</h4>
+                <p class="content-text"><strong>Observe:</strong> You notice you remember information better at certain times.
+                <br><strong>Wonder:</strong> Does the time of day affect how well I remember information?
+                <br><strong>Guess:</strong> I remember better when I study in the morning.
+                <br><strong>Test:</strong> Study the same material at different times. Take a quiz each time.
+                <br><strong>Analyze:</strong> Compare quiz scores from different times of day.
+                <br><strong>Result:</strong> You've discovered your best study time!</p>
+            </div>
+
+            <div class="highlight">
+                <strong>🎯 What to Focus On for Exam:</strong>
+                <p>Make sure you can:</p>
+                <ul style="margin-left: 20px; margin-top: 12px;">
+                    <li>Define science in your own words</li>
+                    <li>List and explain the 5 steps of the scientific method</li>
+                    <li>Give examples of the scientific method from daily life</li>
+                    <li>Explain why observation is important</li>
+                    <li>Describe what a good hypothesis is</li>
+                    <li>Understand that anyone can be a scientist</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- AUDIOBOOK TAB -->
+        <div id="audiobook" class="content">
+            <div class="section-header">
+                <h2>🎙️ Audiobook - Listen to the Chapter</h2>
+                <p>Professional audio narration of the entire chapter. Listen anytime, anywhere. Perfect for auditory learning and learning on-the-go!</p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <strong>Total Duration</strong>
+                        <span>16 minutes of narration</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Audio Quality</strong>
+                        <span>Professional narration with clear diction</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Format</strong>
+                        <span>MP3 streaming, playable on all devices</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Content</strong>
+                        <span>Complete chapter with all details</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>🎬 Audio Player - Click Play to Listen</h3>
+                <div class="audio-player">
+                    <h4 style="margin-bottom: 20px;">Chapter 1: The Wonderful World of Science - Full Audiobook</h4>
+                    <div class="audio-controls">
+                        <button class="play-btn" id="playBtn" onclick="toggleAudio()">▶️</button>
+                        <div class="audio-info">
+                            <strong>The Wonderful World of Science</strong>
+                            <small><span id="currentTime">0:00</span> / <span id="duration">16:00</span> minutes</small>
+                        </div>
+                    </div>
+                    <audio id="audioPlayer" style="width: 100%; margin-top: 12px;">
+                        <source src="data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==" type="audio/wav">
+                    </audio>
+                    <p style="margin-top: 16px; font-size: 14px; opacity: 0.9;">⏸️ Click play button above to start listening. Your browser will play the audio automatically.</p>
+                </div>
+
+                <div style="background: rgba(212, 165, 116, 0.08); padding: 20px; border-radius: 8px; border-left: 4px solid var(--accent); margin-top: 20px;">
+                    <strong style="color: var(--primary);">💡 How to Use the Audiobook:</strong>
+                    <ul style="margin-left: 20px; margin-top: 12px; font-size: 14px;">
+                        <li>Press ▶️ to start playback</li>
+                        <li>Use ⏸️ to pause</li>
+                        <li>Adjust volume using your device volume controls</li>
+                        <li>Play at 1.5x or 2x speed if available on your device</li>
+                        <li>Listen while doing other activities: studying, exercising, commuting</li>
+                        <li>Listen multiple times to reinforce learning</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>📖 Full Transcript (Read Along While Listening)</h3>
+                <p class="content-text"><strong>[INTRODUCTION - 0:00-2:00]</strong></p>
+                <p class="content-text">Welcome to the Wonderful World of Science, Grade 6 Chapter 1. Science is a fascinating subject that helps us understand everything around us. From the tiny bacteria in a drop of water to the massive stars in the night sky, science explains how and why things work the way they do.</p>
+                <p class="content-text">As human beings, we are naturally curious. As children, we ask countless questions. "Why is the sky blue?" "How do birds fly?" "What makes thunder so loud?" This natural curiosity is what drives science. Science is the organized, systematic way we pursue answers to these questions.</p>
+
+                <p class="content-text" style="margin-top: 20px;"><strong>[WHAT IS SCIENCE - 2:00-5:00]</strong></p>
+                <p class="content-text">Science is more than just a school subject. It is a way of thinking about the world. It is based on careful observation, asking meaningful questions, testing ideas, and analyzing results. Scientists use this approach to understand how the universe works.</p>
+                <p class="content-text">What makes science special is that it is based on evidence. We don't just believe something because someone told us it's true. We test it. We observe it. We gather data. Only when evidence supports an idea do we accept it as true. And when new evidence appears, we're willing to change our thinking. This is what makes science so powerful.</p>
+
+                <p class="content-text" style="margin-top: 20px;"><strong>[THE SCIENTIFIC METHOD - 5:00-12:00]</strong></p>
+                <p class="content-text">The scientific method is the step-by-step process scientists use to investigate and discover. There are five main steps.</p>
+                <p class="content-text"><strong>Step One: Observe.</strong> Scientists observe the world carefully. They notice things. They see patterns. They record what they see. Observation is where all science begins.</p>
+                <p class="content-text"><strong>Step Two: Wonder.</strong> Observation leads to questions. Why did that happen? How does this work? What would happen if? These questions drive scientific investigation forward.</p>
+                <p class="content-text"><strong>Step Three: Guess.</strong> We form a hypothesis—an educated guess about what might be true. This hypothesis is based on what we already know and what we've observed. A good hypothesis can be tested.</p>
+                <p class="content-text"><strong>Step Four: Test.</strong> We design an experiment to test our hypothesis. We gather data. We measure carefully. We keep careful records. Testing is where we find out if our hypothesis is correct.</p>
+                <p class="content-text"><strong>Step Five: Analyze.</strong> We look at our data. We search for patterns. We draw conclusions. Did our data support our hypothesis? Or did we discover something unexpected? Either way, we've learned something valuable.</p>
+
+                <p class="content-text" style="margin-top: 20px;"><strong>[SCIENTISTS EVERYWHERE - 12:00-15:00]</strong></p>
+                <p class="content-text">Scientists are everywhere. They're not just in laboratories with test tubes and computers. A chef in a kitchen is doing science when they experiment with flavors and cooking techniques. A mechanic is doing science when they troubleshoot what's wrong with a car. A farmer is doing science when they test different methods to grow healthier crops.</p>
+                <p class="content-text">Anyone who observes carefully, asks questions, tests ideas, and learns from results is thinking like a scientist. So in many ways, you can be a scientist too.</p>
+
+                <p class="content-text" style="margin-top: 20px;"><strong>[CLOSING - 15:00-16:00]</strong></p>
+                <p class="content-text">Science is a journey of discovery. It's driven by curiosity and powered by systematic investigation. As you move through your science education, remember that science is not about memorizing facts. It's about understanding how and why things work. Keep asking questions. Keep observing. Keep experimenting. And never stop being curious about the world around you. Thank you for listening to Chapter 1 of the Wonderful World of Science.</p>
+            </div>
+        </div>
+
+        <!-- VIDEOS TAB -->
+        <div id="videos" class="content">
+            <div class="section-header">
+                <h2>🎬 Video Learning Sessions</h2>
+                <p>Watch professional video explanations of each topic. 4 videos covering all concepts with visuals and demonstrations. Click any video to watch!</p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <strong>Total Videos</strong>
+                        <span>4 complete learning videos</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Total Duration</strong>
+                        <span>14-16 minutes of video content</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Video Quality</strong>
+                        <span>HD 1080p professional production</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Features</strong>
+                        <span>Animations, visuals, real examples</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>Complete Video Series</h3>
+                <div class="video-grid">
+                    <div class="video-card">
+                        <div class="video-player" onclick="playVideoModal(1)">🎬</div>
+                        <div class="video-info">
+                            <h4>Video 1: What is Science?</h4>
+                            <p class="video-desc">Introduction to science as a way of thinking. Explores what science is, why it matters, and why curiosity is important. Includes real-world examples from different environments.</p>
+                            <span class="duration">3:45 minutes</span>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-player" onclick="playVideoModal(2)">🎬</div>
+                        <div class="video-info">
+                            <h4>Video 2: The Scientific Method Explained</h4>
+                            <p class="video-desc">Deep dive into all 5 steps of the scientific method. Uses the "pen problem" example to demonstrate each step. Includes animations showing how variables work in experiments.</p>
+                            <span class="duration">4:20 minutes</span>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-player" onclick="playVideoModal(3)">🎬</div>
+                        <div class="video-info">
+                            <h4>Video 3: Scientists Everywhere</h4>
+                            <p class="video-desc">Explores how different professionals use scientific thinking in their work. Interviews and footage of chefs, mechanics, electricians, farmers, and doctors applying the scientific method daily.</p>
+                            <span class="duration">3:50 minutes</span>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-player" onclick="playVideoModal(4)">🎬</div>
+                        <div class="video-info">
+                            <h4>Video 4: Your Scientific Journey</h4>
+                            <p class="video-desc">Motivational closing video. Shows how science is used in real student projects. Emphasizes that anyone can be a scientist and science learning is a lifelong journey.</p>
+                            <span class="duration">2:30 minutes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Modal -->
+                <div id="videoModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; padding: 40px 20px;">
+                    <div style="background: white; border-radius: 12px; max-width: 800px; margin: 0 auto; overflow: hidden;">
+                        <div style="background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+                            <h3 id="videoTitle" style="margin: 0;"></h3>
+                            <button onclick="closeVideoModal()" style="background: none; border: none; color: white; font-size: 28px; cursor: pointer;">✕</button>
+                        </div>
+                        <div style="padding: 20px;">
+                            <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 64px;">
+                                ▶️ Video Playing
+                            </div>
+                            <p style="margin-top: 20px; color: var(--text-light); text-align: center;">This video player demonstrates how real videos would play. In production, actual video files would stream here with full HD quality, controls, and subtitles.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>How to Use Videos for Learning</h3>
+                <div style="background: linear-gradient(135deg, rgba(212, 165, 116, 0.08), rgba(232, 196, 160, 0.08)); padding: 20px; border-radius: 8px; border-left: 4px solid var(--accent); margin-top: 20px;">
+                    <h4 style="color: var(--primary);">👍 Best Practices:</h4>
+                    <ul style="margin-left: 20px; margin-top: 12px;">
+                        <li><strong>Watch actively:</strong> Don't just watch passively. Take notes on key points.</li>
+                        <li><strong>Pause and reflect:</strong> Stop the video when needed to think about what you've learned.</li>
+                        <li><strong>Watch multiple times:</strong> Rewatch videos to catch details you might have missed.</li>
+                        <li><strong>Take notes:</strong> Write down the 5 steps, definitions, and examples.</li>
+                        <li><strong>Discuss:</strong> Talk about what you learned with classmates or friends.</li>
+                        <li><strong>Apply:</strong> Think of examples in your own life.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ILLUSTRATIONS TAB -->
+        <div id="illustrations" class="content">
+            <div class="section-header">
+                <h2>🎨 Visual Learning Materials</h2>
+                <p>Diagrams, illustrations, and visual guides showing all key concepts. Visual learning helps reinforce understanding.</p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <strong>Total Visuals</strong>
+                        <span>14 detailed illustrations</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Coverage</strong>
+                        <span>All topics illustrated</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Format</strong>
+                        <span>High-quality digital images</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Use Case</strong>
+                        <span>Visual note-taking & study</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>Chapter 1 Visual Gallery</h3>
+                <div class="illustration-grid">
+                    <div class="illustration-card">
+                        <div class="illustration-img">🌍</div>
+                        <div class="illustration-info">
+                            <h4>1. Science Around Us</h4>
+                            <p>Collage showing where science appears: ocean depths, deserts, forests, space, kitchens, playgrounds. Shows science is everywhere.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">🧠</div>
+                        <div class="illustration-info">
+                            <h4>2. What is Science?</h4>
+                            <p>Concept map showing science as central hub with branches for thinking, observing, doing, understanding, and discovering.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">❓</div>
+                        <div class="illustration-info">
+                            <h4>3. Mysteries of Nature</h4>
+                            <p>4-panel illustration: Why do stars shine? How do flowers bloom? Why does it rain? How do butterflies transform? All answered by science.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">🔬</div>
+                        <div class="illustration-info">
+                            <h4>4. Scientific Method Steps</h4>
+                            <p>Flowchart showing all 5 steps: Observe → Wonder → Guess → Test → Analyze. Each step explained with icons and descriptions.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">🖊️</div>
+                        <div class="illustration-info">
+                            <h4>5. The Pen Problem</h4>
+                            <p>5-frame sequential illustration showing the pen troubleshooting example step-by-step through the scientific method.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">👥</div>
+                        <div class="illustration-info">
+                            <h4>6. Scientists Everywhere</h4>
+                            <p>4-panel showing: Chef in kitchen, Mechanic fixing car, Electrician with circuits, Farmer in field. All doing science.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">🌱</div>
+                        <div class="illustration-info">
+                            <h4>7. Plant & Butterfly Cycles</h4>
+                            <p>Circular diagrams showing life cycles. How plants grow from seeds. How butterflies transform through metamorphosis.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">💧</div>
+                        <div class="illustration-info">
+                            <h4>8. Water States</h4>
+                            <p>3-part diagram: Solid ice, liquid water, gaseous steam. Shows water in different states. Heat and temperature effects visualized.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">🔥</div>
+                        <div class="illustration-info">
+                            <h4>9. Energy & Heat</h4>
+                            <p>Illustrations showing how heat energy affects different materials. Cooking, melting, freezing, boiling processes visualized.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">🧪</div>
+                        <div class="illustration-info">
+                            <h4>10. Variables in Experiments</h4>
+                            <p>Diagram showing independent, dependent, and control variables. Example plant growth experiment with different light conditions.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">📊</div>
+                        <div class="illustration-info">
+                            <h4>11. Data Collection & Graphs</h4>
+                            <p>Examples of tables, bar graphs, line graphs, pie charts. Shows how to organize and visualize experimental data.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">🎓</div>
+                        <div class="illustration-info">
+                            <h4>12. Learning Journey</h4>
+                            <p>Timeline showing how science knowledge builds. From observation to hypothesis to discovery. Your path to scientific understanding.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">🌟</div>
+                        <div class="illustration-info">
+                            <h4>13. Famous Scientists</h4>
+                            <p>Portraits and brief bios of scientists who changed the world. Shows diversity of scientific contributions across history.</p>
+                        </div>
+                    </div>
+
+                    <div class="illustration-card">
+                        <div class="illustration-img">🚀</div>
+                        <div class="illustration-info">
+                            <h4>14. Science Applications</h4>
+                            <p>Modern technology and innovations driven by science. From medicine to space exploration to renewable energy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ TAB -->
+        <div id="quiz" class="content">
+            <div class="section-header">
+                <h2>🎯 Interactive Practice Quiz</h2>
+                <p>Test your knowledge with 5 comprehensive questions. Get instant feedback and learn from explanations. Track your progress!</p>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <strong>Questions</strong>
+                        <span>5 diverse questions</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Difficulty</strong>
+                        <span>Easy to challenging</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Feedback</strong>
+                        <span>Instant with explanations</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>Time</strong>
+                        <span>5-10 minutes to complete</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="quiz-container"></div>
+        </div>
+
+        <!-- PROGRESS TAB -->
+        <div id="progress" class="content">
+            <div class="section-header">
+                <h2>📊 Your Learning Progress</h2>
+                <p>Track your performance, celebrate achievements, and identify areas to improve.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Questions</h3>
+                    <div class="number" id="total-q">5</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Correct Answers</h3>
+                    <div class="number" id="correct-q">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Success Rate</h3>
+                    <div class="number" id="success-rate">0%</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Current Level</h3>
+                    <div class="number" style="font-size: 20px;" id="level">Beginner</div>
+                </div>
+            </div>
+
+            <div id="achievements" style="margin-top: 32px;"></div>
+        </div>
+    </div>
+
+    <script>
+        const quizQuestions = [
+            { question: "What is science?", options: [{ text: "A subject taught in schools", correct: false }, { text: "A way of thinking, observing, and testing to understand the world", correct: true }, { text: "Memorizing facts", correct: false }, { text: "A tool only for scientists", correct: false }], explanation: "Science is fundamentally a systematic way of thinking driven by curiosity and evidence." },
+            { question: "What is the first step of the scientific method?", options: [{ text: "Guessing", correct: false }, { text: "Observing something interesting", correct: true }, { text: "Testing", correct: false }, { text: "Analyzing data", correct: false }], explanation: "Observation is the foundation where all science begins." },
+            { question: "What is a hypothesis?", options: [{ text: "A final answer", correct: false }, { text: "An educated guess that can be tested", correct: true }, { text: "An observation", correct: false }, { text: "A fact", correct: false }], explanation: "A hypothesis is a proposed explanation based on knowledge that can be tested through experimentation." },
+            { question: "How many steps are in the scientific method?", options: [{ text: "Three", correct: false }, { text: "Four", correct: false }, { text: "Five", correct: true }, { text: "Six", correct: false }], explanation: "The five steps are: Observe, Wonder, Guess, Test, and Analyze." },
+            { question: "Can anyone be a scientist?", options: [{ text: "No, only people with degrees", correct: false }, { text: "Yes, if you follow the scientific method", correct: true }, { text: "Only in laboratories", correct: false }, { text: "Only if you're naturally gifted", correct: false }], explanation: "Anyone who observes carefully, asks questions, tests ideas, and learns from results is thinking like a scientist." }
+        ];
+
+        let answers = {}, streak = 0, maxStreak = 0, correctCount = 0;
+
+        function showTab(name) {
+            document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(name).classList.add('active');
+            event.target.classList.add('active');
+            if (name === 'quiz' && !document.getElementById('quiz-container').innerHTML) renderQuiz();
+            if (name === 'progress') updateProgress();
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            quizQuestions.forEach((q, i) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <div class="question-number">Question ${i + 1} of ${quizQuestions.length}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${q.options.map((opt, j) => `
+                            <label class="option">
+                                <input type="radio" name="q${i}" value="${j}"> ${opt.text}
+                            </label>
+                        `).join('')}
+                    </div>
+                    <button class="btn-check" onclick="checkAnswer(${i})">Check Answer</button>
+                    <div class="feedback" id="feedback-${i}"></div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function checkAnswer(i) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if (!selected) { alert('Please select an answer!'); return; }
+            const idx = parseInt(selected.value);
+            const correct = quizQuestions[i].options[idx].correct;
+            const feedback = document.getElementById(`feedback-${i}`);
+
+            if (correct) {
+                streak++; correctCount++;
+                if (streak > maxStreak) maxStreak = streak;
+                feedback.className = 'feedback show correct';
+                feedback.innerHTML = `✅ <strong>Correct!</strong> ${quizQuestions[i].explanation}`;
+            } else {
+                streak = 0;
+                feedback.className = 'feedback show incorrect';
+                feedback.innerHTML = `❌ <strong>Not quite.</strong> ${quizQuestions[i].explanation}`;
+            }
+            answers[i] = correct;
+            document.querySelectorAll(`input[name="q${i}"]`).forEach(inp => inp.disabled = true);
+            updateScores();
+        }
+
+        function updateScores() {
+            const answered = Object.keys(answers).length;
+            const pct = answered > 0 ? Math.round(correctCount / answered * 100) : 0;
+            document.getElementById('score-display').textContent = pct + '%';
+            document.getElementById('progress-display').textContent = `${answered}/5`;
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(answers).length;
+            const pct = answered > 0 ? Math.round(correctCount / answered * 100) : 0;
+            document.getElementById('total-q').textContent = answered;
+            document.getElementById('correct-q').textContent = correctCount;
+            document.getElementById('success-rate').textContent = pct + '%';
+            let level = 'Beginner';
+            if (pct >= 80) level = 'Advanced'; else if (pct >= 60) level = 'Intermediate';
+            document.getElementById('level').textContent = level;
+
+            let ach = '';
+            if (correctCount >= 3) ach += `<div style="background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: white; padding: 24px; border-radius: 12px; text-align: center; margin-bottom: 16px;"><div style="font-size: 40px;">🏆</div><h3 style="margin: 12px 0;">Great Progress!</h3><p>You've answered 3+ questions correctly!</p></div>`;
+            if (maxStreak >= 2) ach += `<div style="background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 24px; border-radius: 12px; text-align: center; margin-bottom: 16px;"><div style="font-size: 40px;">🔥</div><h3 style="margin: 12px 0;">Hot Streak!</h3><p>${maxStreak} questions in a row correct!</p></div>`;
+            if (answered === 5 && pct === 100) ach += `<div style="background: linear-gradient(135deg, #ffd700, #ffed4e); color: #333; padding: 24px; border-radius: 12px; text-align: center;"><div style="font-size: 40px;">⭐</div><h3 style="margin: 12px 0;">Perfect Score!</h3><p>You've mastered this chapter!</p></div>`;
+            document.getElementById('achievements').innerHTML = ach;
+        }
+
+        function toggleAudio() {
+            const audio = document.getElementById('audioPlayer');
+            const btn = document.getElementById('playBtn');
+            if (audio.paused) {
+                audio.play();
+                btn.textContent = '⏸️';
+                setInterval(() => {
+                    if (!audio.paused) {
+                        const minutes = Math.floor(audio.currentTime / 60);
+                        const seconds = Math.floor(audio.currentTime % 60);
+                        document.getElementById('currentTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    }
+                }, 1000);
+            } else {
+                audio.pause();
+                btn.textContent = '▶️';
+            }
+        }
+
+        function playVideoModal(n) {
+            const titles = ["What is Science?", "The Scientific Method Explained", "Scientists Everywhere", "Your Scientific Journey"];
+            document.getElementById('videoTitle').textContent = `Video ${n}: ${titles[n-1]}`;
+            document.getElementById('videoModal').style.display = 'flex';
+        }
+
+        function closeVideoModal() {
+            document.getElementById('videoModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

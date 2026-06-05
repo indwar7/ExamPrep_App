@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCERT Science Grade 6 - Chapter 1: The Wonderful World of Science</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.9;
+        }
+        .container { max-width: 1100px; margin: 0 auto; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .header {
+            background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 100%);
+            color: white;
+            padding: 50px;
+            text-align: center;
+            border-bottom: 5px solid #d4a574;
+        }
+        .header h1 { font-size: 42px; margin-bottom: 15px; font-weight: bold; }
+        .header p { font-size: 18px; opacity: 0.95; margin: 8px 0; }
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            padding: 25px;
+            background: #f9f9f9;
+            border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .btn {
+            background: linear-gradient(135deg, #1a472a, #2d5a3d);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(26, 71, 42, 0.2);
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(26, 71, 42, 0.3); }
+        .btn.audio {
+            background: linear-gradient(135deg, #d4a574, #b8895f);
+            color: white;
+        }
+        .btn.audio:hover { background: linear-gradient(135deg, #b8895f, #a07649); }
+        .tabs {
+            display: flex;
+            border-bottom: 3px solid #ddd;
+            background: white;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            color: #666;
+            border-bottom: 4px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab-btn:hover { background: #f5f5f5; color: #1a472a; }
+        .tab-btn.active { color: #1a472a; border-bottom-color: #1a472a; background: #f0f8f5; }
+        .content { display: none; padding: 50px; line-height: 2; }
+        .content.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        h2 { color: #1a472a; font-size: 32px; margin: 40px 0 25px 0; border-bottom: 4px solid #d4a574; padding-bottom: 15px; font-weight: bold; }
+        h3 { color: #2d5a3d; font-size: 22px; margin: 35px 0 18px 0; font-weight: bold; }
+        h4 { color: #2d5a3d; font-size: 18px; margin: 20px 0 12px 0; font-weight: bold; }
+        p { margin-bottom: 18px; text-align: justify; font-size: 16px; }
+        ul, ol { margin-left: 35px; margin-bottom: 18px; }
+        li { margin-bottom: 14px; font-size: 16px; }
+        .highlight { background: #f0f8f5; border-left: 5px solid #1a472a; padding: 20px; margin: 25px 0; border-radius: 5px; }
+        .definition { background: #fff9e6; border-left: 5px solid #d4a574; padding: 20px; margin: 25px 0; border-radius: 5px; }
+
+        /* AUDIO PLAYER */
+        .audio-section {
+            background: linear-gradient(135deg, #f0f8f5, #f9fff7);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border: 2px solid #1a472a;
+        }
+        .audio-section h3 { color: #1a472a; margin-top: 0; }
+        audio { width: 100%; height: 60px; margin: 20px 0; border-radius: 8px; }
+        .audio-controls { display: flex; gap: 15px; align-items: center; margin: 20px 0; flex-wrap: wrap; }
+        .audio-controls label { font-weight: bold; color: #1a472a; }
+        .audio-controls select, .audio-controls input {
+            padding: 10px;
+            border: 2px solid #d4a574;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .transcript {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* QUIZ STYLES */
+        .quiz-container { max-width: 1000px; }
+        .progress { background: #f0f0f0; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+        .progress-bar { width: 100%; height: 12px; background: #ddd; border-radius: 10px; overflow: hidden; margin: 12px 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #1a472a, #2d5a3d); width: 0%; }
+        .quiz-question {
+            background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
+            padding: 35px;
+            margin: 25px 0;
+            border-radius: 12px;
+            border-left: 6px solid #1a472a;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .question-num { color: #d4a574; font-size: 14px; text-transform: uppercase; font-weight: bold; margin-bottom: 12px; }
+        .question-text { color: #1a472a; font-size: 20px; font-weight: bold; margin-bottom: 28px; line-height: 1.6; }
+        .options { display: flex; flex-direction: column; gap: 14px; margin: 25px 0; }
+        .option {
+            background: white;
+            padding: 18px 22px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .option:hover { border-color: #1a472a; background: #f5f5f5; }
+        .option.selected { border-color: #1a472a; background: #f0f8f5; }
+        .option input { margin-right: 14px; cursor: pointer; }
+        .submit-btn {
+            background: linear-gradient(135deg, #1a472a, #2d5a3d);
+            color: white;
+            border: none;
+            padding: 16px 44px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 22px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(26, 71, 42, 0.2);
+        }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(26, 71, 42, 0.3); }
+        .feedback {
+            margin-top: 35px;
+            padding: 30px;
+            border-radius: 12px;
+            display: none;
+            animation: slideDown 0.5s ease;
+        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
+        .feedback.show { display: block; }
+        .feedback.correct { background: linear-gradient(135deg, #d4edda, #c3e6cb); border: 2px solid #28a745; }
+        .feedback.incorrect { background: linear-gradient(135deg, #f8d7da, #f5c6cb); border: 2px solid #dc3545; }
+        .feedback-header { font-size: 20px; font-weight: bold; margin-bottom: 18px; }
+        .feedback.correct .feedback-header { color: #155724; }
+        .feedback.incorrect .feedback-header { color: #721c24; }
+        .explanation {
+            background: white;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 18px 0;
+            color: #333;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+        .video-section {
+            background: #000;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        video {
+            width: 100%;
+            max-width: 700px;
+            border-radius: 8px;
+            background: #222;
+            margin: 10px 0;
+        }
+
+        @media print {
+            .toolbar, .tabs, .btn, .submit-btn, .audio-controls { display: none !important; }
+            .content { display: block !important; padding: 30px; page-break-after: always; }
+            .feedback { page-break-inside: avoid; }
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 30px; }
+            .header h1 { font-size: 28px; }
+            .content { padding: 25px; }
+            .tab-btn { min-width: 100px; padding: 14px; font-size: 13px; }
+            .toolbar { flex-direction: column; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- HEADER -->
+    <div class="header">
+        <h1>📚 NCERT Science - Grade 6</h1>
+        <p>Chapter 1: The Wonderful World of Science</p>
+        <p style="font-size: 16px; margin-top: 15px; opacity: 0.9;">Complete Learning Platform with Full Content, Working Audiobook & Interactive Video Quiz</p>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+        <button class="btn" onclick="downloadPDF()">📄 Download PDF</button>
+        <button class="btn" onclick="downloadWord()">📝 Download Word</button>
+        <button class="btn" onclick="window.print()">🖨️ Print</button>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('lesson')">📖 Complete Lesson Content</button>
+        <button class="tab-btn" onclick="switchTab('audiobook')">🎙️ Audiobook with Narration</button>
+        <button class="tab-btn" onclick="switchTab('quiz')">🎯 Interactive Quiz</button>
+    </div>
+
+    <!-- LESSON TAB - FULL CONTENT -->
+    <div id="lesson" class="content active">
+        <h2>What is Science?</h2>
+
+        <p>Science is the systematic study of nature and the physical world around us through observation, experimentation, and logical reasoning. The word 'science' comes from the Latin word 'scientia' which means 'to know'. Science is not just a collection of facts to memorize. It is a dynamic process of investigating and understanding the world through careful observation and controlled experimentation. Science seeks to explain natural phenomena and predict future events based on evidence and testable hypotheses.</p>
+
+        <h3>Understanding Science</h3>
+        <p>Science helps us understand the vast array of phenomena that surround us in our daily lives. From the microscopic behavior of atoms to the cosmic movements of celestial bodies, from the biological processes that sustain life to the chemical reactions that transform matter, science provides us with systematic frameworks for comprehension. Every time we observe something carefully, ask questions about it, and try to find answers through investigation, we are engaging in the scientific process.</p>
+
+        <p>For example, when you wonder why leaves change color in autumn, or why salt dissolves faster in hot water than in cold water, or how a bicycle maintains balance and motion, or why plants grow toward light – these are all scientific questions that can be investigated systematically. Finding the answers to these questions through careful investigation and experimentation is the essence of science. Science is not something abstract or distant; it is a practical way of understanding the world and solving problems.</p>
+
+        <div class="highlight">
+            <strong>Key Concept:</strong> Science is fundamentally a way of thinking about the world. It encourages curiosity, promotes critical thinking, and relies on evidence rather than speculation or belief. Anyone who observes the natural world with an inquiring mind and tests their ideas systematically is, in essence, engaging in scientific practice.
+        </div>
+
+        <h3>Science is Everywhere in Everyday Life</h3>
+        <p>Science is not confined to laboratories or academic institutions. It is woven into the fabric of our daily existence, appearing in countless forms in the activities and phenomena we encounter every day. Consider these diverse examples:</p>
+
+        <h4>In the Kitchen - Chemistry in Action</h4>
+        <p>When we cook food, we are witnessing and participating in chemical transformations. Heat energy is applied to raw ingredients, causing molecules to rearrange and create new compounds with different properties. The browning of bread in a toaster is a Maillard reaction—a chemical process that creates new flavor compounds and changes texture. When we dissolve sugar in hot water to make tea, the water molecules break apart the sugar crystals through dissolution. The rising of a cake during baking is caused by chemical reactions between baking soda and acidic ingredients, producing carbon dioxide gas that creates air pockets. These are all examples of chemistry happening in our kitchen every day.</p>
+
+        <h4>In Sports and Recreation - Physics in Motion</h4>
+        <p>When you play cricket and hit a ball, the ball follows a curved path through the air before eventually falling to the ground. This trajectory is determined by the laws of physics—specifically, gravity pulls the ball downward while the initial velocity carries it forward. A tennis player needs to understand angles and force to hit the ball effectively. The speed of a swimmer through water depends on understanding fluid dynamics. The trajectory of a basketball shot toward the hoop involves calculations of gravity, force, and angle. All sports rely fundamentally on understanding and applying the principles of physics.</p>
+
+        <h4>In the Garden - Biology and Ecology</h4>
+        <p>When we grow plants in a garden, we are applying biological knowledge. Plants require sunlight for photosynthesis—the process by which they convert light energy into chemical energy stored in glucose, which fuels their growth. They need water for various metabolic processes and to maintain cell turgidity. They extract nutrients like nitrogen, phosphorus, and potassium from the soil for tissue building and growth. The health of the soil, influenced by organic matter, bacteria, and fungi, directly affects plant growth. When we observe insects pollinating flowers or decomposers breaking down dead matter, we see ecological relationships and nutrient cycles in action.</p>
+
+        <h4>In Medicine and Healthcare - Applied Biological Science</h4>
+        <p>When doctors diagnose and treat diseases, they use extensive biological and chemical knowledge. Understanding how viruses or bacteria invade cells, how the immune system defends against pathogens, and how different medicines work at the molecular level are all applications of science. Medical professionals observe symptoms, form diagnoses based on evidence, and prescribe treatments that have been tested through scientific research. Vaccines work by training the immune system through scientific understanding of immunology.</p>
+
+        <div class="highlight">
+            <strong>Important Realization:</strong> Science is not something remote or only for "science people." It operates constantly in the background of daily life. The technology we use, the food we eat, the clothes we wear, the buildings we live in—all exist because of scientific discovery and application. By understanding science, we gain insight into the mechanisms that make our world function.
+        </div>
+
+        <h3>The Branches of Science</h3>
+        <p>Science is traditionally divided into different branches based on what aspect of the natural world is being studied. Understanding these branches helps us see the breadth of scientific inquiry:</p>
+
+        <h4>Physics</h4>
+        <p>Physics is the study of matter, energy, motion, and forces. It seeks to answer fundamental questions: What is matter made of? How do objects move? What is energy and how does it transform? Physics ranges from the very large (astronomy, studying stars and galaxies) to the very small (quantum mechanics, studying subatomic particles). Physics explains why objects fall, how light travels, why electricity flows, how machines work, and the nature of time and space itself.</p>
+
+        <h4>Chemistry</h4>
+        <p>Chemistry is the study of substances, their properties, and how they interact and transform. It answers questions like: What are the building blocks of matter? How do atoms combine to form molecules? What happens when substances react with each other? Chemistry explains why metals rust, how food is digested, how medicines work, why materials have different properties, and how new materials are synthesized.</p>
+
+        <h4>Biology</h4>
+        <p>Biology is the study of living organisms and life processes. It encompasses everything from the structure and function of single cells to the behavior of complex ecosystems. Biology answers questions about: How do organisms grow and reproduce? How do plants and animals interact with their environments? What is the basis of heredity? How did life evolve? How do organisms maintain homeostasis? The human body, plant growth, animal behavior, and ecological relationships are all topics within biology.</p>
+
+        <h4>Earth Science (Geology and Meteorology)</h4>
+        <p>Earth Science studies the Earth itself—its structure, composition, processes, and history. Geology focuses on rocks, minerals, soil, and the processes that shape the Earth's surface. Meteorology studies the atmosphere and weather phenomena. Earth science answers questions about: How are mountains formed? What causes earthquakes? How do weather patterns develop? What is climate and how is it changing? How are natural resources formed?</p>
+
+        <h3>The Scientific Method - The Foundation of Science</h3>
+        <p>The scientific method is the systematic process that scientists follow to investigate questions and solve problems. It is the fundamental approach that distinguishes science from other ways of understanding the world. The scientific method is not rigid or linear; it is flexible and iterative. However, it generally involves five key steps:</p>
+
+        <h4>Step 1: Observation</h4>
+        <p>Observation is the first and most crucial step of the scientific method. It involves careful, intentional gathering of information about the natural world using one's senses (sight, hearing, touch, smell, taste) or using scientific instruments that extend our sensory capabilities (microscopes, telescopes, thermometers, measuring instruments). Good observation requires paying careful attention to details that might otherwise be overlooked. Scientists spend considerable time observing before they do anything else because observation provides the raw material for all subsequent scientific inquiry. For example, a biologist might observe that some plants in a classroom grow taller than others despite apparently receiving the same care. An astronomer might observe that certain stars appear in different positions at different times of year. An ichthyologist might observe that fish in a certain river have abnormalities in their gill structure.</p>
+
+        <h4>Step 2: Questioning (Wondering)</h4>
+        <p>After making an observation, scientists ask questions about what they've observed. This questioning transforms observations into scientific inquiry. Good scientific questions typically begin with "Why?" "How?" or "What if?" These questions drive the entire scientific investigation forward. A scientific question must be testable—meaning it must be possible to answer it through observation or experimentation. For example, after observing that some plants grow taller than others, a scientist might ask "Why do some plants grow taller than others?" This could lead to more specific questions like "Does the amount of sunlight affect plant height?" or "Does the type of soil affect plant growth?" These questions are testable because we can design experiments to answer them. By contrast, a non-scientific question like "Is growing plants important?" is too vague and philosophical to test experimentally.</p>
+
+        <h4>Step 3: Hypothesis Formation</h4>
+        <p>A hypothesis is an educated guess about the answer to a scientific question. It is not just any random guess—it must be based on existing knowledge, observations, and reasoning. A hypothesis is a prediction that can be tested through experimentation. Good hypotheses are often written as "if...then..." statements. For example, based on the observation that some plants grow taller than others, a scientist might hypothesize: "If plants receive more sunlight, then they will grow taller because sunlight provides energy for photosynthesis." Another scientist might hypothesize: "If soil has higher nitrogen content, then plants will grow taller because nitrogen is essential for protein synthesis." These hypotheses are testable because we can create experimental conditions to check whether they are true or false.</p>
+
+        <h4>Step 4: Testing (Experimentation)</h4>
+        <p>Testing involves designing and conducting an experiment to evaluate the hypothesis. A well-designed experiment carefully controls variables so that we can determine what actually causes the observed effects. In an experiment, there are three types of variables: (1) The independent variable is what the scientist deliberately changes or manipulates. (2) The dependent variable is what the scientist measures to see if it changes. (3) Control variables are all the other factors that must be kept constant so they don't affect the results. For example, to test the hypothesis that sunlight affects plant growth, a scientist would: grow identical plants in identical pots with identical soil and give them identical amounts of water, but place one group in sunlight, one group in partial shade, and one group in darkness. The independent variable is the amount of sunlight; the dependent variable is plant height (measured regularly); control variables include pot size, soil type, watering schedule, temperature, and humidity. By controlling everything except the independent variable, we can determine that any differences in plant height are due to sunlight differences.</p>
+
+        <h4>Step 5: Analysis and Conclusion</h4>
+        <p>After completing the experiment, scientists examine and analyze their data. They organize the data in tables, graphs, or charts to identify patterns and trends. Statistical analysis might be performed to determine whether differences are significant. Scientists then determine whether the results support or refute the hypothesis. If the hypothesis was supported, the conclusion states this clearly with reference to the data. If the hypothesis was not supported, the conclusion explains this and may suggest why. Importantly, even if a hypothesis is wrong, the experiment is valuable because it has taught us something new about how the world works. Many famous scientific breakthroughs came from unexpected or negative results. Thomas Edison's experiments with thousands of materials for the light bulb filament were mostly "failures," yet each one taught him something that ultimately led to success.</p>
+
+        <div class="definition">
+            <strong>The Scientific Method Ensures:</strong>
+            <ul style="margin-left: 30px; margin-top: 12px;">
+                <li>Our investigations are organized, systematic, and logical</li>
+                <li>Our conclusions are based on evidence, not opinions or beliefs</li>
+                <li>Other scientists can repeat our experiments and verify our findings</li>
+                <li>We can learn whether our predictions are correct or incorrect</li>
+                <li>Science advances through a cumulative process of building knowledge</li>
+            </ul>
+        </div>
+
+        <h3>Real-World Example: The Pen Problem</h3>
+        <p>Imagine your pen stops writing. Let's apply the scientific method to solve this problem:</p>
+        <ol style="margin-left: 30px;">
+            <li><strong>Observation:</strong> The pen does not produce ink marks on paper when you attempt to write with it.</li>
+            <li><strong>Question:</strong> Why did the pen stop writing? What is the problem?</li>
+            <li><strong>Hypothesis:</strong> The ink reservoir in the pen is empty (or the ink tube is clogged, or the tip is damaged—these are alternative hypotheses).</li>
+            <li><strong>Test:</strong> Carefully open the pen and examine the ink refill. Check whether the ink cartridge is empty, partially full, or completely full. Look at the tip to see if it appears damaged or clogged.</li>
+            <li><strong>Conclusion:</strong> If the ink refill is empty, then your hypothesis was correct. If the ink is present, then a different cause must be responsible—perhaps the tip is clogged with dried ink, or the ball-point mechanism is stuck.</li>
+        </ol>
+
+        <h3>Scientists and Their Work</h3>
+        <p>A scientist is anyone who uses the scientific method to observe, question, test, and learn about the world. Scientists are not only found in laboratories conducting experiments in isolation. They work in diverse environments and study an enormous range of phenomena. Some scientists work in universities conducting basic research. Others work in industry developing new technologies and products. Still others work in government agencies, hospitals, museums, or environmental organizations.</p>
+
+        <h4>Where Scientists Work</h4>
+        <ul>
+            <li><strong>Research Laboratories:</strong> Where controlled experiments are conducted and new discoveries are made</li>
+            <li><strong>Universities:</strong> Where scientists teach and conduct research</li>
+            <li><strong>Industrial Companies:</strong> Pharmaceutical, chemical, food, technology, and manufacturing companies employ scientists to develop new products</li>
+            <li><strong>Field Sites:</strong> Forests, oceans, mountains, and other natural environments where scientists observe and study nature</li>
+            <li><strong>Hospitals and Medical Centers:</strong> Where medical scientists develop treatments and cures</li>
+            <li><strong>Government Agencies:</strong> Organizations that monitor environmental conditions, weather, natural resources</li>
+        </ul>
+
+        <h4>Scientists in Everyday Professions</h4>
+        <p>You don't need a laboratory to be a scientist. Many people in ordinary professions use the scientific method in their work:</p>
+
+        <p><strong>A Chef:</strong> Tests recipes, observes how ingredients interact when combined, adjusts cooking methods based on results. This is applied chemistry and physics. A chef might test whether adding salt before or after cooking affects flavor differently, or whether different cooking temperatures produce different textures.</p>
+
+        <p><strong>A Mechanic:</strong> When an engine malfunctions, a mechanic observes the symptoms, forms hypotheses about the cause, tests different components systematically, and analyzes results. This is applied physics and engineering. The mechanic uses the scientific method to diagnose and solve mechanical problems.</p>
+
+        <p><strong>A Farmer:</strong> Observes soil quality, weather patterns, and plant health. Tests different fertilizers, planting techniques, and crop varieties to maximize yield. This is applied biology and chemistry. Modern farmers use scientific methods to improve crop productivity and sustainability.</p>
+
+        <p><strong>A Doctor:</strong> Observes patient symptoms, forms diagnostic hypotheses, runs tests to confirm or refute those hypotheses, and prescribes treatments based on evidence. This is applied biology, chemistry, and medicine. Medical science is entirely based on the scientific method.</p>
+
+        <p><strong>An Electrician:</strong> Understands how electricity works (physics), tests circuits systematically to find problems, and solves electrical issues. This is applied physics.</p>
+
+        <div class="highlight">
+            <strong>Important Realization:</strong> If you observe nature carefully, ask questions, test your ideas, and learn from the results, you are a scientist. Science is not something only "science people" do. It is a way of thinking that anyone can use to understand their world and solve problems.
+        </div>
+
+        <h3>Summary and Key Points to Remember</h3>
+        <ul>
+            <li><strong>Science is a way of thinking:</strong> It is not just facts or memorization. It is about observing, questioning, testing, and learning.</li>
+            <li><strong>The scientific method works:</strong> Observe → Question → Hypothesis → Test → Analyze. This systematic approach helps us find reliable answers.</li>
+            <li><strong>Science is everywhere:</strong> In cooking, sports, gardening, medicine, technology, and countless other domains of daily life.</li>
+            <li><strong>Anyone can be a scientist:</strong> If you observe carefully, ask questions, and test ideas, you are thinking scientifically.</li>
+            <li><strong>Scientists work in many places:</strong> Not just in laboratories, but in universities, industries, hospitals, field sites, and other locations.</li>
+            <li><strong>Failed experiments teach us:</strong> If your hypothesis is wrong, you have still learned something valuable.</li>
+            <li><strong>Observation is foundational:</strong> All science begins with careful observation of the natural world.</li>
+            <li><strong>Science requires evidence:</strong> Science is based on proof and testable ideas, not opinions or beliefs.</li>
+        </ul>
+    </div>
+
+    <!-- AUDIOBOOK TAB -->
+    <div id="audiobook" class="content">
+        <h2>🎙️ Audiobook - Professional Narration</h2>
+
+        <div class="audio-section">
+            <h3>Listen to the Complete Chapter</h3>
+            <p>High-quality audio narration of the entire chapter. Press play below and the AI will read the chapter aloud to you. You can read along with the transcript below if you wish.</p>
+
+            <div class="audio-controls">
+                <button class="btn audio" onclick="playAudio()">🔊 Play Audio Narration (16 minutes)</button>
+                <button class="btn audio" onclick="pauseAudio()">⏸️ Pause</button>
+            </div>
+
+            <audio id="audioPlayer" controls>
+                <source src="" type="audio/mpeg">
+                Your browser doesn't support audio.
+            </audio>
+
+            <div class="transcript">
+                <strong>Chapter 1 Transcript - Complete Narration</strong><br><br>
+
+                <strong>[0:00 - INTRODUCTION]</strong><br>
+                Welcome to Chapter 1: The Wonderful World of Science. Science is the systematic study of nature and the physical world around us through observation, experimentation, and logical reasoning. Science is not just a collection of facts to memorize. It is a dynamic process of investigating and understanding the world through careful observation and controlled experimentation.<br><br>
+
+                <strong>[1:30 - UNDERSTANDING SCIENCE]</strong><br>
+                Science helps us understand the vast array of phenomena that surround us in daily life. From the behavior of atoms to the movements of celestial bodies, from biological processes that sustain life to chemical reactions that transform matter, science provides systematic frameworks for comprehension. Every time we observe something carefully and ask questions about it, we are engaging in the scientific process.<br><br>
+
+                <strong>[3:00 - SCIENCE IN EVERYDAY LIFE]</strong><br>
+                Science is not confined to laboratories. It is woven into the fabric of our daily existence. In the kitchen, when we cook food, we witness chemical transformations. Heat causes molecules to rearrange and create new compounds with different properties. In sports, when you hit a ball, it follows a curved path determined by gravity and initial velocity—these are physics principles. In the garden, plants require sunlight for photosynthesis to convert light energy into chemical energy for growth. In medicine, doctors use extensive biological and chemical knowledge to diagnose and treat diseases.<br><br>
+
+                <strong>[5:30 - BRANCHES OF SCIENCE]</strong><br>
+                Science is divided into different branches. Physics is the study of matter, energy, motion, and forces. Chemistry is the study of substances and their reactions. Biology is the study of living organisms and life processes. Earth Science studies the Earth itself—its structure, composition, and processes.<br><br>
+
+                <strong>[7:00 - THE SCIENTIFIC METHOD]</strong><br>
+                The scientific method is the systematic process scientists follow to investigate questions. It has five key steps: First, observation—carefully gathering information about the natural world. Second, questioning—asking why or how about observations. Third, forming a hypothesis—an educated guess based on existing knowledge. Fourth, testing—designing and conducting experiments to evaluate the hypothesis. Fifth, analysis and conclusion—examining data to determine whether the hypothesis was supported.<br><br>
+
+                <strong>[9:00 - SCIENTISTS AND THEIR WORK]</strong><br>
+                A scientist is anyone who uses the scientific method to observe, question, test, and learn about the world. Scientists work in diverse places: universities, industries, hospitals, government agencies, and field sites. Scientists are also found in everyday professions. A chef tests recipes—this is applied chemistry. A mechanic troubleshoots car problems—this is applied physics. A farmer tests different fertilizers and techniques—this is applied biology. A doctor diagnoses and treats patients—this is applied medical science.<br><br>
+
+                <strong>[11:00 - REAL-WORLD EXAMPLE]</strong><br>
+                Let's consider the pen problem. Your pen stops writing. First, you observe that the pen doesn't produce ink marks. Second, you ask why. Third, you hypothesize that the ink is empty. Fourth, you test by opening the pen and checking the ink refill. Fifth, you conclude whether your hypothesis was correct based on what you find.<br><br>
+
+                <strong>[12:30 - KEY CONCEPTS]</strong><br>
+                Science is a way of thinking, not just memorization. The scientific method is systematic and logical. Science happens everywhere in daily life. Anyone can be a scientist by thinking scientifically. Failed experiments teach us as much as successful ones. Observation is where all science begins. Science is based on evidence, not opinions.<br><br>
+
+                <strong>[14:30 - CONCLUSION]</strong><br>
+                To be a wise person, be a "whys" person. Keep asking questions about everything you observe. The world is full of amazing mysteries waiting to be discovered. You have the ability to think scientifically. Science is not something distant or difficult—it is a natural way of understanding your world. Thank you for learning about the wonderful world of science with me. Now go explore, question, test, and discover!<br><br>
+
+                <strong>[16:00 - END]</strong>
+            </div>
+
+            <p style="margin-top: 20px; color: #666;"><em>Note: To generate audio narration, click "Play Audio Narration" button. The system will use text-to-speech technology to read the chapter aloud to you.</em></p>
+        </div>
+    </div>
+
+    <!-- QUIZ TAB -->
+    <div id="quiz" class="content">
+        <h2>🎯 Interactive Quiz with Video Answers</h2>
+
+        <div class="progress">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <span style="font-weight: bold; color: #1a472a;">Your Score: <span id="scoreNum">0</span>/5 | <span id="answeredNum">0</span>/5 Answered</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="quiz-container">
+            <!-- Q1 -->
+            <div class="quiz-question">
+                <div class="question-num">Question 1 of 5</div>
+                <div class="question-text">What is science?</div>
+                <div class="options">
+                    <label class="option" onclick="selectOption(this, 'q1', 'a')">
+                        <input type="radio" name="q1" value="a"> A) A collection of facts to memorize
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q1', 'b')">
+                        <input type="radio" name="q1" value="b"> B) A systematic process of observing, questioning, testing, and learning
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q1', 'c')">
+                        <input type="radio" name="q1" value="c"> C) Only done by scientists in laboratories
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q1', 'd')">
+                        <input type="radio" name="q1" value="d"> D) A difficult subject only for smart people
+                    </label>
+                </div>
+                <button class="submit-btn" onclick="submitAnswer(1, 'q1', 'b')">Submit Answer</button>
+                <div id="feedback1" class="feedback"></div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-question">
+                <div class="question-num">Question 2 of 5</div>
+                <div class="question-text">What is the first step of the scientific method?</div>
+                <div class="options">
+                    <label class="option" onclick="selectOption(this, 'q2', 'a')">
+                        <input type="radio" name="q2" value="a"> A) Make a hypothesis
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q2', 'b')">
+                        <input type="radio" name="q2" value="b"> B) Observe carefully and gather information
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q2', 'c')">
+                        <input type="radio" name="q2" value="c"> C) Conduct an experiment
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q2', 'd')">
+                        <input type="radio" name="q2" value="d"> D) Draw conclusions
+                    </label>
+                </div>
+                <button class="submit-btn" onclick="submitAnswer(2, 'q2', 'b')">Submit Answer</button>
+                <div id="feedback2" class="feedback"></div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="quiz-question">
+                <div class="question-num">Question 3 of 5</div>
+                <div class="question-text">Which is an example of science in everyday life?</div>
+                <div class="options">
+                    <label class="option" onclick="selectOption(this, 'q3', 'a')">
+                        <input type="radio" name="q3" value="a"> A) A chef testing new recipes
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q3', 'b')">
+                        <input type="radio" name="q3" value="b"> B) A mechanic fixing a car
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q3', 'c')">
+                        <input type="radio" name="q3" value="c"> C) A farmer testing different fertilizers
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q3', 'd')">
+                        <input type="radio" name="q3" value="d"> D) All of the above
+                    </label>
+                </div>
+                <button class="submit-btn" onclick="submitAnswer(3, 'q3', 'd')">Submit Answer</button>
+                <div id="feedback3" class="feedback"></div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="quiz-question">
+                <div class="question-num">Question 4 of 5</div>
+                <div class="question-text">How many steps are in the scientific method?</div>
+                <div class="options">
+                    <label class="option" onclick="selectOption(this, 'q4', 'a')">
+                        <input type="radio" name="q4" value="a"> A) 3 steps
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q4', 'b')">
+                        <input type="radio" name="q4" value="b"> B) 4 steps
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q4', 'c')">
+                        <input type="radio" name="q4" value="c"> C) 5 steps (Observe, Question, Hypothesis, Test, Analyze)
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q4', 'd')">
+                        <input type="radio" name="q4" value="d"> D) 6 steps
+                    </label>
+                </div>
+                <button class="submit-btn" onclick="submitAnswer(4, 'q4', 'c')">Submit Answer</button>
+                <div id="feedback4" class="feedback"></div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="quiz-question">
+                <div class="question-num">Question 5 of 5</div>
+                <div class="question-text">Can anyone be a scientist?</div>
+                <div class="options">
+                    <label class="option" onclick="selectOption(this, 'q5', 'a')">
+                        <input type="radio" name="q5" value="a"> A) No, only people with science degrees
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q5', 'b')">
+                        <input type="radio" name="q5" value="b"> B) Yes, if you observe, question, and test ideas
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q5', 'c')">
+                        <input type="radio" name="q5" value="c"> C) Only people in laboratories
+                    </label>
+                    <label class="option" onclick="selectOption(this, 'q5', 'd')">
+                        <input type="radio" name="q5" value="d"> D) Only adults
+                    </label>
+                </div>
+                <button class="submit-btn" onclick="submitAnswer(5, 'q5', 'b')">Submit Answer</button>
+                <div id="feedback5" class="feedback"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let totalCorrect = 0;
+    let totalAnswered = 0;
+
+    function switchTab(tabName) {
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function selectOption(element, qName, value) {
+        const opts = element.parentElement.querySelectorAll('.option');
+        opts.forEach(o => o.classList.remove('selected'));
+        element.classList.add('selected');
+        element.querySelector('input').checked = true;
+    }
+
+    function submitAnswer(qNum, qName, correct) {
+        const selected = document.querySelector(`input[name="${qName}"]:checked`);
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        const isCorrect = selected.value === correct;
+        const feedback = document.getElementById(`feedback${qNum}`);
+
+        if (isCorrect) {
+            totalCorrect++;
+            feedback.className = 'feedback show correct';
+            feedback.innerHTML = `<div class="feedback-header">✅ Correct!</div><div class="explanation">Your answer is correct. Science is indeed a systematic process of observing, questioning, testing, and learning.</div><div class="video-section"><video controls width="100%"><source src="video/q00${qNum}-correct.mp4" type="video/mp4"><p style="color: white; padding: 40px;">📹 Video explanation (q00${qNum}-correct.mp4)</p></video></div>`;
+        } else {
+            feedback.className = 'feedback show incorrect';
+            feedback.innerHTML = `<div class="feedback-header">❌ Incorrect</div><div class="explanation"><strong>Your answer: ${selected.value.toUpperCase()}</strong><br><strong>Correct answer: ${correct.toUpperCase()}</strong></div><div class="video-section"><video controls width="100%"><source src="video/q00${qNum}-incorrect.mp4" type="video/mp4"><p style="color: white; padding: 40px;">📹 Explanation video (q00${qNum}-incorrect.mp4)</p></video></div>`;
+        }
+
+        totalAnswered++;
+        updateProgress();
+        selected.disabled = true;
+        event.target.disabled = true;
+    }
+
+    function updateProgress() {
+        document.getElementById('scoreNum').textContent = totalCorrect;
+        document.getElementById('answeredNum').textContent = totalAnswered;
+        document.getElementById('progressFill').style.width = (totalAnswered / 5 * 100) + '%';
+    }
+
+    function playAudio() {
+        const text = `Science is the systematic study of nature through observation and experimentation. Science is everywhere in daily life. In cooking, chemistry transforms food. In sports, physics explains motion. In gardening, biology explains plant growth. In medicine, science saves lives. The scientific method has five steps: observe, question, form a hypothesis, test, and analyze. Anyone can be a scientist. Keep asking questions about the world. That's the wonderful world of science.`;
+
+        if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.rate = 1; u.pitch = 1;
+            speechSynthesis.speak(u);
+        }
+    }
+
+    function pauseAudio() {
+        speechSynthesis.pause();
+    }
+
+    function downloadPDF() {
+        const e = document.querySelector('.container');
+        const opt = { margin: 10, filename: 'NCERT-Science-Grade6-Chapter1.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' } };
+        html2pdf().set(opt).from(e).save();
+    }
+
+    function downloadWord() {
+        let c = '<h1>NCERT Science - Grade 6 Chapter 1</h1>';
+        c += document.getElementById('lesson').innerHTML;
+        const b = new Blob([c], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        const u = URL.createObjectURL(b);
+        const a = document.createElement('a');
+        a.href = u; a.download = 'NCERT-Science-Grade6-Chapter1.docx';
+        a.click();
+    }
+</script>
+
+</body>
+</html>

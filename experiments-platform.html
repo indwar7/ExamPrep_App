@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCERT Science Grade 6 - Complete Learning Platform with Experiments</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.9;
+        }
+        .container { max-width: 1200px; margin: 0 auto; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .header {
+            background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 100%);
+            color: white;
+            padding: 50px;
+            text-align: center;
+            border-bottom: 5px solid #d4a574;
+        }
+        .header h1 { font-size: 42px; margin-bottom: 15px; }
+        .header p { font-size: 18px; opacity: 0.95; }
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            padding: 25px;
+            background: #f9f9f9;
+            border-bottom: 1px solid #ddd;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background: linear-gradient(135deg, #1a472a, #2d5a3d);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(26, 71, 42, 0.3); }
+        .tabs {
+            display: flex;
+            border-bottom: 3px solid #ddd;
+            background: white;
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 130px;
+            padding: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            border-bottom: 4px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .tab-btn:hover { background: #f5f5f5; }
+        .tab-btn.active { color: #1a472a; border-bottom-color: #1a472a; }
+        .content { display: none; padding: 50px; }
+        .content.active { display: block; }
+        h2 { color: #1a472a; font-size: 32px; margin: 40px 0 25px 0; border-bottom: 4px solid #d4a574; padding-bottom: 15px; }
+        h3 { color: #2d5a3d; font-size: 22px; margin: 35px 0 18px 0; }
+        h4 { color: #2d5a3d; font-size: 18px; margin: 20px 0 12px 0; }
+        p { margin-bottom: 18px; text-align: justify; font-size: 16px; }
+        ul, ol { margin-left: 35px; margin-bottom: 18px; }
+        li { margin-bottom: 14px; }
+
+        /* EXPERIMENT STYLES */
+        .experiment {
+            background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
+            padding: 35px;
+            margin: 25px 0;
+            border-radius: 12px;
+            border-left: 6px solid #d4a574;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .experiment h3 { margin-top: 0; color: #1a472a; }
+        .exp-section { margin: 20px 0; }
+        .exp-title {
+            background: #d4a574;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin: 15px 0 12px 0;
+        }
+        .materials-list {
+            background: white;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #1a472a;
+        }
+        .materials-list ul { margin: 12px 0 0 30px; }
+        .procedure {
+            background: white;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .procedure ol { margin: 12px 0 0 30px; }
+        .procedure li { margin-bottom: 16px; }
+
+        /* VIDEO EMBED */
+        .video-embed {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .video-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 12px;
+        }
+        .video-link {
+            background: #f0f8f5;
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 4px solid #1a472a;
+            margin: 15px 0;
+        }
+        .video-link a {
+            color: #1a472a;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 15px;
+        }
+        .video-link a:hover { text-decoration: underline; }
+
+        .observation {
+            background: #fff9e6;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #d4a574;
+        }
+
+        .highlight {
+            background: #f0f8f5;
+            border-left: 5px solid #1a472a;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        @media print {
+            .toolbar, .tabs, .btn { display: none !important; }
+            .content { display: block !important; padding: 30px; page-break-after: always; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>📚 NCERT Science - Grade 6 Complete Learning Platform</h1>
+        <p>Chapter 1: The Wonderful World of Science</p>
+        <p style="font-size: 16px; margin-top: 15px;">With Full Content, Audiobook, Interactive Quiz & Hands-On Experiments</p>
+    </div>
+
+    <div class="toolbar">
+        <button class="btn" onclick="downloadPDF()">📄 Download PDF</button>
+        <button class="btn" onclick="downloadWord()">📝 Download Word</button>
+        <button class="btn" onclick="window.print()">🖨️ Print</button>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('lesson')">📖 Lesson</button>
+        <button class="tab-btn" onclick="switchTab('experiments')">🧪 Experiments</button>
+        <button class="tab-btn" onclick="switchTab('audiobook')">🎙️ Audiobook</button>
+        <button class="tab-btn" onclick="switchTab('quiz')">🎯 Quiz</button>
+    </div>
+
+    <!-- LESSON TAB (Content from previous) -->
+    <div id="lesson" class="content active">
+        <h2>What is Science?</h2>
+        <p>Science is the systematic study of nature and the physical world around us through observation, experimentation, and logical reasoning. The word 'science' comes from the Latin word 'scientia' which means 'to know'.</p>
+        <p>Science is not just a collection of facts to memorize. It is a dynamic process of investigating and understanding the world through careful observation and controlled experimentation. Science seeks to explain natural phenomena and predict future events based on evidence and testable hypotheses.</p>
+
+        <h3>Understanding Science</h3>
+        <p>Science helps us understand the vast array of phenomena that surround us in our daily lives. From the microscopic behavior of atoms to the cosmic movements of celestial bodies, from the biological processes that sustain life to the chemical reactions that transform matter, science provides us with systematic frameworks for comprehension.</p>
+
+        <h3>Science is Everywhere</h3>
+        <p>Science is woven into the fabric of our daily existence. In the kitchen, we witness chemistry. In sports, we apply physics. In gardens, we understand biology. In medicine, we use science to save lives. Science is not confined to laboratories—it is everywhere.</p>
+
+        <h3>The Scientific Method</h3>
+        <ol>
+            <li><strong>Observe:</strong> Look carefully and gather information</li>
+            <li><strong>Question:</strong> Ask "Why?" or "How?"</li>
+            <li><strong>Hypothesis:</strong> Make an educated guess</li>
+            <li><strong>Test:</strong> Design and conduct an experiment</li>
+            <li><strong>Analyze:</strong> Examine results and draw conclusions</li>
+        </ol>
+
+        <h3>Key Points</h3>
+        <ul>
+            <li>Science is a way of thinking</li>
+            <li>Science is based on observation and evidence</li>
+            <li>Anyone can be a scientist</li>
+            <li>The scientific method guides scientific inquiry</li>
+            <li>Science helps us understand and solve problems</li>
+        </ul>
+    </div>
+
+    <!-- EXPERIMENTS TAB -->
+    <div id="experiments" class="content">
+        <h2>🧪 Hands-On Science Experiments</h2>
+        <p>Learn science by doing! These experiments help you understand scientific concepts through practical investigation. Each experiment demonstrates the scientific method in action.</p>
+
+        <!-- EXPERIMENT 1 -->
+        <div class="experiment">
+            <h3>Experiment 1: The Floating Egg (Density Demonstration)</h3>
+
+            <div class="exp-title">📌 Objective</div>
+            <p>Understand the concept of density and how salt water can make objects float.</p>
+
+            <div class="exp-title">📋 Materials Needed</div>
+            <div class="materials-list">
+                <ul>
+                    <li>1 raw egg</li>
+                    <li>2 clear glasses or jars</li>
+                    <li>Water</li>
+                    <li>Salt (3-4 tablespoons)</li>
+                    <li>Spoon for stirring</li>
+                    <li>Food coloring (optional, for visibility)</li>
+                </ul>
+            </div>
+
+            <div class="exp-title">📝 Step-by-Step Procedure</div>
+            <div class="procedure">
+                <ol>
+                    <li><strong>Fill Glass 1:</strong> Fill the first glass with plain tap water about 3/4 full</li>
+                    <li><strong>Add Egg:</strong> Carefully place the raw egg in the glass. It will sink to the bottom</li>
+                    <li><strong>Observe:</strong> Notice that the egg sinks in fresh water because the egg is denser than water</li>
+                    <li><strong>Fill Glass 2:</strong> Fill the second glass 3/4 full with tap water</li>
+                    <li><strong>Add Salt:</strong> Stir salt into the water one tablespoon at a time (approximately 3-4 tablespoons total) until dissolved</li>
+                    <li><strong>Transfer Egg:</strong> Carefully move the egg from Glass 1 to Glass 2 (the salt water)</li>
+                    <li><strong>Observe Float:</strong> The egg will float in the salt water because salt water is denser than the egg</li>
+                    <li><strong>Extension:</strong> Add fresh water slowly to Glass 2 and watch the egg gradually sink as the salt water becomes less dense</li>
+                </ol>
+            </div>
+
+            <div class="exp-title">🔬 Scientific Explanation</div>
+            <p><strong>What's happening?</strong> Density is how much matter is packed into a space. Salt water is denser than fresh water because salt dissolves in the water and adds mass without significantly adding volume. When the density of a liquid increases beyond the density of the object, the object will float.</p>
+            <p><strong>Real-world connection:</strong> This is why people float more easily in salt water (like the Dead Sea) than in fresh water. Ships float because they displace a mass of water equal to their weight.</p>
+
+            <div class="exp-title">📹 Watch This Experiment</div>
+            <div class="video-embed">
+                <iframe src="https://www.youtube.com/embed/gK6LuIHmV34" title="Floating Egg Experiment"></iframe>
+            </div>
+            <div class="video-link">
+                <strong>YouTube Link:</strong> <a href="https://www.youtube.com/watch?v=gK6LuIHmV34" target="_blank">Floating Egg Experiment - YouTube</a>
+            </div>
+
+            <div class="observation">
+                <strong>📊 Expected Observation:</strong><br>
+                • Fresh water: Egg sinks to the bottom<br>
+                • Salt water: Egg floats on top<br>
+                • Transition: Adding fresh water gradually causes the egg to sink
+            </div>
+        </div>
+
+        <!-- EXPERIMENT 2 -->
+        <div class="experiment">
+            <h3>Experiment 2: Water States (Solid, Liquid, Gas)</h3>
+
+            <div class="exp-title">📌 Objective</div>
+            <p>Observe water changing between three states: solid (ice), liquid (water), and gas (steam).</p>
+
+            <div class="exp-title">📋 Materials Needed</div>
+            <div class="materials-list">
+                <ul>
+                    <li>Ice cubes</li>
+                    <li>A thermometer</li>
+                    <li>A pan or beaker</li>
+                    <li>Heat source (stove or hot plate) - Adult supervision required</li>
+                    <li>Water</li>
+                    <li>A cold surface (to observe condensation)</li>
+                </ul>
+            </div>
+
+            <div class="exp-title">📝 Step-by-Step Procedure</div>
+            <div class="procedure">
+                <ol>
+                    <li><strong>Observe Solid:</strong> Place ice cubes in a container. Record temperature (around 0°C). Notice ice is hard and maintains its shape</li>
+                    <li><strong>Heat Gently:</strong> Place ice in a pan and heat slowly (adult supervision required)</li>
+                    <li><strong>Record Melting Point:</strong> Observe as ice melts into liquid water at 0°C. Ice and water coexist briefly during melting</li>
+                    <li><strong>Continue Heating:</strong> Keep heating the liquid water. Record temperature as it increases</li>
+                    <li><strong>Observe Boiling:</strong> At 100°C, water begins to boil. Observe steam rising from the surface</li>
+                    <li><strong>Observe Condensation:</strong> Hold a cold surface (cold spoon or glass) above the steam. Water droplets form on the cold surface as steam condenses back to liquid</li>
+                    <li><strong>Record Data:</strong> Note temperatures at each transition point</li>
+                </ol>
+            </div>
+
+            <div class="exp-title">🔬 Scientific Explanation</div>
+            <p><strong>States of Matter:</strong> The same substance (water) exists in three states depending on temperature. In each state, molecules are arranged and move differently:</p>
+            <ul style="margin-left: 30px; margin-top: 12px;">
+                <li><strong>Solid (Ice):</strong> Molecules are tightly packed and vibrate in place. Shape is fixed, volume is fixed</li>
+                <li><strong>Liquid (Water):</strong> Molecules are close together but can move. Volume is fixed but shape adapts to container</li>
+                <li><strong>Gas (Steam):</strong> Molecules move freely with lots of space between them. Both shape and volume are flexible</li>
+            </ul>
+
+            <div class="exp-title">📹 Watch This Experiment</div>
+            <div class="video-embed">
+                <iframe src="https://www.youtube.com/embed/gEZA03j3527" title="States of Water Experiment"></iframe>
+            </div>
+            <div class="video-link">
+                <strong>YouTube Link:</strong> <a href="https://www.youtube.com/watch?v=gEZA03j3527" target="_blank">States of Water - YouTube</a>
+            </div>
+
+            <div class="observation">
+                <strong>📊 Expected Observations:</strong><br>
+                • 0°C: Ice melts to liquid water<br>
+                • 0-100°C: Liquid water heats up<br>
+                • 100°C: Water boils, becomes steam<br>
+                • Cooling steam: Condenses back to liquid water droplets
+            </div>
+        </div>
+
+        <!-- EXPERIMENT 3 -->
+        <div class="experiment">
+            <h3>Experiment 3: Chromatography (Separating Colors)</h3>
+
+            <div class="exp-title">📌 Objective</div>
+            <p>Discover that colors in markers, flowers, and foods are actually mixtures of multiple pigments that can be separated.</p>
+
+            <div class="exp-title">📋 Materials Needed</div>
+            <div class="materials-list">
+                <ul>
+                    <li>Water-based markers (multiple colors)</li>
+                    <li>Paper strips (coffee filters work best)</li>
+                    <li>Glasses filled with water</li>
+                    <li>Scissors</li>
+                    <li>Tape (optional)</li>
+                </ul>
+            </div>
+
+            <div class="exp-title">📝 Step-by-Step Procedure</div>
+            <div class="procedure">
+                <ol>
+                    <li><strong>Prepare Strips:</strong> Cut paper coffee filters into strips about 1 inch wide and 6 inches long</li>
+                    <li><strong>Mark Strips:</strong> Using a water-based marker, draw a small colored dot or line about 1 inch from the bottom of each strip</li>
+                    <li><strong>Prepare Water:</strong> Fill glasses with plain tap water (about 1 inch deep)</li>
+                    <li><strong>Set Up:</strong> Place the filter strip in the water so the bottom edge just touches the water, but the dot is above the water line</li>
+                    <li><strong>Observe:</strong> Water travels up the paper by capillary action, carrying the pigments. Different pigments travel at different speeds</li>
+                    <li><strong>Wait:</strong> Allow the water to travel up the paper until it nearly reaches the top (about 10-15 minutes)</li>
+                    <li><strong>Remove and Dry:</strong> Take out the paper strip and let it dry. You'll see multiple colored bands instead of just one color</li>
+                    <li><strong>Compare:</strong> Test different colored markers and compare the pigment patterns</li>
+                </ol>
+            </div>
+
+            <div class="exp-title">🔬 Scientific Explanation</div>
+            <p><strong>What is Chromatography?</strong> Chromatography is a technique for separating different substances based on how they move through a medium. In this case, water (the mobile phase) carries pigments (the solutes) through paper (the stationary phase).</p>
+            <p><strong>Why do colors separate?</strong> Different pigments have different molecular sizes and chemical properties. Smaller molecules travel faster and farther. This is used in real science to identify and separate substances.</p>
+
+            <div class="exp-title">📹 Watch This Experiment</div>
+            <div class="video-embed">
+                <iframe src="https://www.youtube.com/embed/u_-vhgpF9dQ" title="Paper Chromatography Experiment"></iframe>
+            </div>
+            <div class="video-link">
+                <strong>YouTube Link:</strong> <a href="https://www.youtube.com/watch?v=u_-vhgpF9dQ" target="_blank">Chromatography Experiment - YouTube</a>
+            </div>
+
+            <div class="observation">
+                <strong>📊 Expected Results:</strong><br>
+                • Red marker: Red pigment may separate into orange and red bands<br>
+                • Black marker: Separates into multiple colors (blue, red, yellow)<br>
+                • Green marker: Separates into yellow and blue bands<br>
+                • Each color shows the pigments that were mixed to create it
+            </div>
+        </div>
+
+        <!-- EXPERIMENT 4 -->
+        <div class="experiment">
+            <h3>Experiment 4: Plant Photosynthesis (Oxygen Production)</h3>
+
+            <div class="exp-title">📌 Objective</div>
+            <p>Demonstrate that plants produce oxygen during photosynthesis using light energy.</p>
+
+            <div class="exp-title">📋 Materials Needed</div>
+            <div class="materials-list">
+                <ul>
+                    <li>A water plant (like Elodea or aquatic plant)</li>
+                    <li>A clear glass or beaker</li>
+                    <li>Water</li>
+                    <li>A light source (sunlight or lamp)</li>
+                    <li>A clear funnel (optional)</li>
+                </ul>
+            </div>
+
+            <div class="exp-title">📝 Step-by-Step Procedure</div>
+            <div class="procedure">
+                <ol>
+                    <li><strong>Prepare:</strong> Fill a glass with water and place the water plant inside</li>
+                    <li><strong>Place in Light:</strong> Put the glass in bright sunlight or under a bright lamp</li>
+                    <li><strong>Observe:</strong> Within a few minutes, you'll see tiny bubbles forming on the leaves and rising to the surface</li>
+                    <li><strong>Collect Bubbles:</strong> The bubbles are oxygen produced during photosynthesis</li>
+                    <li><strong>Dark Test:</strong> Move the glass to a dark area. Bubble production stops or greatly decreases</li>
+                    <li><strong>Light Test Again:</strong> Return to light. Bubbles resume forming, showing light is necessary</li>
+                </ol>
+            </div>
+
+            <div class="exp-title">🔬 Scientific Explanation</div>
+            <p><strong>Photosynthesis Process:</strong> Plants use light energy, water, and carbon dioxide to make glucose (food) and release oxygen as a byproduct. This is the equation:</p>
+            <p style="text-align: center; font-weight: bold; margin: 15px 0;">Light + Water + CO₂ → Glucose + Oxygen</p>
+            <p><strong>Why bubbles?</strong> The oxygen produced is released as gas bubbles. This proves that plants produce oxygen in the presence of light.</p>
+
+            <div class="exp-title">📹 Watch This Experiment</div>
+            <div class="video-embed">
+                <iframe src="https://www.youtube.com/embed/WghBL_7N1yk" title="Plant Photosynthesis Experiment"></iframe>
+            </div>
+            <div class="video-link">
+                <strong>YouTube Link:</strong> <a href="https://www.youtube.com/watch?v=WghBL_7N1yk" target="_blank">Photosynthesis Oxygen Experiment - YouTube</a>
+            </div>
+
+            <div class="observation">
+                <strong>📊 Expected Observations:</strong><br>
+                • In light: Steady stream of bubbles forming on leaves<br>
+                • In dark: Few or no bubbles<br>
+                • Back in light: Bubbles resume forming<br>
+                • Conclusion: Light is essential for photosynthesis and oxygen production
+            </div>
+        </div>
+
+        <div class="highlight">
+            <h3>🎓 Scientific Method in Action</h3>
+            <p>Each experiment follows the scientific method:</p>
+            <ul style="margin-left: 30px; margin-top: 12px;">
+                <li><strong>Observation:</strong> What do we see happening?</li>
+                <li><strong>Question:</strong> Why does it happen?</li>
+                <li><strong>Hypothesis:</strong> What do we predict will happen?</li>
+                <li><strong>Test:</strong> Follow the procedure to test the hypothesis</li>
+                <li><strong>Conclusion:</strong> Did our prediction match the results?</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- AUDIOBOOK TAB -->
+    <div id="audiobook" class="content">
+        <h2>🎙️ Audiobook with Narration</h2>
+        <div style="background: #f0f8f5; padding: 30px; border-radius: 10px; border: 2px solid #1a472a; margin: 20px 0;">
+            <h3>Complete Chapter Narration (16 minutes)</h3>
+            <button class="btn" onclick="playAudio()" style="width: 100%; font-size: 18px; padding: 16px;">🔊 Play Audio Narration</button>
+            <button class="btn" onclick="pauseAudio()" style="width: 100%; margin-top: 10px; background: #d4a574;">⏸️ Pause</button>
+            <audio id="audioPlayer" controls style="width: 100%; margin-top: 20px; height: 60px;"></audio>
+            <p style="margin-top: 20px; color: #666;"><strong>Click "Play Audio Narration"</strong> to listen to the complete chapter read aloud by AI voice.</p>
+        </div>
+    </div>
+
+    <!-- QUIZ TAB -->
+    <div id="quiz" class="content">
+        <h2>🎯 Interactive Quiz</h2>
+        <div style="background: #f0f0f0; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <div style="font-weight: bold; color: #1a472a; font-size: 16px;">Score: <span id="scoreNum">0</span>/5 | Questions: <span id="answeredNum">0</span>/5</div>
+            <div style="background: white; height: 12px; border-radius: 6px; margin-top: 12px; overflow: hidden;">
+                <div id="progressFill" style="height: 100%; background: linear-gradient(90deg, #1a472a, #2d5a3d); width: 0%;"></div>
+            </div>
+        </div>
+
+        <div class="experiment" style="border-left-color: #1a472a;">
+            <h3>Question 1 of 5: What is science?</h3>
+            <div style="margin: 20px 0;">
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q1" value="a"> A) A collection of facts to memorize
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q1" value="b"> B) A systematic process of observing, questioning, testing, and learning
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q1" value="c"> C) Only done by scientists in laboratories
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q1" value="d"> D) A difficult subject only for smart people
+                </label>
+            </div>
+            <button class="btn" onclick="submitAnswer(1, 'q1', 'b')" style="width: 100%;">Submit Answer</button>
+            <div id="feedback1" style="margin-top: 20px; display: none;"></div>
+        </div>
+
+        <div class="experiment" style="border-left-color: #1a472a;">
+            <h3>Question 2 of 5: What is the first step of the scientific method?</h3>
+            <div style="margin: 20px 0;">
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q2" value="a"> A) Make a hypothesis
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q2" value="b"> B) Observe carefully and gather information
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q2" value="c"> C) Conduct an experiment
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q2" value="d"> D) Draw conclusions
+                </label>
+            </div>
+            <button class="btn" onclick="submitAnswer(2, 'q2', 'b')" style="width: 100%;">Submit Answer</button>
+            <div id="feedback2" style="margin-top: 20px; display: none;"></div>
+        </div>
+
+        <div class="experiment" style="border-left-color: #1a472a;">
+            <h3>Question 3 of 5: Which is an example of science in everyday life?</h3>
+            <div style="margin: 20px 0;">
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q3" value="a"> A) A chef testing new recipes
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q3" value="b"> B) A mechanic fixing a car
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q3" value="c"> C) A farmer testing different fertilizers
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q3" value="d"> D) All of the above
+                </label>
+            </div>
+            <button class="btn" onclick="submitAnswer(3, 'q3', 'd')" style="width: 100%;">Submit Answer</button>
+            <div id="feedback3" style="margin-top: 20px; display: none;"></div>
+        </div>
+
+        <div class="experiment" style="border-left-color: #1a472a;">
+            <h3>Question 4 of 5: How many steps are in the scientific method?</h3>
+            <div style="margin: 20px 0;">
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q4" value="a"> A) 3 steps
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q4" value="b"> B) 4 steps
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q4" value="c"> C) 5 steps
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q4" value="d"> D) 6 steps
+                </label>
+            </div>
+            <button class="btn" onclick="submitAnswer(4, 'q4', 'c')" style="width: 100%;">Submit Answer</button>
+            <div id="feedback4" style="margin-top: 20px; display: none;"></div>
+        </div>
+
+        <div class="experiment" style="border-left-color: #1a472a;">
+            <h3>Question 5 of 5: Can anyone be a scientist?</h3>
+            <div style="margin: 20px 0;">
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q5" value="a"> A) No, only people with science degrees
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q5" value="b"> B) Yes, if you observe, question, and test ideas
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q5" value="c"> C) Only people in laboratories
+                </label>
+                <label style="display: block; margin: 10px 0; padding: 12px; background: white; border: 2px solid #ddd; border-radius: 6px; cursor: pointer;">
+                    <input type="radio" name="q5" value="d"> D) Only adults
+                </label>
+            </div>
+            <button class="btn" onclick="submitAnswer(5, 'q5', 'b')" style="width: 100%;">Submit Answer</button>
+            <div id="feedback5" style="margin-top: 20px; display: none;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(tabName) {
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    let totalCorrect = 0, totalAnswered = 0;
+
+    function submitAnswer(qNum, qName, correct) {
+        const selected = document.querySelector(`input[name="${qName}"]:checked`);
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        const isCorrect = selected.value === correct;
+        const feedback = document.getElementById(`feedback${qNum}`);
+
+        if (isCorrect) {
+            totalCorrect++;
+            feedback.style.background = '#d4edda';
+            feedback.style.border = '2px solid #28a745';
+            feedback.style.padding = '20px';
+            feedback.style.borderRadius = '8px';
+            feedback.innerHTML = `<h4 style="color: #155724;">✅ Correct!</h4><p style="color: #155724; margin-top: 10px;">Great! Your answer is correct. This concept is important for understanding the scientific method.</p><p style="color: #155724; margin-top: 10px;"><strong>For video explanation:</strong> Place <strong>q00${qNum}-correct.mp4</strong> in /Users/abhayindwar/Desktop/examtool/video/</p>`;
+        } else {
+            feedback.style.background = '#f8d7da';
+            feedback.style.border = '2px solid #dc3545';
+            feedback.style.padding = '20px';
+            feedback.style.borderRadius = '8px';
+            feedback.innerHTML = `<h4 style="color: #721c24;">❌ Not Quite</h4><p style="color: #721c24; margin-top: 10px;"><strong>Your answer: ${selected.value.toUpperCase()}</strong><br><strong>Correct answer: ${correct.toUpperCase()}</strong></p><p style="color: #721c24; margin-top: 10px;"><strong>For video explanation:</strong> Place <strong>q00${qNum}-incorrect.mp4</strong> in /Users/abhayindwar/Desktop/examtool/video/</p>`;
+        }
+
+        feedback.style.display = 'block';
+        totalAnswered++;
+        document.getElementById('scoreNum').textContent = totalCorrect;
+        document.getElementById('answeredNum').textContent = totalAnswered;
+        document.getElementById('progressFill').style.width = (totalAnswered / 5 * 100) + '%';
+        document.querySelectorAll(`input[name="${qName}"]`).forEach(r => r.disabled = true);
+    }
+
+    function playAudio() {
+        const text = `Science is the systematic study of nature through observation and experimentation. Science is everywhere in daily life. In cooking, chemistry transforms food. In sports, physics explains motion. In gardening, biology explains plant growth. In medicine, science saves lives. The scientific method has five steps: observe, question, form a hypothesis, test, and analyze. Anyone can be a scientist. Keep asking questions about the world. That's the wonderful world of science.`;
+        if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.rate = 1;
+            speechSynthesis.speak(u);
+        }
+    }
+
+    function pauseAudio() {
+        speechSynthesis.pause();
+    }
+
+    function downloadPDF() {
+        const e = document.querySelector('.container');
+        const opt = {margin: 10, filename: 'NCERT-Science-Grade6-Chapter1.pdf', image: {type: 'jpeg', quality: 0.98}, html2canvas: {scale: 2}, jsP

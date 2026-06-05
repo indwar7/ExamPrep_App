@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamTool - Professional Learning Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a3a52;
+            --primary-light: #2d5a7b;
+            --accent: #d4a574;
+            --accent-light: #e8c4a0;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --background: #f8f9fa;
+            --surface: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #ecf0f1;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--surface);
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 24px rgba(26, 58, 82, 0.08);
+            border-top: 4px solid var(--accent);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+        }
+
+        .header-title h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-title p {
+            font-size: 16px;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            min-width: 150px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 8px 0;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== TABS ===== */
+        .tabs-container {
+            margin-bottom: 40px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            background: var(--surface);
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 14px 28px;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+        }
+
+        .tab:hover {
+            background: var(--background);
+            color: var(--primary);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.15);
+        }
+
+        /* ===== CONTENT ===== */
+        .content {
+            display: none;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== FORMAT INTRODUCTION ===== */
+        .format-intro {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 24px rgba(26, 58, 82, 0.15);
+        }
+
+        .format-intro h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .format-intro p {
+            font-size: 16px;
+            line-height: 1.8;
+            opacity: 0.95;
+            margin-bottom: 16px;
+        }
+
+        .format-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-item strong {
+            color: var(--accent);
+            display: block;
+            margin-bottom: 4px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .feature-item span {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* ===== LESSON SECTION ===== */
+        .lesson-section {
+            margin-bottom: 40px;
+        }
+
+        .lesson-section h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent);
+            letter-spacing: -0.3px;
+        }
+
+        .lesson-section p {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+
+        /* ===== KEY POINT ===== */
+        .key-point {
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.08) 0%, rgba(232, 196, 160, 0.08) 100%);
+            border-left: 4px solid var(--accent);
+            padding: 24px;
+            margin: 20px 0;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .key-point strong {
+            color: var(--primary);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .key-point p {
+            color: var(--text);
+            margin: 0;
+        }
+
+        /* ===== STEPS GRID ===== */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        .step-card {
+            background: var(--surface);
+            padding: 28px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+        }
+
+        .step-card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .step-card strong {
+            display: block;
+            color: var(--primary);
+            font-size: 16px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .step-card span {
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* ===== QUIZ ===== */
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .question {
+            background: var(--surface);
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            border-top: 3px solid var(--accent);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            transition: width 0.3s ease;
+        }
+
+        .question-number {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 12px 0 24px 0;
+            letter-spacing: -0.3px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .option:hover {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.05) 0%, rgba(232, 196, 160, 0.05) 100%);
+        }
+
+        .option input[type="radio"] {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent);
+        }
+
+        .option.selected {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.08) 0%, rgba(232, 196, 160, 0.08) 100%);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.05) 0%, rgba(39, 174, 96, 0.05) 100%);
+        }
+
+        .option.incorrect {
+            border-color: var(--danger);
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.05) 0%, rgba(192, 57, 43, 0.05) 100%);
+        }
+
+        /* ===== FEEDBACK ===== */
+        .feedback {
+            margin-top: 24px;
+            padding: 24px;
+            border-radius: 8px;
+            display: none;
+            border-left: 4px solid var(--danger);
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.05) 0%, rgba(192, 57, 43, 0.05) 100%);
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                max-height: 1000px;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback.correct {
+            border-left-color: var(--success);
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.05) 0%, rgba(39, 174, 96, 0.05) 100%);
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: var(--primary);
+        }
+
+        .feedback.correct .feedback-title {
+            color: var(--success);
+        }
+
+        .feedback.incorrect .feedback-title {
+            color: var(--danger);
+        }
+
+        .feedback-text {
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        /* ===== VIDEO EXPLANATION ===== */
+        .video-explanation {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 24px;
+            border-radius: 8px;
+            margin-top: 16px;
+            border: 2px solid var(--accent);
+            color: white;
+        }
+
+        .video-explanation h4 {
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .video-placeholder {
+            background: rgba(255, 255, 255, 0.1);
+            width: 100%;
+            height: 240px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            border: 2px dashed var(--accent);
+            font-size: 18px;
+        }
+
+        .video-placeholder:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
+        }
+
+        .video-title {
+            color: var(--accent-light);
+            margin-top: 12px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* ===== BUTTONS ===== */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: white;
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 165, 116, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--background);
+            color: var(--primary);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ===== STREAK ===== */
+        .streak-display {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 24px rgba(212, 165, 116, 0.25);
+        }
+
+        .streak-label {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .streak-number {
+            font-size: 56px;
+            font-weight: 700;
+            margin: 12px 0;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .streak-message {
+            font-size: 14px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        /* ===== PROGRESS STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            padding: 28px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border-top: 3px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card h3 {
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card .number {
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .stat-card p {
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* ===== ACHIEVEMENT ===== */
+        .achievement {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 32px;
+            box-shadow: 0 8px 24px rgba(26, 58, 82, 0.15);
+        }
+
+        .achievement-icon {
+            font-size: 56px;
+            margin-bottom: 12px;
+        }
+
+        .achievement h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .achievement p {
+            opacity: 0.95;
+            font-size: 15px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .header {
+                padding: 24px;
+                margin-bottom: 24px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .header-title h1 {
+                font-size: 32px;
+            }
+
+            .header-stats {
+                flex-direction: column;
+                width: 100%;
+                gap: 16px;
+            }
+
+            .stat-box {
+                width: 100%;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .tab {
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+
+            .question {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 18px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .format-features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-content">
+                <div class="header-title">
+                    <h1>ExamTool</h1>
+                    <p>Professional Learning Platform</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Current Score</div>
+                        <div class="stat-value" id="score-display">0%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Progress</div>
+                        <div class="stat-value" id="progress-display">0/5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NAVIGATION -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('overview')">📚 Lesson Overview</button>
+                <button class="tab" onclick="showTab('summary')">📝 Summary Guide</button>
+                <button class="tab" onclick="showTab('quiz')">🎯 Practice Quiz</button>
+                <button class="tab" onclick="showTab('progress')">📊 My Progress</button>
+            </div>
+        </div>
+
+        <!-- ===== OVERVIEW TAB ===== -->
+        <div id="overview" class="content active">
+            <div class="format-intro">
+                <h2>📚 Lesson Overview</h2>
+                <p>A comprehensive introduction to Chapter 1: "The Wonderful World of Science." This lesson overview provides structured learning content organized by concepts, with real-world examples and clear explanations suitable for Grade 6 students.</p>
+                <div class="format-features">
+                    <div class="feature-item">
+                        <strong>Purpose</strong>
+                        <span>In-depth understanding of science concepts</span>
+                    </div>
+                    <div class="feature-item">
+                        <strong>Format</strong>
+                        <span>Structured sections with key points</span>
+                    </div>
+                    <div class="feature-item">
+                        <strong>Best For</strong>
+                        <span>Teachers and detailed study</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>What is Science?</h3>
+                <p>Science is a way of thinking, observing, and doing things to understand the world we live in. It's fundamentally about curiosity—asking questions about everything around us and systematically finding answers through investigation.</p>
+                <div class="key-point">
+                    <strong>🔑 Key Concept:</strong>
+                    <p>Science is not just memorizing facts. It's a process of exploration, questioning, and discovery that anyone can practice.</p>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>The Scientific Method: 5-Step Process</h3>
+                <p>All scientists follow a systematic approach to solve problems and discover new knowledge. This five-step method is the foundation of all scientific thinking:</p>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <strong>Observe</strong>
+                        <span>Look carefully at something interesting or puzzling that captures your curiosity.</span>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <strong>Wonder</strong>
+                        <span>Ask yourself "Why?" or "How?" about what you've observed.</span>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <strong>Guess</strong>
+                        <span>Make an educated guess (hypothesis) about the answer to your question.</span>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <strong>Test</strong>
+                        <span>Do an experiment or make more observations to check your guess.</span>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">5</div>
+                        <strong>Analyze</strong>
+                        <span>Look at your results. Was your guess correct? What did you learn?</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="streak-display">
+                <div class="streak-label">🔥 Current Streak</div>
+                <div class="streak-number" id="streak-overview">0</div>
+                <div class="streak-message">Answer questions correctly to build your streak!</div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>Science is Everywhere</h3>
+                <p>Science isn't limited to laboratories and research centers. Real people in everyday professions use the scientific method to solve problems and make discoveries:</p>
+                <div class="steps-grid">
+                    <div class="key-point">
+                        <strong>👨‍🍳 Chef</strong>
+                        <p>Wondering why certain cooking techniques work better than others</p>
+                    </div>
+                    <div class="key-point">
+                        <strong>🔧 Mechanic</strong>
+                        <p>Troubleshooting why a vehicle isn't working properly</p>
+                    </div>
+                    <div class="key-point">
+                        <strong>⚡ Electrician</strong>
+                        <p>Figuring out electrical problems systematically</p>
+                    </div>
+                    <div class="key-point">
+                        <strong>🌾 Farmer</strong>
+                        <p>Testing different methods to improve crop yields</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>💡 Remember:</strong>
+                <p>Anyone who follows the scientific method is working like a scientist! When you ask questions and find answers systematically, you're practicing science in your daily life.</p>
+            </div>
+        </div>
+
+        <!-- ===== SUMMARY TAB ===== -->
+        <div id="summary" class="content">
+            <div class="format-intro">
+                <h2>📝 Summary Guide</h2>
+                <p>A condensed, quick-reference guide highlighting the core concepts and key topics from the chapter. Perfect for revision before exams or for a quick refresher of main ideas.</p>
+                <div class="format-features">
+                    <div class="feature-item">
+                        <strong>Purpose</strong>
+                        <span>Quick revision and concept reinforcement</span>
+                    </div>
+                    <div class="feature-item">
+                        <strong>Format</strong>
+                        <span>Key points, one-liners, and summaries</span>
+                    </div>
+                    <div class="feature-item">
+                        <strong>Best For</strong>
+                        <span>Last-minute exam prep and quick learning</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>Core Concepts at a Glance</h3>
+                <div class="key-point">
+                    <strong>Science</strong> = A way of thinking, observing, and doing to understand the world
+                </div>
+                <div class="key-point">
+                    <strong>Scientific Method</strong> = Observe → Wonder → Guess → Test → Analyze
+                </div>
+                <div class="key-point">
+                    <strong>Curiosity</strong> = The most important quality for any scientist
+                </div>
+                <div class="key-point">
+                    <strong>Hypothesis</strong> = An educated guess you can test through experimentation
+                </div>
+                <div class="key-point">
+                    <strong>Anyone Can Be a Scientist</strong> = If you follow the scientific method
+                </div>
+            </div>
+
+            <div class="lesson-section">
+                <h3>Key Topics Summary</h3>
+                <ul style="margin-left: 24px; color: var(--text); line-height: 2; font-size: 15px;">
+                    <li>Science helps answer mysteries about the world</li>
+                    <li>The scientific method has 5 main, sequential steps</li>
+                    <li>Scientists work together in teams for better results</li>
+                    <li>Science is a lifelong journey of continuous discovery</li>
+                    <li>Everyone who asks questions and solves problems is a scientist</li>
+                    <li>Observation and curiosity are the starting points</li>
+                </ul>
+            </div>
+
+            <div class="key-point">
+                <strong>🎓 Important Reminder:</strong>
+                <p>To be a wise person, you must be a "whys" person! Keep asking questions about everything. The world is full of amazing mysteries waiting to be discovered through your curiosity.</p>
+            </div>
+        </div>
+
+        <!-- ===== QUIZ TAB ===== -->
+        <div id="quiz" class="content">
+            <div class="format-intro">
+                <h2>🎯 Practice Quiz</h2>
+                <p>Test your understanding with interactive questions about Chapter 1. Each question provides immediate feedback and video explanations for wrong answers to help you learn.</p>
+                <div class="format-features">
+                    <div class="feature-item">
+                        <strong>Format</strong>
+                        <span>5 practice questions with detailed explanations</span>
+                    </div>
+                    <div class="feature-item">
+                        <strong>Feedback</strong>
+                        <span>🎥 Video explanations for wrong answers</span>
+                    </div>
+                    <div class="feature-item">
+                        <strong>Best For</strong>
+                        <span>Self-assessment and learning reinforcement</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-container" id="quiz-container"></div>
+        </div>
+
+        <!-- ===== PROGRESS TAB ===== -->
+        <div id="progress" class="content">
+            <div class="format-intro">
+                <h2>📊 My Progress</h2>
+                <p>Track your learning journey with detailed statistics, achievement badges, and performance metrics. Your progress helps identify areas to focus on and celebrates your achievements!</p>
+                <div class="format-features">
+                    <div class="feature-item">
+                        <strong>Tracking</strong>
+                        <span>Real-time performance metrics</span>
+                    </div>
+                    <div class="feature-item">
+                        <strong>Achievements</strong>
+                        <span>🏆 Unlock badges as you progress</span>
+                    </div>
+                    <div class="feature-item">
+                        <strong>Best For</strong>
+                        <span>Motivation and performance monitoring</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Questions</h3>
+                    <div class="number" id="total-questions">5</div>
+                    <p>Questions you've attempted</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Correct Answers</h3>
+                    <div class="number" id="correct-answers">0</div>
+                    <p>Keep improving your score!</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Success Rate</h3>
+                    <div class="number" id="success-rate">0%</div>
+                    <p>Your accuracy percentage</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Current Streak</h3>
+                    <div class="number" id="streak-progress">0</div>
+                    <p>Consecutive correct answers</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Best Streak</h3>
+                    <div class="number" id="best-streak">0</div>
+                    <p>Your maximum streak achieved</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Level</h3>
+                    <div class="number" id="level-display">Beginner</div>
+                    <p>Keep learning to advance!</p>
+                </div>
+            </div>
+
+            <div id="achievements" style="margin-top: 32px;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz Questions with Professional Metadata
+        const quizQuestions = [
+            {
+                id: 1,
+                question: "What is science?",
+                options: [
+                    { text: "A subject taught only in schools", isCorrect: false },
+                    { text: "A way of thinking, observing, and doing things to understand the world", isCorrect: true },
+                    { text: "A collection of facts to memorize", isCorrect: false },
+                    { text: "A tool used only by scientists", isCorrect: false }
+                ],
+                explanation: "Science is fundamentally a way of thinking and understanding our world through observation, questioning, and systematic investigation.",
+                videoTitle: "Understanding Science - Clear Explanation",
+                videoUrl: "https://www.youtube.com/embed/jHbR9rAONGU?start=0&end=180"
+            },
+            {
+                id: 2,
+                question: "What is the most important quality for a scientist?",
+                options: [
+                    { text: "Intelligence", isCorrect: false },
+                    { text: "Memory", isCorrect: false },
+                    { text: "Curiosity", isCorrect: true },
+                    { text: "Speed", isCorrect: false }
+                ],
+                explanation: "Curiosity is the foundation of scientific discovery. It drives scientists to ask questions and seek answers about the world around them.",
+                videoTitle: "Why Curiosity Matters in Science",
+                videoUrl: "https://www.youtube.com/embed/gHBhEB-Zn8Q?start=0&end=180"
+            },
+            {
+                id: 3,
+                question: "What is the first step of the scientific method?",
+                options: [
+                    { text: "Guessing the answer", isCorrect: false },
+                    { text: "Observing something interesting or puzzling", isCorrect: true },
+                    { text: "Testing an experiment", isCorrect: false },
+                    { text: "Analyzing results", isCorrect: false }
+                ],
+                explanation: "Observation is the foundation of the scientific method. You must first notice something that interests or puzzles you before you can ask questions about it.",
+                videoTitle: "The Scientific Method: Step 1 - Observation",
+                videoUrl: "https://www.youtube.com/embed/fBC3kWXnGKE?start=0&end=180"
+            },
+            {
+                id: 4,
+                question: "What does hypothesis mean?",
+                options: [
+                    { text: "A final answer", isCorrect: false },
+                    { text: "An observation", isCorrect: false },
+                    { text: "An educated guess or proposed explanation", isCorrect: true },
+                    { text: "A question", isCorrect: false }
+                ],
+                explanation: "A hypothesis is an educated guess based on observations. It's a proposed explanation that you can test through experiments or further observations.",
+                videoTitle: "Making Hypotheses - Scientific Thinking",
+                videoUrl: "https://www.youtube.com/embed/s7wmiYiDKqw?start=0&end=180"
+            },
+            {
+                id: 5,
+                question: "How many main steps are in the scientific method?",
+                options: [
+                    { text: "Three", isCorrect: false },
+                    { text: "Four", isCorrect: false },
+                    { text: "Five", isCorrect: true },
+                    { text: "Six", isCorrect: false }
+                ],
+                explanation: "The scientific method has five main steps: Observe, Wonder, Guess (Hypothesis), Test, and Analyze. This systematic approach helps solve problems and discover new knowledge.",
+                videoTitle: "The 5 Steps of Scientific Method Explained",
+                videoUrl: "https://www.youtube.com/embed/VM643KwBJ9M?start=0&end=240"
+            }
+        ];
+
+        // State Management
+        let currentQuestionIndex = 0;
+        let answers = {};
+        let streak = 0;
+        let maxStreak = 0;
+        let correctCount = 0;
+
+        // Initialize
+        function init() {
+            renderQuiz();
+            updateProgress();
+        }
+
+        // Tab Navigation
+        function showTab(tabName) {
+            document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'progress') {
+                updateProgressTab();
+            }
+        }
+
+        // Render Quiz
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            quizQuestions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.id = `question-${index}`;
+
+                const progressPercent = ((index + 1) / quizQuestions.length * 100);
+                const progressHtml = `<div class="progress-bar-container">
+                    <div class="progress-bar" style="width: ${progressPercent}%"></div>
+                </div>`;
+
+                let optionsHtml = '<div class="options">';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHtml += `
+                        <label class="option" onclick="selectAnswer(${index}, ${optIndex})">
+                            <input type="radio" name="q${index}" value="${optIndex}">
+                            <span>${opt.text}</span>
+                        </label>
+                    `;
+                });
+                optionsHtml += '</div>';
+
+                let feedbackHtml = `
+                    <div class="feedback" id="feedback-${index}">
+                        <div class="feedback-title" id="feedback-title-${index}"></div>
+                        <div class="feedback-text" id="feedback-text-${index}"></div>
+                        <div class="video-explanation" id="video-${index}" style="display: none;">
+                            <h4>🎥 Video Explanation</h4>
+                            <div class="video-placeholder" onclick="playVideo('${q.videoUrl}')">
+                                ▶️ Play Explanation Video
+                            </div>
+                            <p class="video-title">${q.videoTitle}</p>
+                        </div>
+                    </div>
+                `;
+
+                let submitHtml = `
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="submitAnswer(${index})">Check Answer</button>
+                        ${index < quizQuestions.length - 1 ? `<button class="btn btn-secondary" onclick="nextQuestion(${index})">Skip</button>` : ''}
+                    </div>
+                `;
+
+                questionDiv.innerHTML = `
+                    ${progressHtml}
+                    <div class="question-number">Question ${index + 1} of ${quizQuestions.length}</div>
+                    <div class="question-text">${q.question}</div>
+                    ${optionsHtml}
+                    ${feedbackHtml}
+                    ${submitHtml}
+                `;
+
+                container.appendChild(questionDiv);
+            });
+        }
+
+        // Select Answer
+        function selectAnswer(questionIndex, optionIndex) {
+            const inputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            inputs.forEach(input => input.checked = false);
+            inputs[optionIndex].checked = true;
+
+            document.querySelectorAll(`#question-${questionIndex} .option`).forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            event.target.closest('.option').classList.add('selected');
+        }
+
+        // Submit Answer
+        function submitAnswer(questionIndex) {
+            const question = quizQuestions[questionIndex];
+            const selectedInput = document.querySelector(`input[name="q${questionIndex}"]:checked`);
+
+            if (!selectedInput) {
+                alert('Please select an answer!');
+                return;
+            }
+
+            const selectedIndex = parseInt(selectedInput.value);
+            const isCorrect = question.options[selectedIndex].isCorrect;
+            const feedback = document.getElementById(`feedback-${questionIndex}`);
+            const feedbackTitle = document.getElementById(`feedback-title-${questionIndex}`);
+            const feedbackText = document.getElementById(`feedback-text-${questionIndex}`);
+            const videoDiv = document.getElementById(`video-${questionIndex}`);
+
+            // Update streak
+            if (isCorrect) {
+                streak++;
+                correctCount++;
+                if (streak > maxStreak) maxStreak = streak;
+            } else {
+                streak = 0;
+            }
+
+            answers[questionIndex] = { selectedIndex, isCorrect };
+
+            // Show feedback
+            if (isCorrect) {
+                feedback.classList.add('correct');
+                feedback.classList.remove('incorrect');
+                feedbackTitle.innerHTML = '✅ Correct!';
+                feedbackText.innerHTML = `<strong>${question.explanation}</strong><br><br>Excellent work! You've mastered this concept.`;
+                videoDiv.style.display = 'none';
+
+                document.querySelectorAll(`#question-${questionIndex} .option`)[selectedIndex].classList.add('correct');
+            } else {
+                feedback.classList.add('incorrect');
+                feedback.classList.remove('correct');
+                feedbackTitle.innerHTML = '❌ Not Quite Right';
+                feedbackText.innerHTML = `<strong>${question.explanation}</strong><br><br>Watch the video explanation below to understand this concept better.`;
+                videoDiv.style.display = 'block';
+
+                document.querySelectorAll(`#question-${questionIndex} .option`)[selectedIndex].classList.add('incorrect');
+
+                const correctIndex = question.options.findIndex(opt => opt.isCorrect);
+                document.querySelectorAll(`#question-${questionIndex} .option`)[correctIndex].classList.add('correct');
+            }
+
+            feedback.classList.add('show');
+
+            document.querySelectorAll(`input[name="q${questionIndex}"]`).forEach(input => {
+                input.disabled = true;
+            });
+
+            updateProgress();
+        }
+
+        function nextQuestion(currentIndex) {
+            if (currentIndex < quizQuestions.length - 1) {
+                document.getElementById(`question-${currentIndex}`).style.display = 'none';
+                document.getElementById(`question-${currentIndex + 1}`).scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function playVideo(videoUrl) {
+            alert('🎬 Video would play here:\n\n' + videoUrl);
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(answers).length;
+            const percentage = answered > 0 ? Math.round((correctCount / answered) * 100) : 0;
+
+            document.getElementById('score-display').textContent = percentage + '%';
+            document.getElementById('progress-display').textContent = `${answered}/${quizQuestions.length}`;
+            document.getElementById('streak-overview').textContent = streak;
+        }
+
+        function updateProgressTab() {
+            const answered = Object.keys(answers).length;
+            const percentage = answered > 0 ? Math.round((correctCount / answered) * 100) : 0;
+
+            document.getElementById('total-questions').textContent = answered;
+            document.getElementById('correct-answers').textContent = correctCount;
+            document.getElementById('success-rate').textContent = percentage + '%';
+            document.getElementById('streak-progress').textContent = streak;
+            document.getElementById('best-streak').textContent = maxStreak;
+
+            let level = 'Beginner';
+            if (percentage >= 80) level = 'Advanced';
+            else if (percentage >= 60) level = 'Intermediate';
+            document.getElementById('level-display').textContent = level;
+
+            const achievementsDiv = document.getElementById('achievements');
+            achievementsDiv.innerHTML = '';
+
+            if (correctCount >= 3) {
+                achievementsDiv.innerHTML += `
+                    <div class="achievement">
+                        <div class="achievement-icon">🏆</div>
+                        <h3>Great Progress!</h3>
+                        <p>You've answered 3+ questions correctly. Keep improving!</p>
+                    </div>
+                `;
+            }
+
+            if (maxStreak >= 2) {
+                achievementsDiv.innerHTML += `
+                    <div class="achievement">
+                        <div class="achievement-icon">🔥</div>
+                        <h3>Hot Streak!</h3>
+                        <p>You got ${maxStreak} questions in a row correct. Amazing!</p>
+                    </div>
+                `;
+            }
+
+            if (answered === quizQuestions.length && percentage === 100) {
+                achievementsDiv.innerHTML += `
+                    <div class="achievement">
+                        <div class="achievement-icon">⭐</div>
+                        <h3>Perfect Score!</h3>
+                        <p>You've mastered this chapter! Congratulations!</p>
+                    </div>
+                `;
+            }
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

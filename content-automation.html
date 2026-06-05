@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Content Automation System - Multi-Format Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .header h1 {
+            color: #667eea;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .header p { color: #666; font-size: 16px; }
+        .input-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        textarea { resize: vertical; min-height: 200px; }
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+        }
+        .output-section {
+            display: none;
+        }
+        .output-section.active { display: block; }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .tab-btn {
+            background: white;
+            border: 2px solid #ecf0f1;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .tab-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .format-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .format-content.active { display: block; }
+        .format-content h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        .format-content p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+        .format-content ul {
+            margin-left: 20px;
+            color: #555;
+            line-height: 1.8;
+        }
+        .format-content li { margin-bottom: 8px; }
+        .download-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .btn-download {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .btn-download:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+        .stats {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value { font-size: 24px; font-weight: bold; }
+        .stat-label { font-size: 12px; opacity: 0.9; }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 18px;
+        }
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- HEADER -->
+    <div class="header">
+        <h1>📚 Content Automation System</h1>
+        <p>Generate Multi-Format Educational Content from Textbook Material</p>
+    </div>
+
+    <!-- INPUT SECTION -->
+    <div class="input-section">
+        <h2 style="color: #667eea; margin-bottom: 20px;">📥 Input Content Information</h2>
+
+        <div class="form-group">
+            <label>Chapter Name:</label>
+            <input type="text" id="chapterName" placeholder="e.g., The Wonderful World of Science">
+        </div>
+
+        <div class="form-group">
+            <label>Subject & Class:</label>
+            <input type="text" id="subjectClass" placeholder="e.g., Science - Grade 6 / Class VI">
+        </div>
+
+        <div class="form-group">
+            <label>Grade Level:</label>
+            <select id="gradeLevel">
+                <option>Grade 1-3</option>
+                <option>Grade 4-6</option>
+                <option selected>Grade 6</option>
+                <option>Grade 7-9</option>
+                <option>Grade 10-12</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Source Text / Chapter Content:</label>
+            <textarea id="sourceText" placeholder="Paste your NCERT or textbook chapter text here..."></textarea>
+        </div>
+
+        <button class="btn-generate" onclick="generateContent()">🚀 Generate All Formats</button>
+    </div>
+
+    <!-- LOADING -->
+    <div id="loadingSection" style="display: none;">
+        <div class="loading">
+            <span class="spinner"></span>
+            Generating content in all formats...
+        </div>
+    </div>
+
+    <!-- OUTPUT SECTION -->
+    <div class="output-section" id="outputSection">
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchFormat('detailed')">📄 Detailed Document</button>
+            <button class="tab-btn" onclick="switchFormat('summary')">📝 Summary Notes</button>
+            <button class="tab-btn" onclick="switchFormat('illustrations')">🎨 Illustrations Guide</button>
+            <button class="tab-btn" onclick="switchFormat('video')">🎬 Video Script</button>
+            <button class="tab-btn" onclick="switchFormat('audio')">🎙️ Audiobook Script</button>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value" id="wordCount">0</div>
+                <div class="stat-label">Words</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="readTime">0</div>
+                <div class="stat-label">Read Time</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="sections">0</div>
+                <div class="stat-label">Sections</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="concepts">0</div>
+                <div class="stat-label">Concepts</div>
+            </div>
+        </div>
+
+        <!-- FORMAT 1: DETAILED DOCUMENT -->
+        <div id="detailed" class="format-content active">
+            <h3>📄 Detailed Document (Word/PDF)</h3>
+            <div id="detailedContent"></div>
+            <div class="download-btns">
+                <button class="btn-download" onclick="downloadPDF('detailed')">📄 Download PDF</button>
+                <button class="btn-download" onclick="downloadWord('detailed')">📝 Download Word</button>
+            </div>
+        </div>
+
+        <!-- FORMAT 2: SUMMARY NOTES -->
+        <div id="summary" class="format-content">
+            <h3>📝 Summary Notes</h3>
+            <div id="summaryContent"></div>
+            <div class="download-btns">
+                <button class="btn-download" onclick="downloadPDF('summary')">📄 Download PDF</button>
+                <button class="btn-download" onclick="downloadWord('summary')">📝 Download Word</button>
+            </div>
+        </div>
+
+        <!-- FORMAT 3: ILLUSTRATIONS GUIDE -->
+        <div id="illustrations" class="format-content">
+            <h3>🎨 Illustrations & Diagrams Guide</h3>
+            <div id="illustrationsContent"></div>
+            <div class="download-btns">
+                <button class="btn-download" onclick="downloadPDF('illustrations')">📄 Download PDF</button>
+                <button class="btn-download" onclick="downloadWord('illustrations')">📝 Download Word</button>
+            </div>
+        </div>
+
+        <!-- FORMAT 4: VIDEO SCRIPT -->
+        <div id="video" class="format-content">
+            <h3>🎬 Video Script</h3>
+            <div id="videoContent"></div>
+            <div class="download-btns">
+                <button class="btn-download" onclick="downloadPDF('video')">📄 Download PDF</button>
+                <button class="btn-download" onclick="downloadWord('video')">📝 Download Word</button>
+            </div>
+        </div>
+
+        <!-- FORMAT 5: AUDIOBOOK SCRIPT -->
+        <div id="audio" class="format-content">
+            <h3>🎙️ Audiobook Narration Script</h3>
+            <div id="audioContent"></div>
+            <div class="download-btns">
+                <button class="btn-download" onclick="downloadPDF('audio')">📄 Download PDF</button>
+                <button class="btn-download" onclick="downloadWord('audio')">📝 Download Word</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let generatedContent = {};
+
+    function generateContent() {
+        const chapterName = document.getElementById('chapterName').value;
+        const subjectClass = document.getElementById('subjectClass').value;
+        const gradeLevel = document.getElementById('gradeLevel').value;
+        const sourceText = document.getElementById('sourceText').value;
+
+        if (!chapterName || !subjectClass || !sourceText) {
+            alert('Please fill in all required fields!');
+            return;
+        }
+
+        document.getElementById('loadingSection').style.display = 'block';
+        document.getElementById('outputSection').style.display = 'none';
+
+        setTimeout(() => {
+            generateAllFormats(chapterName, subjectClass, gradeLevel, sourceText);
+            document.getElementById('loadingSection').style.display = 'none';
+            document.getElementById('outputSection').style.display = 'block';
+        }, 2000);
+    }
+
+    function generateAllFormats(chapterName, subjectClass, gradeLevel, sourceText) {
+        // Parse source text to extract key concepts
+        const paragraphs = sourceText.split('\n\n').filter(p => p.trim());
+        const sentences = sourceText.split('.').filter(s => s.trim());
+
+        // 1. DETAILED DOCUMENT
+        generatedContent.detailed = generateDetailedDocument(chapterName, subjectClass, sourceText, paragraphs);
+
+        // 2. SUMMARY NOTES
+        generatedContent.summary = generateSummaryNotes(chapterName, sourceText, sentences);
+
+        // 3. ILLUSTRATIONS GUIDE
+        generatedContent.illustrations = generateIllustrationsGuide(chapterName, sourceText);
+
+        // 4. VIDEO SCRIPT
+        generatedContent.video = generateVideoScript(chapterName, sourceText);
+
+        // 5. AUDIOBOOK SCRIPT
+        generatedContent.audio = generateAudiobookScript(chapterName, sourceText);
+
+        // Display all content
+        displayFormats();
+
+        // Update stats
+        updateStats();
+    }
+
+    function generateDetailedDocument(chapterName, subjectClass, sourceText, paragraphs) {
+        let html = `<h4>${chapterName}</h4>`;
+        html += `<p><strong>Subject:</strong> ${subjectClass}</p>`;
+        html += `<p><strong>Content Type:</strong> Detailed Reference Document</p>`;
+        html += `<p><strong>Purpose:</strong> Complete chapter explanation with key concepts, examples, and definitions</p>`;
+        html += `<hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">`;
+
+        paragraphs.slice(0, 5).forEach((para, i) => {
+            html += `<h4>Section ${i + 1}</h4>`;
+            html += `<p>${para.trim()}</p>`;
+        });
+
+        html += `<h4>Key Concepts</h4>`;
+        html += `<ul>`;
+        html += `<li>Core principles and fundamentals from the chapter</li>`;
+        html += `<li>Important definitions and terminology</li>`;
+        html += `<li>Real world applications and examples</li>`;
+        html += `<li>Learning outcomes and objectives</li>`;
+        html += `</ul>`;
+
+        return html;
+    }
+
+    function generateSummaryNotes(chapterName, sourceText, sentences) {
+        let html = `<h4>${chapterName} - Quick Reference</h4>`;
+        html += `<p><strong>Summary Format:</strong> Bullet points of key topics</p>`;
+        html += `<hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">`;
+
+        html += `<h4>Top 10 Key Concepts</h4>`;
+        html += `<ul>`;
+        for (let i = 0; i < Math.min(10, sentences.length); i++) {
+            const sentence = sentences[i].trim();
+            if (sentence.length > 20) {
+                html += `<li>${sentence.substring(0, 100)}...</li>`;
+            }
+        }
+        html += `</ul>`;
+
+        html += `<h4>Quick Facts</h4>`;
+        html += `<ul>`;
+        html += `<li>Easy to remember key points from the chapter</li>`;
+        html += `<li>Important dates, names, and numbers</li>`;
+        html += `<li>Common misconceptions clarified</li>`;
+        html += `<li>Essential formulas or processes</li>`;
+        html += `</ul>`;
+
+        return html;
+    }
+
+    function generateIllustrationsGuide(chapterName, sourceText) {
+        let html = `<h4>${chapterName} - Visual Learning Guide</h4>`;
+        html += `<p><strong>Purpose:</strong> Guide for creating diagrams and illustrations</p>`;
+        html += `<hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">`;
+
+        html += `<h4>Recommended Illustrations (10-15 visuals)</h4>`;
+        html += `<table style="width: 100%; border-collapse: collapse; margin: 15px 0;">`;
+        html += `<tr style="background: #f0f0f0;">`;
+        html += `<th style="border: 1px solid #ddd; padding: 10px; text-align: left;">No.</th>`;
+        html += `<th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Illustration Title</th>`;
+        html += `<th style="border: 1px solid #ddd; padding: 10px; text-align: left;">What It Shows</th>`;
+        html += `<th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Related Concept</th>`;
+        html += `</tr>`;
+
+        const illustrations = [
+            ['1', 'Chapter Overview Diagram', 'Visual representation of main topics', 'Introduction'],
+            ['2', 'Key Concepts Mind Map', 'How concepts connect to each other', 'Core Ideas'],
+            ['3', 'Process Flow Chart', 'Step by step process explained', 'Methods'],
+            ['4', 'Comparison Table Visual', 'Similarities and differences', 'Analysis'],
+            ['5', 'Timeline or Sequence', 'Order of events or steps', 'Progression']
+        ];
+
+        illustrations.forEach(ill => {
+            html += `<tr>`;
+            html += `<td style="border: 1px solid #ddd; padding: 10px;">${ill[0]}</td>`;
+            html += `<td style="border: 1px solid #ddd; padding: 10px;">${ill[1]}</td>`;
+            html += `<td style="border: 1px solid #ddd; padding: 10px;">${ill[2]}</td>`;
+            html += `<td style="border: 1px solid #ddd; padding: 10px;">${ill[3]}</td>`;
+            html += `</tr>`;
+        });
+
+        html += `</table>`;
+
+        return html;
+    }
+
+    function generateVideoScript(chapterName, sourceText) {
+        let html = `<h4>${chapterName} - Video Production Script</h4>`;
+        html += `<p><strong>Format:</strong> 5-7 minute video outline</p>`;
+        html += `<p><strong>Target Audience:</strong> Grade 6 Students</p>`;
+        html += `<hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">`;
+
+        html += `<h4>Video Structure</h4>`;
+        html += `<ul>`;
+        html += `<li><strong>Introduction (0:00-0:30):</strong> Hook with engaging question or scenario</li>`;
+        html += `<li><strong>Main Content (0:30-5:30):</strong> Break into 3-4 key segments with animations</li>`;
+        html += `<li><strong>Examples (5:30-6:30):</strong> Real world applications shown visually</li>`;
+        html += `<li><strong>Summary (6:30-7:00):</strong> Recap key points and call to action</li>`;
+        html += `</ul>`;
+
+        html += `<h4>Scene Breakdown</h4>`;
+        html += `<p><strong>Scene 1:</strong> Opening with visual effects - introduce main topic</p>`;
+        html += `<p><strong>Scene 2:</strong> Explain concept with animations and graphics</p>`;
+        html += `<p><strong>Scene 3:</strong> Real world examples with live action or recreations</p>`;
+        html += `<p><strong>Scene 4:</strong> Summary with key takeaways highlighted</p>`;
+
+        return html;
+    }
+
+    function generateAudiobookScript(chapterName, sourceText) {
+        let html = `<h4>${chapterName} - Audiobook Narration Script</h4>`;
+        html += `<p><strong>Format:</strong> Conversational narration (15-20 minutes)</p>`;
+        html += `<p><strong>Tone:</strong> Engaging, educational, age appropriate</p>`;
+        html += `<hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">`;
+
+        html += `<h4>Narration Guide</h4>`;
+        html += `<p><strong>[OPENING - 0:00]</strong></p>`;
+        html += `<p>"Hello, welcome to [${chapterName}]. I'm excited to share this amazing content with you. Let's explore together."</p>`;
+
+        html += `<p><strong>[MAIN CONTENT - 0:30 to 15:00]</strong></p>`;
+        html += `<p>Take a slow, conversational approach. Pause between ideas. Emphasize key points.</p>`;
+        html += `<ul>`;
+        html += `<li>Speak at natural pace (120-150 words per minute)</li>`;
+        html += `<li>Add emphasis on important terms</li>`;
+        html += `<li>Use pauses for comprehension</li>`;
+        html += `<li>Include sound effects or music at transitions</li>`;
+        html += `</ul>`;
+
+        html += `<p><strong>[CLOSING - 15:00 to 16:00]</strong></p>`;
+        html += `<p>"That concludes [${chapterName}]. I hope you learned something amazing. Keep exploring, stay curious!"</p>`;
+
+        return html;
+    }
+
+    function displayFormats() {
+        document.getElementById('detailedContent').innerHTML = generatedContent.detailed;
+        document.getElementById('summaryContent').innerHTML = generatedContent.summary;
+        document.getElementById('illustrationsContent').innerHTML = generatedContent.illustrations;
+        document.getElementById('videoContent').innerHTML = generatedContent.video;
+        document.getElementById('audioContent').innerHTML = generatedContent.audio;
+    }
+
+    function switchFormat(format) {
+        document.querySelectorAll('.format-content').forEach(f => f.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(format).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function updateStats() {
+        const sourceText = document.getElementById('sourceText').value;
+        const words = sourceText.split(/\s+/).length;
+        const readTime = Math.ceil(words / 200);
+        const sections = document.getElementById('sourceText').value.split('\n\n').filter(p => p.trim()).length;
+
+        document.getElementById('wordCount').textContent = words;
+        document.getElementById('readTime').textContent = readTime + ' min';
+        document.getElementById('sections').textContent = sections;
+        document.getElementById('concepts').textContent = Math.ceil(sections * 2);
+    }
+
+    function downloadPDF(format) {
+        const content = document.getElementById(format).innerHTML;
+        const element = document.createElement('div');
+        element.innerHTML = content;
+
+        const opt = {
+            margin: 10,
+            filename: `${format}-content.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+        };
+
+        html2pdf().set(opt).from(element).save();
+    }
+
+    function downloadWord(format) {
+        const content = document.getElementById(format).innerHTML;
+        const doctype = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+        const blob = new Blob([doctype + content], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${format}-content.docx`;
+        link.click();
+    }
+</script>
+
+</body>
+</html>

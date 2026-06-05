@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCERT Science Grade 6 - Chapter 1</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; color: #333; }
+        .header { background: #1a472a; color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 28px; margin-bottom: 5px; }
+        .tabs { display: flex; background: white; border-bottom: 2px solid #1a472a; }
+        .tab { padding: 15px 25px; cursor: pointer; background: #f0f0f0; border: none; font-size: 14px; font-weight: bold; color: #666; }
+        .tab:hover { background: #e0e0e0; }
+        .tab.active { background: white; color: #1a472a; border-bottom: 3px solid #1a472a; }
+        .content { display: none; padding: 30px; background: white; }
+        .content.active { display: block; }
+        .buttons { padding: 20px; background: white; border-bottom: 1px solid #ddd; display: flex; gap: 10px; flex-wrap: wrap; }
+        button { background: #1a472a; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        button:hover { background: #0d2818; }
+        h2 { color: #1a472a; margin-bottom: 15px; border-bottom: 2px solid #d4a574; padding-bottom: 10px; }
+        h3 { color: #2d5a3d; margin: 20px 0 10px 0; }
+        p { margin-bottom: 12px; line-height: 1.6; text-align: justify; }
+        ul, ol { margin-left: 30px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+        .exp { background: #f9f9f9; padding: 20px; border-left: 4px solid #1a472a; margin: 20px 0; }
+        .exp h3 { margin-top: 0; color: #1a472a; }
+        .mat { background: #e8f5e9; padding: 12px; border-radius: 5px; margin: 10px 0; }
+        .proc { background: #fff3e0; padding: 12px; border-radius: 5px; margin: 10px 0; }
+        .video-box { background: #e3f2fd; padding: 15px; margin: 15px 0; border-radius: 5px; text-align: center; }
+        .video-box a { color: #1a472a; font-weight: bold; text-decoration: none; }
+        .video-box a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h1>📚 NCERT Science - Grade 6</h1>
+    <p>Chapter 1: The Wonderful World of Science</p>
+</div>
+
+<!-- BUTTONS -->
+<div class="buttons">
+    <button onclick="downloadPDF()">📄 Download PDF</button>
+    <button onclick="downloadWord()">📝 Download Word</button>
+    <button onclick="window.print()">🖨️ Print</button>
+    <button onclick="playAudio()">🎙️ Play Audio</button>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+    <button class="tab active" onclick="showTab('lesson')">📖 Lesson</button>
+    <button class="tab" onclick="showTab('experiments')">🧪 Experiments</button>
+    <button class="tab" onclick="showTab('quiz')">🎯 Quiz</button>
+</div>
+
+<!-- LESSON CONTENT -->
+<div id="lesson" class="content active">
+    <h2>What is Science?</h2>
+    <p>Science is the systematic study of nature and the physical world around us through observation, experimentation, and logical reasoning. Science is not just facts—it is a process of investigating and understanding the world.</p>
+
+    <h3>Understanding Science</h3>
+    <p>Science helps us understand everything around us. From how plants grow to how our bodies work, from weather patterns to the stars—science explains all of these. Every time we observe something carefully, ask questions, and try to find answers, we are doing science.</p>
+
+    <h3>Science in Everyday Life</h3>
+    <ul>
+        <li><strong>In the Kitchen:</strong> Cooking involves chemistry. Heat changes food texture and taste.</li>
+        <li><strong>In Sports:</strong> When you throw a ball, gravity and motion explain its path. This is physics.</li>
+        <li><strong>In Gardening:</strong> Plants need sunlight, water, and nutrients to grow. This is biology.</li>
+        <li><strong>In Medicine:</strong> Doctors use science to diagnose and treat diseases.</li>
+    </ul>
+
+    <h3>Branches of Science</h3>
+    <ul>
+        <li><strong>Physics:</strong> Study of matter, energy, motion, and forces</li>
+        <li><strong>Chemistry:</strong> Study of substances and their reactions</li>
+        <li><strong>Biology:</strong> Study of living organisms</li>
+        <li><strong>Earth Science:</strong> Study of the Earth, rocks, weather, and natural resources</li>
+    </ul>
+
+    <h3>The Scientific Method (5 Steps)</h3>
+    <ol>
+        <li><strong>Observe:</strong> Look carefully and gather information</li>
+        <li><strong>Question:</strong> Ask "Why?" or "How?"</li>
+        <li><strong>Hypothesis:</strong> Make an educated guess based on observations</li>
+        <li><strong>Test:</strong> Design and conduct an experiment</li>
+        <li><strong>Analyze:</strong> Look at results and draw conclusions</li>
+    </ol>
+
+    <h3>Scientists and Their Work</h3>
+    <p>A scientist is anyone who uses the scientific method. Scientists work in many places: universities, industries, hospitals, and field sites. Science happens in everyday jobs too:</p>
+    <ul>
+        <li>A chef testing recipes (Chemistry)</li>
+        <li>A mechanic fixing cars (Physics)</li>
+        <li>A farmer testing fertilizers (Biology)</li>
+        <li>A doctor treating patients (Medical Science)</li>
+    </ul>
+
+    <h3>Summary</h3>
+    <p><strong>Key Points:</strong> Science is a way of thinking. Science is based on observation and evidence. Anyone can be a scientist by thinking scientifically. The scientific method guides scientific investigation. Science is everywhere in daily life.</p>
+</div>
+
+<!-- EXPERIMENTS CONTENT -->
+<div id="experiments" class="content">
+    <h2>🧪 Hands-On Experiments</h2>
+
+    <div class="exp">
+        <h3>Experiment 1: Floating Egg (Density)</h3>
+        <p><strong>Objective:</strong> Understand how density makes objects float or sink.</p>
+
+        <div class="mat">
+            <strong>Materials:</strong>
+            <ul>
+                <li>1 raw egg</li>
+                <li>2 glasses with water</li>
+                <li>Salt (3-4 tablespoons)</li>
+                <li>Spoon</li>
+            </ul>
+        </div>
+
+        <div class="proc">
+            <strong>Procedure:</strong>
+            <ol>
+                <li>Fill Glass 1 with plain water and place egg in it. It sinks.</li>
+                <li>Fill Glass 2 with water and stir in salt until dissolved.</li>
+                <li>Move egg to Glass 2. It floats!</li>
+                <li>Slowly add fresh water to Glass 2. Watch the egg sink as water becomes less dense.</li>
+            </ol>
+        </div>
+
+        <p><strong>Explanation:</strong> Salt water is denser than fresh water. When density increases enough, the egg floats.</p>
+
+        <div class="video-box">
+            📹 Watch: <a href="https://www.youtube.com/watch?v=gK6LuIHmV34" target="_blank">Floating Egg Experiment</a>
+        </div>
+    </div>
+
+    <div class="exp">
+        <h3>Experiment 2: Water States (Solid/Liquid/Gas)</h3>
+        <p><strong>Objective:</strong> Observe water changing states with temperature.</p>
+
+        <div class="mat">
+            <strong>Materials:</strong>
+            <ul>
+                <li>Ice cubes</li>
+                <li>Water</li>
+                <li>Thermometer</li>
+                <li>Heat source (stove)</li>
+                <li>Pan</li>
+            </ul>
+        </div>
+
+        <div class="proc">
+            <strong>Procedure:</strong>
+            <ol>
+                <li>Place ice in a pan. Record temperature (~0°C). Ice is solid.</li>
+                <li>Heat gently. Ice melts to water at 0°C.</li>
+                <li>Continue heating. Water temperature rises.</li>
+                <li>At 100°C, water boils and becomes steam (gas).</li>
+                <li>Hold a cold surface above steam. Water droplets form (condensation).</li>
+            </ol>
+        </div>
+
+        <p><strong>Explanation:</strong> Temperature changes the state of water: solid ice, liquid water, and gas steam.</p>
+
+        <div class="video-box">
+            📹 Watch: <a href="https://www.youtube.com/watch?v=gEZA03j3527" target="_blank">States of Water</a>
+        </div>
+    </div>
+
+    <div class="exp">
+        <h3>Experiment 3: Chromatography (Color Separation)</h3>
+        <p><strong>Objective:</strong> Separate colors in markers using paper and water.</p>
+
+        <div class="mat">
+            <strong>Materials:</strong>
+            <ul>
+                <li>Water-based markers</li>
+                <li>Paper strips (coffee filters)</li>
+                <li>Glasses with water</li>
+                <li>Scissors</li>
+            </ul>
+        </div>
+
+        <div class="proc">
+            <strong>Procedure:</strong>
+            <ol>
+                <li>Cut paper into strips about 6 inches long.</li>
+                <li>Draw a colored dot with marker 1 inch from the bottom.</li>
+                <li>Place strip in water so bottom just touches water (dot above water line).</li>
+                <li>Water travels up the paper, carrying different pigments at different speeds.</li>
+                <li>Remove when water reaches the top. Let dry.</li>
+                <li>You'll see multiple color bands instead of just one color!</li>
+            </ol>
+        </div>
+
+        <p><strong>Explanation:</strong> Colors are mixtures of pigments. Water separates them based on size and properties.</p>
+
+        <div class="video-box">
+            📹 Watch: <a href="https://www.youtube.com/watch?v=u_-vhgpF9dQ" target="_blank">Paper Chromatography</a>
+        </div>
+    </div>
+
+    <div class="exp">
+        <h3>Experiment 4: Plant Photosynthesis (Oxygen)</h3>
+        <p><strong>Objective:</strong> Prove plants produce oxygen in light.</p>
+
+        <div class="mat">
+            <strong>Materials:</strong>
+            <ul>
+                <li>Water plant (like Elodea)</li>
+                <li>Glass or beaker</li>
+                <li>Water</li>
+                <li>Sunlight or bright lamp</li>
+            </ul>
+        </div>
+
+        <div class="proc">
+            <strong>Procedure:</strong>
+            <ol>
+                <li>Fill glass with water and place plant inside.</li>
+                <li>Put in bright light (sunlight or lamp).</li>
+                <li>Within minutes, tiny bubbles form on the plant leaves!</li>
+                <li>These are oxygen bubbles produced during photosynthesis.</li>
+                <li>Move to dark area. Bubbles stop forming.</li>
+                <li>Return to light. Bubbles resume. This proves light is necessary.</li>
+            </ol>
+        </div>
+
+        <p><strong>Explanation:</strong> Plants use light energy to make food (glucose) and release oxygen as a byproduct.</p>
+
+        <div class="video-box">
+            📹 Watch: <a href="https://www.youtube.com/watch?v=WghBL_7N1yk" target="_blank">Plant Photosynthesis</a>
+        </div>
+    </div>
+</div>
+
+<!-- QUIZ CONTENT -->
+<div id="quiz" class="content">
+    <h2>🎯 Interactive Quiz</h2>
+
+    <p><strong>Answer each question. Click "Check Answer" to see if you're correct!</strong></p>
+    <p style="color: #1a472a; font-weight: bold;">Score: <span id="score">0</span>/5</p>
+
+    <!-- Q1 -->
+    <div style="background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 5px;">
+        <h3>Question 1: What is science?</h3>
+        <label><input type="radio" name="q1" value="a"> A) A collection of facts to memorize</label><br>
+        <label><input type="radio" name="q1" value="b"> B) A systematic process of observing, questioning, testing, and learning</label><br>
+        <label><input type="radio" name="q1" value="c"> C) Only done in laboratories</label><br>
+        <label><input type="radio" name="q1" value="d"> D) A difficult subject for smart people</label><br><br>
+        <button onclick="checkQ1()">Check Answer</button>
+        <p id="ans1" style="display:none; margin-top: 10px; padding: 10px; background: #c8e6c9; border-radius: 5px;"><strong>✅ Correct!</strong> Science is a way of thinking and investigating the world.</p>
+    </div>
+
+    <!-- Q2 -->
+    <div style="background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 5px;">
+        <h3>Question 2: First step of scientific method?</h3>
+        <label><input type="radio" name="q2" value="a"> A) Make a hypothesis</label><br>
+        <label><input type="radio" name="q2" value="b"> B) Observe carefully and gather information</label><br>
+        <label><input type="radio" name="q2" value="c"> C) Conduct an experiment</label><br>
+        <label><input type="radio" name="q2" value="d"> D) Draw conclusions</label><br><br>
+        <button onclick="checkQ2()">Check Answer</button>
+        <p id="ans2" style="display:none; margin-top: 10px; padding: 10px; background: #c8e6c9; border-radius: 5px;"><strong>✅ Correct!</strong> Observation is the foundation of science.</p>
+    </div>
+
+    <!-- Q3 -->
+    <div style="background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 5px;">
+        <h3>Question 3: Science in everyday life?</h3>
+        <label><input type="radio" name="q3" value="a"> A) Chef testing recipes</label><br>
+        <label><input type="radio" name="q3" value="b"> B) Mechanic fixing cars</label><br>
+        <label><input type="radio" name="q3" value="c"> C) Farmer testing fertilizers</label><br>
+        <label><input type="radio" name="q3" value="d"> D) All of the above</label><br><br>
+        <button onclick="checkQ3()">Check Answer</button>
+        <p id="ans3" style="display:none; margin-top: 10px; padding: 10px; background: #c8e6c9; border-radius: 5px;"><strong>✅ Correct!</strong> Science is everywhere in everyday life!</p>
+    </div>
+
+    <!-- Q4 -->
+    <div style="background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 5px;">
+        <h3>Question 4: Steps in scientific method?</h3>
+        <label><input type="radio" name="q4" value="a"> A) 3 steps</label><br>
+        <label><input type="radio" name="q4" value="b"> B) 4 steps</label><br>
+        <label><input type="radio" name="q4" value="c"> C) 5 steps</label><br>
+        <label><input type="radio" name="q4" value="d"> D) 6 steps</label><br><br>
+        <button onclick="checkQ4()">Check Answer</button>
+        <p id="ans4" style="display:none; margin-top: 10px; padding: 10px; background: #c8e6c9; border-radius: 5px;"><strong>✅ Correct!</strong> 5 steps: Observe, Question, Hypothesis, Test, Analyze.</p>
+    </div>
+
+    <!-- Q5 -->
+    <div style="background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 5px;">
+        <h3>Question 5: Can anyone be a scientist?</h3>
+        <label><input type="radio" name="q5" value="a"> A) No, only with degrees</label><br>
+        <label><input type="radio" name="q5" value="b"> B) Yes, if you observe, question, and test</label><br>
+        <label><input type="radio" name="q5" value="c"> C) Only in laboratories</label><br>
+        <label><input type="radio" name="q5" value="d"> D) Only adults</label><br><br>
+        <button onclick="checkQ5()">Check Answer</button>
+        <p id="ans5" style="display:none; margin-top: 10px; padding: 10px; background: #c8e6c9; border-radius: 5px;"><strong>✅ Correct!</strong> Anyone can be a scientist by thinking scientifically!</p>
+    </div>
+</div>
+
+<script>
+    let correctAnswers = 0;
+
+    function showTab(tabName) {
+        // Hide all content
+        document.getElementById('lesson').classList.remove('active');
+        document.getElementById('experiments').classList.remove('active');
+        document.getElementById('quiz').classList.remove('active');
+
+        // Remove active from all tabs
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+
+        // Show selected content
+        document.getElementById(tabName).classList.add('active');
+
+        // Add active to clicked tab
+        event.target.classList.add('active');
+    }
+
+    function checkQ1() {
+        if (document.querySelector('input[name="q1"]:checked').value === 'b') {
+            document.getElementById('ans1').style.display = 'block';
+            correctAnswers++;
+        }
+        document.getElementById('score').textContent = correctAnswers;
+    }
+
+    function checkQ2() {
+        if (document.querySelector('input[name="q2"]:checked').value === 'b') {
+            document.getElementById('ans2').style.display = 'block';
+            correctAnswers++;
+        }
+        document.getElementById('score').textContent = correctAnswers;
+    }
+
+    function checkQ3() {
+        if (document.querySelector('input[name="q3"]:checked').value === 'd') {
+            document.getElementById('ans3').style.display = 'block';
+            correctAnswers++;
+        }
+        document.getElementById('score').textContent = correctAnswers;
+    }
+
+    function checkQ4() {
+        if (document.querySelector('input[name="q4"]:checked').value === 'c') {
+            document.getElementById('ans4').style.display = 'block';
+            correctAnswers++;
+        }
+        document.getElementById('score').textContent = correctAnswers;
+    }
+
+    function checkQ5() {
+        if (document.querySelector('input[name="q5"]:checked').value === 'b') {
+            document.getElementById('ans5').style.display = 'block';
+            correctAnswers++;
+        }
+        document.getElementById('score').textContent = correctAnswers;
+    }
+
+    function playAudio() {
+        const text = "Science is the study of nature through observation and experimentation. The scientific method has five steps: Observe, Question, Hypothesis, Test, Analyze. Science is everywhere in cooking, sports, gardening, and medicine. Anyone can be a scientist!";
+        if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(u);
+            alert('Playing audio...');
+        }
+    }
+
+    function downloadPDF() {
+        alert('PDF download feature - You can right-click and Save As to save this page as PDF');
+    }
+
+    function downloadWord() {
+        alert('Word download feature - Copy content and paste into Word document');
+    }
+</script>
+
+</body>
+</html>

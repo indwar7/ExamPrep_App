@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCERT Science Grade 6 - Complete Learning Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; color: #333; }
+
+        /* ==================== PROGRESS BAR ==================== */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: #e0e0e0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1a472a, #d4a574);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .container { max-width: 1200px; margin: 0 auto; background: white; }
+        .header { background: linear-gradient(135deg, #1a472a, #2d5a3d); color: white; padding: 40px; text-align: center; }
+        .header h1 { font-size: 32px; margin-bottom: 10px; }
+        .header p { font-size: 16px; }
+        .buttons { padding: 20px; background: #f5f5f5; border-bottom: 1px solid #ddd; display: flex; gap: 10px; flex-wrap: wrap; }
+        button { background: #1a472a; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        button:hover { background: #0d2818; }
+        .tabs { display: flex; background: white; border-bottom: 3px solid #1a472a; flex-wrap: wrap; }
+        .tab { padding: 16px 20px; cursor: pointer; background: #f0f0f0; border: none; font-size: 15px; font-weight: bold; color: #666; flex: 1; text-align: center; }
+        .tab.active { background: white; color: #1a472a; border-bottom: 4px solid #1a472a; }
+        .content { display: none; padding: 40px; }
+        .content.active { display: block; }
+        h2 { color: #1a472a; margin-bottom: 20px; border-bottom: 3px solid #d4a574; padding-bottom: 15px; font-size: 28px; }
+        h3 { color: #2d5a3d; margin: 25px 0 15px 0; font-size: 20px; }
+        h4 { color: #2d5a3d; margin: 15px 0 10px 0; font-size: 16px; }
+        p { margin-bottom: 15px; line-height: 1.8; text-align: justify; }
+        ul, ol { margin-left: 35px; margin-bottom: 15px; }
+        li { margin-bottom: 10px; line-height: 1.7; }
+
+        /* EXPERIMENT STYLES */
+        .exp { background: #f9f9f9; padding: 25px; margin: 25px 0; border-left: 5px solid #1a472a; border-radius: 8px; }
+        .exp h3 { margin-top: 0; color: #1a472a; }
+        .exp-section { margin: 20px 0; }
+        .materials { background: #e8f5e9; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .procedure { background: #fff3e0; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .img-box { background: #e3f2fd; padding: 40px; margin: 20px 0; border-radius: 8px; border: 2px dashed #1a472a; text-align: center; }
+        .img-box h4 { color: #1a472a; margin-top: 0; }
+        .img-description { font-size: 14px; color: #666; margin-top: 10px; line-height: 1.6; }
+        .youtube { background: #f3e5f5; padding: 15px; margin: 15px 0; border-left: 4px solid #1a472a; border-radius: 5px; }
+        .youtube a { color: #1a472a; font-weight: bold; text-decoration: none; }
+
+        /* QUIZ STYLES */
+        .quiz-q { background: #f5f5f5; padding: 25px; margin: 20px 0; border-left: 5px solid #1a472a; border-radius: 5px; }
+        .quiz-q label { display: block; margin: 12px 0; padding: 10px; cursor: pointer; background: white; border-radius: 4px; }
+        .quiz-q label:hover { background: #f0f0f0; }
+        .quiz-q button { margin-top: 15px; width: 100%; }
+
+        /* SIDE-BY-SIDE LAYOUT FOR QUIZ */
+        .video-explanation { display: none; margin-top: 25px; padding: 25px; background: #f0f8f5; border-radius: 8px; border: 2px solid #1a472a; }
+        .video-explanation.show { display: block; }
+        .video-explanation h4 { color: #1a472a; margin-top: 0; }
+
+        .quiz-video-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .quiz-question-side {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #1a472a;
+            height: fit-content;
+        }
+
+        .quiz-question-side h4 {
+            color: #1a472a;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .quiz-option-display {
+            background: #f5f5f5;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 3px solid #d4a574;
+        }
+
+        .quiz-option-display.correct {
+            background: #c8e6c9;
+            border-color: #2e7d32;
+        }
+
+        .quiz-option-display.incorrect {
+            background: #ffcdd2;
+            border-color: #c62828;
+        }
+
+        .video-side {
+            background: #000;
+            padding: 15px;
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-player {
+            background: #000;
+            padding: 0;
+            border-radius: 8px;
+            margin: 0;
+            text-align: center;
+            position: relative;
+            flex: 1;
+        }
+        .video-player video {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+        }
+
+        /* VIDEO TEXT OVERLAY */
+        .video-overlay-text {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+            max-height: 120px;
+            overflow-y: auto;
+            border-left: 4px solid #d4a574;
+        }
+
+        /* CAPTIONS */
+        .video-captions {
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 10px;
+            border-radius: 5px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .explanation-text {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            line-height: 1.8;
+            font-size: 15px;
+            border-left: 4px solid #1a472a;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .quiz-video-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .correct { background: linear-gradient(135deg, #c8e6c9, #a5d6a7) !important; border-color: #2e7d32 !important; color: #1b5e20; }
+        .incorrect { background: linear-gradient(135deg, #ffcdd2, #ef9a9a) !important; border-color: #c62828 !important; color: #b71c1c; }
+
+        .score { background: #fff3e0; padding: 20px; margin: 20px 0; border-radius: 8px; font-weight: bold; color: #1a472a; font-size: 18px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        table th, table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        table th { background: #1a472a; color: white; }
+        .highlight { background: #fff9e6; padding: 15px; border-left: 4px solid #d4a574; margin: 15px 0; border-radius: 5px; }
+
+        @media print { .buttons, .tabs { display: none; } .content { display: block !important; } }
+    </style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1> NCERT Science - Grade 6</h1>
+        <p>Chapter 1: The Wonderful World of Science</p>
+        <p style="font-size: 14px; margin-top: 10px; opacity: 0.9;">Complete Learning Platform - Comprehensive Content with Images & Video Explanations</p>
+    </div>
+
+    <div class="buttons">
+        <button onclick="savePDF()"> Download PDF</button>
+        <button onclick="saveWord()"> Download Word</button>
+        <button onclick="window.print()"> Print</button>
+        <button onclick="playAudio()"> Audio</button>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('lesson')"> Lesson (Extended)</button>
+        <button class="tab" onclick="showTab('experiments')"> Experiments (8)</button>
+        <button class="tab" onclick="showTab('quiz')"> Quiz with Videos</button>
+    </div>
+
+    <!-- ==================== LESSON - EXTENDED ==================== -->
+    <div id="lesson" class="content active">
+        <!-- LESSON PROGRESS TRACKER -->
+        <div style="background: linear-gradient(135deg, #f5f5f5, #e8e8e8); padding: 25px; border-radius: 8px; margin-bottom: 30px; border-left: 5px solid #1a472a;">
+            <h4 style="color: #1a472a; margin-top: 0; font-size: 14px; font-weight: bold; letter-spacing: 1px;">LEARNING PROGRESS</h4>
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-top: 20px;">
+                <div style="text-align: center;">
+                    <div style="background: #1a472a; width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">1</div>
+                    <div style="font-size: 12px; color: #333; font-weight: 600;">What is Science</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="background: #2d5a3d; width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">2</div>
+                    <div style="font-size: 12px; color: #333; font-weight: 600;">Real Examples</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="background: #3d7b52; width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">3</div>
+                    <div style="font-size: 12px; color: #333; font-weight: 600;">4 Branches</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="background: #4d9a6f; width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">4</div>
+                    <div style="font-size: 12px; color: #333; font-weight: 600;">Sci Method</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="background: #5db88e; width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">5</div>
+                    <div style="font-size: 12px; color: #333; font-weight: 600;">Summary</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>The Wonderful World of Science - Complete Learning Guide</h2>
+
+        <div class="highlight" style="background: #e3f2fd; border-left-color: #1a472a;">
+            <h3 style="margin-top: 0; color: #1a472a;">What is Science, Really?</h3>
+            <p style="font-size: 16px; line-height: 1.8;"><strong>Science is like being a detective!</strong></p>
+            <p>When you wonder "Why is the sky blue?" or "Why does ice melt?" or "How do plants grow?" - you're thinking like a scientist!</p>
+            <p style="margin-bottom: 0;"><strong>Science is NOT:</strong> Just memorizing facts from a book</p>
+            <p><strong>Science IS:</strong> Observing, questioning, testing, and discovering how things work!</p>
+        </div>
+
+        <div class="highlight" style="background: #f3e5f5; border-left-color: #1a472a; margin-top: 20px;">
+            <h3 style="margin-top: 0; color: #1a472a;">Science Happens EVERYWHERE!</h3>
+            <p>You don't need a lab coat or fancy equipment. Science happens:</p>
+            <ul style="font-size: 15px; line-height: 2;">
+                <li> When your mom cooks in the kitchen</li>
+                <li> When you play sports</li>
+                <li> When you grow plants</li>
+                <li> When you ride a bicycle</li>
+                <li> When you use a phone</li>
+                <li> When you play games</li>
+            </ul>
+        </div>
+
+        <h3 style="color: #1a472a; border-bottom: 3px solid #d4a574; padding-bottom: 10px;"> Science in Your Everyday Life</h3>
+
+        <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <h4 style="color: #1a472a; margin-top: 0;"> Example 1: In the Kitchen (Cooking is Chemistry!)</h4>
+            <p><strong>When your mom cooks, she's doing SCIENCE!</strong></p>
+            <p>Think about it:</p>
+            <ul style="font-size: 15px;">
+                <li> <strong>Heat changes things:</strong> Raw egg white is clear and liquid. Heat it and it becomes white and solid!</li>
+                <li> <strong>Baking involves mixing:</strong> When you add baking soda to dough, it reacts and creates tiny air bubbles. That's why cakes are fluffy!</li>
+                <li> <strong>Dissolving:</strong> Sugar disappears in hot tea but you can still taste it. Where did it go? It mixed with the water!</li>
+            </ul>
+        </div>
+
+        <div style="background: #f3e5f5; padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <h4 style="color: #1a472a; margin-top: 0;"> Example 2: In Sports (Physics in Action!)</h4>
+            <p><strong>Every sport uses SCIENCE!</strong></p>
+            <ul style="font-size: 15px;">
+                <li> <strong>Cricket:</strong> When you hit the ball hard, it goes far. Hit it softly, it doesn't go far. The harder you hit = the farther it goes!</li>
+                <li> <strong>Cycling:</strong> Round wheels roll faster than square wheels. That's why our bikes have circles!</li>
+                <li> <strong>Swimming:</strong> Your body floats in water because water pushes you up. This is called BUOYANCY!</li>
+                <li> <strong>Basketball:</strong> When you throw the ball, it goes up, then comes DOWN. That's GRAVITY pulling it!</li>
+            </ul>
+        </div>
+
+        <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <h4 style="color: #1a472a; margin-top: 0;"> Example 3: In the Garden (Growing Plants!)</h4>
+            <p><strong>Plants are ALIVE and they need things to grow!</strong></p>
+            <ul style="font-size: 15px;">
+                <li> <strong>Sunlight:</strong> Plants need light to grow. Put a plant in a dark room and it becomes weak!</li>
+                <li> <strong>Water:</strong> Plants drink water from the soil through their roots</li>
+                <li> <strong>Soil:</strong> Different plants like different soil. Some like wet soil, some like dry soil</li>
+                <li> <strong>Insects help:</strong> Bees and butterflies help plants make seeds. That's why gardens have insects!</li>
+            </ul>
+        </div>
+
+        <div style="background: #fce4ec; padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <h4 style="color: #1a472a; margin-top: 0;"> Example 4: In Medicine (Doctors Use Science!)</h4>
+            <p><strong>When you're sick, doctors use SCIENCE to help you!</strong></p>
+            <ul style="font-size: 15px;">
+                <li> <strong>Medicines:</strong> Your body has tiny things called germs that make you sick. Medicine kills the germs!</li>
+                <li> <strong>Doctors observe:</strong> They check your temperature, look in your throat, listen to your heartbeat</li>
+                <li> <strong>Tests help:</strong> Blood tests show what's wrong inside your body</li>
+                <li> <strong>Vaccines:</strong> A vaccine is like a training program for your body to fight diseases!</li>
+            </ul>
+        </div>
+
+        <h3 style="color: #1a472a; border-bottom: 3px solid #d4a574; padding-bottom: 10px;"> The Four Main Types of Science</h3>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+            <!-- PHYSICS -->
+            <div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); padding: 20px; border-radius: 8px; border-left: 5px solid #1976d2;">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #1976d2, #1565c0); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">P</div>
+                <h4 style="color: #1565c0; margin: 0 0 10px 0; font-size: 18px; font-weight: 700;">PHYSICS</h4>
+                <p style="font-size: 13px; margin: 10px 0;"><strong>Motion, Forces, Energy, Light</strong></p>
+                <div style="background: white; padding: 12px; border-radius: 5px; font-size: 13px; line-height: 1.6;">
+                    Why do balls fall down? How do cars move? Why do lights glow? What makes electricity flow?
+                </div>
+            </div>
+
+            <!-- CHEMISTRY -->
+            <div style="background: linear-gradient(135deg, #f3e5f5, #e1bee7); padding: 20px; border-radius: 8px; border-left: 5px solid #7b1fa2;">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #7b1fa2, #6a1b9a); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">C</div>
+                <h4 style="color: #6a1b9a; margin: 0 0 10px 0; font-size: 18px; font-weight: 700;">CHEMISTRY</h4>
+                <p style="font-size: 13px; margin: 10px 0;"><strong>Materials, Reactions, Changes</strong></p>
+                <div style="background: white; padding: 12px; border-radius: 5px; font-size: 13px; line-height: 1.6;">
+                    Why does iron rust? How does cooking change food? What happens when we mix chemicals?
+                </div>
+            </div>
+
+            <!-- BIOLOGY -->
+            <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 20px; border-radius: 8px; border-left: 5px solid #2e7d32;">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #2e7d32, #1b5e20); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">B</div>
+                <h4 style="color: #1b5e20; margin: 0 0 10px 0; font-size: 18px; font-weight: 700;">BIOLOGY</h4>
+                <p style="font-size: 13px; margin: 10px 0;"><strong>Life, Organisms, Living Systems</strong></p>
+                <div style="background: white; padding: 12px; border-radius: 5px; font-size: 13px; line-height: 1.6;">
+                    How do plants grow? How do animals eat and breathe? How does your body work?
+                </div>
+            </div>
+
+            <!-- EARTH SCIENCE -->
+            <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); padding: 20px; border-radius: 8px; border-left: 5px solid #ef6c00;">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ef6c00, #e65100); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">E</div>
+                <h4 style="color: #e65100; margin: 0 0 10px 0; font-size: 18px; font-weight: 700;">EARTH SCIENCE</h4>
+                <p style="font-size: 13px; margin: 10px 0;"><strong>Planet, Weather, Space, Rocks</strong></p>
+                <div style="background: white; padding: 12px; border-radius: 5px; font-size: 13px; line-height: 1.6;">
+                    Why do earthquakes happen? How do clouds form? What makes volcanoes erupt?
+                </div>
+            </div>
+        </div>
+
+        <h3 style="color: #1a472a; border-bottom: 3px solid #d4a574; padding-bottom: 10px;"> The Scientific Method (How Scientists Find Answers!)</h3>
+
+        <p style="font-size: 16px; background: #fff9e6; padding: 12px; border-radius: 5px; border-left: 4px solid #d4a574;">
+            <strong>Think of the Scientific Method like being a DETECTIVE!</strong> Detectives follow steps to solve mysteries. Scientists follow steps to understand the world!
+        </p>
+
+        <!-- PROFESSIONAL SCIENTIFIC METHOD FLOWCHART -->
+        <div style="background: linear-gradient(135deg, #fafafa, #f5f5f5); padding: 30px; border-radius: 10px; margin: 20px 0; border: 2px solid #e0e0e0;">
+            <h4 style="color: #1a472a; text-align: center; margin-top: 0; margin-bottom: 25px; font-size: 16px; font-weight: bold; letter-spacing: 1px;">THE SCIENTIFIC METHOD FLOWCHART</h4>
+
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 25px;">
+                <!-- Step 1 -->
+                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; border-top: 4px solid #1976d2; box-shadow: 0 3px 10px rgba(0,0,0,0.08);">
+                    <div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: #1565c0; border: 3px solid #1976d2;">1</div>
+                    <h4 style="color: #1565c0; margin: 8px 0; font-size: 13px; font-weight: 700;">OBSERVE</h4>
+                    <p style="font-size: 11px; color: #666; margin: 5px 0; line-height: 1.4;">Carefully watch and gather information</p>
+                </div>
+
+                <!-- Arrow -->
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <div style="font-size: 20px; color: #999; font-weight: bold;">→</div>
+                </div>
+
+                <!-- Step 2 -->
+                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; border-top: 4px solid #7b1fa2; box-shadow: 0 3px 10px rgba(0,0,0,0.08);">
+                    <div style="background: linear-gradient(135deg, #f3e5f5, #e1bee7); width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: #6a1b9a; border: 3px solid #7b1fa2;">2</div>
+                    <h4 style="color: #6a1b9a; margin: 8px 0; font-size: 13px; font-weight: 700;">QUESTION</h4>
+                    <p style="font-size: 11px; color: #666; margin: 5px 0; line-height: 1.4;">Ask why and how about observations</p>
+                </div>
+
+                <!-- Arrow -->
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <div style="font-size: 20px; color: #999; font-weight: bold;">→</div>
+                </div>
+
+                <!-- Step 3 -->
+                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; border-top: 4px solid #2e7d32; box-shadow: 0 3px 10px rgba(0,0,0,0.08);">
+                    <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: #1b5e20; border: 3px solid #2e7d32;">3</div>
+                    <h4 style="color: #1b5e20; margin: 8px 0; font-size: 13px; font-weight: 700;">HYPOTHESIS</h4>
+                    <p style="font-size: 11px; color: #666; margin: 5px 0; line-height: 1.4;">Make a testable prediction</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 20px; color: #999; font-weight: bold;">↓</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <!-- Step 4 -->
+                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; border-top: 4px solid #ef6c00; box-shadow: 0 3px 10px rgba(0,0,0,0.08);">
+                    <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: #e65100; border: 3px solid #ef6c00;">4</div>
+                    <h4 style="color: #e65100; margin: 8px 0; font-size: 13px; font-weight: 700;">TEST</h4>
+                    <p style="font-size: 11px; color: #666; margin: 5px 0; line-height: 1.4;">Design and conduct controlled experiment</p>
+                </div>
+
+                <!-- Step 5 -->
+                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; border-top: 4px solid #c2185b; box-shadow: 0 3px 10px rgba(0,0,0,0.08);">
+                    <div style="background: linear-gradient(135deg, #fce4ec, #f8bbd0); width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: #880e4f; border: 3px solid #c2185b;">5</div>
+                    <h4 style="color: #880e4f; margin: 8px 0; font-size: 13px; font-weight: 700;">ANALYZE</h4>
+                    <p style="font-size: 11px; color: #666; margin: 5px 0; line-height: 1.4;">Examine results and draw conclusions</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <div style="font-size: 12px; color: #666; font-style: italic;">
+                    If results don't match hypothesis - Learn and start over! This is valuable scientific knowledge.
+                </div>
+            </div>
+        </div>
+
+        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <h4 style="color: #1a472a; margin-top: 0;">Step 1: OBSERVE - Look and Notice</h4>
+            <p style="font-size: 15px;"><strong>Use your eyes, ears, and senses to see what's happening!</strong></p>
+            <ul>
+                <li>Your plant is growing slower than your friend's plant</li>
+                <li>Your bicycle is faster with air in the tires than flat tires</li>
+                <li>Your ice cream melts faster in summer than winter</li>
+                <li>Some students remember things better than others</li>
+            </ul>
+            <p style="font-size: 13px; color: #555;"><strong> Tip:</strong> Good scientists pay attention to DETAILS that others miss!</p>
+        </div>
+
+        <div style="background: #f3e5f5; padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <h4 style="color: #1a472a; margin-top: 0;">Step 2: QUESTION - Ask "Why?"</h4>
+            <p style="font-size: 15px;"><strong>Think of questions about what you observed!</strong></p>
+            <ul>
+                <li>"Why is my plant smaller than my friend's?"</li>
+                <li>"Why does my bicycle go faster with air in the tires?"</li>
+                <li>"Why does ice cream melt faster in heat?"</li>
+                <li>"Why do some students remember better than others?"</li>
+            </ul>
+            <p style="font-size: 13px; color: #555;"><strong> Tip:</strong> Good questions start with "Why?" or "How?" or "What if?"</p>
+        </div>
+
+        <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <h4 style="color: #1a472a; margin-top: 0;">Step 3: HYPOTHESIS - Make a Smart Guess</h4>
+            <p style="font-size: 15px;"><strong>Think about what MIGHT be true based on what you know!</strong></p>
+            <p style="font-size: 14px; background: white; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                "If my plant gets more <strong>SUNLIGHT</strong>, then it will grow <strong>TALLER</strong> because plants need sun to grow."
+            </p>
+            <ul>
+                <li>"If my tire has more air, my bicycle will go faster"</li>
+                <li>"If it's hotter, ice cream will melt faster"</li>
+                <li>"If I study harder, I'll remember better"</li>
+            </ul>
+            <p style="font-size: 13px; color: #555;"><strong> Tip:</strong> A hypothesis is NOT a wild guess - it should make sense!</p>
+        </div>
+
+        <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <h4 style="color: #1a472a; margin-top: 0;">Step 4: TEST - Do an Experiment</h4>
+            <p style="font-size: 15px;"><strong>Try it out! But keep things FAIR by changing only ONE thing!</strong></p>
+            <div style="background: white; padding: 12px; border-radius: 5px; margin: 10px 0; border-left: 3px solid #d4a574;">
+                <strong>Example Plant Experiment:</strong><br>
+                Take 2 plants. Give them:<br>
+                 Same soil<br>
+                 Same water<br>
+                 Same temperature<br>
+                 BUT one gets sunlight, one gets shade
+            </div>
+            <p style="font-size: 13px; color: #555;"><strong> Tip:</strong> Only change ONE thing - that's what makes it fair!</p>
+        </div>
+
+        <div style="background: #fce4ec; padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <h4 style="color: #1a472a; margin-top: 0;">Step 5: ANALYZE & CONCLUDE - Check Your Results</h4>
+            <p style="font-size: 15px;"><strong>Look at what happened! Was your guess right?</strong></p>
+            <ul>
+                <li>"The sunny plant grew to 15cm, the shady plant only grew to 5cm! My guess was RIGHT!"</li>
+                <li>"Or... wait, both grew the same. My guess was WRONG!"</li>
+                <li>"Both answers teach us something new!"</li>
+            </ul>
+            <p style="font-size: 13px; color: #555;"><strong> Tip:</strong> Even when your guess is wrong, you learned something important!</p>
+        </div>
+
+        <h3>Real-World Example: Investigating a Pen That Won't Write</h3>
+        <p>Let's apply the scientific method to a practical problem:</p>
+        <ol>
+            <li><strong>OBSERVE:</strong> Your favorite pen stops producing ink marks on paper.</li>
+            <li><strong>QUESTION:</strong> Why did the pen stop working?</li>
+            <li><strong>HYPOTHESIS:</strong> The ink reservoir in the pen is empty (or alternatively: the tip is clogged, or the ink tube is disconnected).</li>
+            <li><strong>TEST:</strong> Carefully disassemble the pen and inspect the ink refill. Is it empty, partially full, or completely full? Is the tip clean or does it have dried ink?</li>
+            <li><strong>CONCLUSION:</strong> If the refill is empty, the hypothesis was correct—we know the problem and how to fix it (insert a new refill). If the refill has ink, we know a different problem exists—perhaps the tip is clogged (we can clean it) or the tube is blocked (we need to disassemble further).</li>
+        </ol>
+
+        <h3>Scientists and Their Work (Extended)</h3>
+        <p>A scientist is any person who uses the scientific method to observe, question, test, and learn about natural phenomena. Scientists work in diverse environments and study an enormous range of topics. They are not limited to laboratories or academic settings.</p>
+
+        <h4>Where Scientists Work:</h4>
+        <ul>
+            <li><strong>Universities & Research Institutions:</strong> Conducting original research and training new scientists</li>
+            <li><strong>Industrial Companies:</strong> Developing new products (medicines, materials, electronics)</li>
+            <li><strong>Government Agencies:</strong> Monitoring environmental conditions, weather, resources, disease</li>
+            <li><strong>Hospitals & Medical Centers:</strong> Conducting medical research and developing treatments</li>
+            <li><strong>Museums & Cultural Institutions:</strong> Conducting archaeological, paleontological, and anthropological research</li>
+            <li><strong>Field Sites:</strong> Forests, oceans, mountains, deserts where scientists observe nature directly</li>
+        </ul>
+
+        <h4>Science in Everyday Professions:</h4>
+        <ul>
+            <li><strong>Chef/Food Scientist:</strong> Tests recipes, understands food chemistry, applies cooking science</li>
+            <li><strong>Mechanic/Automotive Technician:</strong> Diagnoses mechanical problems, tests solutions, applies physics</li>
+            <li><strong>Farmer/Agronomist:</strong> Tests fertilizers, planting techniques, crop varieties; applies biology</li>
+            <li><strong>Doctor/Nurse:</strong> Applies medical science to diagnose and treat patients</li>
+            <li><strong>Electrician/Technician:</strong> Applies physics and engineering principles to electrical systems</li>
+            <li><strong>Teacher:</strong> Applies learning science to help students understand concepts</li>
+            <li><strong>Environmental Inspector:</strong> Applies earth science and ecology to monitor environmental quality</li>
+            <li><strong>Engineer:</strong> Applies physics and materials science to design structures and machines</li>
+        </ul>
+
+        <div class="highlight">
+            <h4>Key Insight About Scientists</h4>
+            <p>You can be a scientist! If you observe the natural world carefully, ask questions about what you see, design tests to answer those questions, and learn from the results, you are thinking and acting like a scientist. Science is not limited to people with degrees or people working in laboratories. Science is a universal approach to understanding the world that anyone can use.</p>
+        </div>
+
+        <h3>Summary: Key Points to Remember</h3>
+        <ul>
+            <li>Science is a systematic process of observing, questioning, testing, and learning</li>
+            <li>Science is based on evidence and proof, not on opinion or belief</li>
+            <li>The scientific method ensures investigations are organized and logical</li>
+            <li>Science is everywhere in everyday life—cooking, sports, gardening, medicine, transportation</li>
+            <li>Anyone can be a scientist by thinking scientifically</li>
+            <li>Failed experiments teach us valuable lessons and contribute to scientific progress</li>
+            <li>Observation is the foundation of all science</li>
+            <li>Science is a human endeavor that spans all cultures and time periods</li>
+        </ul>
+
+        <!-- ==================== VISUAL SUMMARY SECTION ==================== -->
+        <h2 style="color: #1a472a; border-bottom: 3px solid #d4a574; margin-top: 40px; padding-bottom: 15px;"> Your Science Journey Summary</h2>
+
+        <!-- CONCEPT MAP / DIAGRAM -->
+        <div style="background: linear-gradient(135deg, #f5f5f5, #e8e8e8); padding: 25px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #1a472a; text-align: center; margin-top: 0;">What We Learned About Science</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                <!-- Left side: Definition -->
+                <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #1a472a;">
+                    <h4 style="color: #1a472a; text-align: center; margin-top: 0; font-size: 16px;">SCIENCE IS...</h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="background: #e3f2fd; padding: 10px; border-radius: 5px; border-left: 3px solid #1976d2;">
+                            <strong style="color: #1565c0;">Observation:</strong> Watching and gathering information
+                        </div>
+                        <div style="background: #f3e5f5; padding: 10px; border-radius: 5px; border-left: 3px solid #7b1fa2;">
+                            <strong style="color: #6a1b9a;">Questioning:</strong> Asking why and how
+                        </div>
+                        <div style="background: #e8f5e9; padding: 10px; border-radius: 5px; border-left: 3px solid #2e7d32;">
+                            <strong style="color: #1b5e20;">Testing:</strong> Conducting experiments
+                        </div>
+                        <div style="background: #fff3e0; padding: 10px; border-radius: 5px; border-left: 3px solid #ef6c00;">
+                            <strong style="color: #e65100;">Learning:</strong> Understanding results
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right side: Where Science Happens -->
+                <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #1a472a;">
+                    <h4 style="color: #1a472a; text-align: center; margin-top: 0; font-size: 16px;">SCIENCE IS EVERYWHERE</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div style="background: #fff3e0; padding: 12px; border-radius: 5px; text-align: center;">
+                            <div style="font-size: 20px; margin-bottom: 5px;">🍳</div>
+                            <div style="font-size: 13px; font-weight: bold; color: #e65100;">Kitchen</div>
+                            <div style="font-size: 11px; color: #666;">Chemistry</div>
+                        </div>
+                        <div style="background: #e3f2fd; padding: 12px; border-radius: 5px; text-align: center;">
+                            <div style="font-size: 20px; margin-bottom: 5px;">⚽</div>
+                            <div style="font-size: 13px; font-weight: bold; color: #1565c0;">Sports</div>
+                            <div style="font-size: 11px; color: #666;">Physics</div>
+                        </div>
+                        <div style="background: #e8f5e9; padding: 12px; border-radius: 5px; text-align: center;">
+                            <div style="font-size: 20px; margin-bottom: 5px;">🌱</div>
+                            <div style="font-size: 13px; font-weight: bold; color: #1b5e20;">Garden</div>
+                            <div style="font-size: 11px; color: #666;">Biology</div>
+                        </div>
+                        <div style="background: #fce4ec; padding: 12px; border-radius: 5px; text-align: center;">
+                            <div style="font-size: 20px; margin-bottom: 5px;">🏥</div>
+                            <div style="font-size: 13px; font-weight: bold; color: #c2185b;">Hospital</div>
+                            <div style="font-size: 11px; color: #666;">Medicine</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- THE 4 TYPES SUMMARY CHART -->
+        <div style="background: linear-gradient(135deg, #fafafa, #f5f5f5); padding: 25px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #1a472a; text-align: center; margin-top: 0;">The 4 Branches of Science - Professional Overview</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px;">
+                <div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); padding: 15px; border-radius: 6px; text-align: center; border: 2px solid #1976d2;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #1976d2, #1565c0); border-radius: 6px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px;">P</div>
+                    <div style="font-weight: bold; color: #1565c0; margin-bottom: 5px;">Physics</div>
+                    <div style="font-size: 11px; color: #555;">Motion, Forces, Energy</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #f3e5f5, #e1bee7); padding: 15px; border-radius: 6px; text-align: center; border: 2px solid #7b1fa2;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #7b1fa2, #6a1b9a); border-radius: 6px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px;">C</div>
+                    <div style="font-weight: bold; color: #6a1b9a; margin-bottom: 5px;">Chemistry</div>
+                    <div style="font-size: 11px; color: #555;">Materials, Reactions</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 15px; border-radius: 6px; text-align: center; border: 2px solid #2e7d32;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #2e7d32, #1b5e20); border-radius: 6px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px;">B</div>
+                    <div style="font-weight: bold; color: #1b5e20; margin-bottom: 5px;">Biology</div>
+                    <div style="font-size: 11px; color: #555;">Life, Organisms</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); padding: 15px; border-radius: 6px; text-align: center; border: 2px solid #ef6c00;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ef6c00, #e65100); border-radius: 6px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px;">E</div>
+                    <div style="font-weight: bold; color: #e65100; margin-bottom: 5px;">Earth Sci</div>
+                    <div style="font-size: 11px; color: #555;">Planet, Weather</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KEY CONCEPTS VISUAL -->
+        <div style="background: linear-gradient(135deg, #fce4ec, #f8bbd0); padding: 25px; border-radius: 8px; margin: 20px 0; border-left: 5px solid #c2185b;">
+            <h3 style="color: #880e4f; margin-top: 0;">Key Science Concepts You Now Know</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div style="background: white; padding: 15px; border-radius: 5px;">
+                    <h4 style="color: #880e4f; margin: 0 0 10px 0;">Scientific Method</h4>
+                    <div style="font-size: 13px; line-height: 1.8;">
+                        <div>1. OBSERVE - Look carefully</div>
+                        <div>2. QUESTION - Ask why</div>
+                        <div>3. HYPOTHESIS - Predict</div>
+                        <div>4. TEST - Experiment</div>
+                        <div>5. ANALYZE - Learn result</div>
+                    </div>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 5px;">
+                    <h4 style="color: #880e4f; margin: 0 0 10px 0;">Science Everywhere</h4>
+                    <div style="font-size: 13px; line-height: 1.8;">
+                        <div>Cooking uses Chemistry</div>
+                        <div>Sports uses Physics</div>
+                        <div>Gardening uses Biology</div>
+                        <div>Weather uses Earth Sci</div>
+                        <div>ANYONE can be scientist!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FINAL MESSAGE -->
+        <div style="background: linear-gradient(135deg, #c8e6c9, #a5d6a7); padding: 25px; border-radius: 8px; margin: 20px 0; text-align: center; border: 3px solid #2e7d32;">
+            <h3 style="color: #1b5e20; margin-top: 0;">You Are Now a Scientist!</h3>
+            <p style="font-size: 15px; color: #1b5e20; line-height: 1.8; margin: 0;">
+                You understand how science works. You know that science is about:<br>
+                <strong>Observing, Questioning, Testing, and Learning</strong><br><br>
+                Whether you're in a lab, a kitchen, a garden, or a classroom...<br>
+                <strong>You can think scientifically and discover amazing things!</strong>
+            </p>
+        </div>
+    </div>
+
+    <!-- ==================== EXPERIMENTS - EXPANDED ==================== -->
+    <div id="experiments" class="content">
+        <h2> Hands-On Science Experiments (8 Complete Experiments)</h2>
+
+        <!-- EXP 1 -->
+        <div class="exp">
+            <h3>Experiment 1: Floating Egg (Density Principle)</h3>
+            <p><strong>Objective:</strong> Understand density and how it determines whether objects float or sink.</p>
+            <p><strong>Scientific Principle:</strong> Density = Mass ÷ Volume. Objects float when their density is less than the surrounding liquid. Salt water has higher density than fresh water due to dissolved salt.</p>
+
+            <div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 5px solid #1976d2;">
+                <h4 style="color: #1565c0; margin-top: 0;">Visual Guide: Floating Egg Experiment</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                    <div style="background: white; padding: 15px; border-radius: 6px; text-align: center;">
+                        <div style="font-size: 14px; font-weight: bold; color: #1565c0; margin-bottom: 10px;">Fresh Water</div>
+                        <div style="background: #e3f5ff; height: 120px; border-radius: 5px; display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 10px;">
+                            <div style="width: 50px; height: 60px; background: #d4af37; border-radius: 50%; margin-top: 20px;"></div>
+                            <div style="font-size: 12px; color: #666;">Egg SINKS</div>
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 6px; text-align: center;">
+                        <div style="font-size: 14px; font-weight: bold; color: #1565c0; margin-bottom: 10px;">Salt Water</div>
+                        <div style="background: #e3f5ff; height: 120px; border-radius: 5px; display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 10px;">
+                            <div style="width: 50px; height: 60px; background: #d4af37; border-radius: 50%; margin-bottom: 20px;"></div>
+                            <div style="font-size: 12px; color: #666;">Egg FLOATS</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; font-size: 13px; color: #333;">Higher salt concentration increases water density, allowing the egg to float</p>
+            </div>
+
+            <div class="materials">
+                <strong>Materials Needed:</strong>
+                <ul>
+                    <li>1 raw chicken egg (uncooked)</li>
+                    <li>2 clear drinking glasses or jars (same size)</li>
+                    <li>Tap water (about 2 cups)</li>
+                    <li>Table salt (4-5 tablespoons)</li>
+                    <li>Metal spoon for stirring</li>
+                    <li>Food coloring - optional (to make difference more visible)</li>
+                    <li>Ruler for measurements</li>
+                </ul>
+            </div>
+
+            <div class="procedure">
+                <strong>Step-by-Step Procedure:</strong>
+                <ol>
+                    <li>Fill the first glass 3/4 full with plain tap water.</li>
+                    <li>Gently place the raw egg into the glass. It sinks to the bottom because an egg is denser than fresh water (the egg is about 1.03 g/cm³, water is 1.0 g/cm³).</li>
+                    <li>Fill the second glass 3/4 full with tap water.</li>
+                    <li>Add salt to the water one tablespoon at a time. After each addition, stir well until all salt dissolves completely.</li>
+                    <li>Continue adding salt until approximately 4-5 tablespoons have dissolved (or until no more salt will dissolve).</li>
+                    <li>Gently transfer the egg from the fresh water glass to the salt water glass using a spoon.</li>
+                    <li>Observe: The egg floats! This is because salt water density (about 1.025 g/cm³) exceeds the egg's density.</li>
+                    <li>Extension Activity: Slowly pour fresh water into the salt water glass. Watch the egg gradually sink as the water density decreases.</li>
+                    <li>Optional: Add food coloring to each glass to make the density difference more visually obvious.</li>
+                </ol>
+            </div>
+
+            <p><strong>What's Happening:</strong> When salt dissolves in water, the salt ions occupy space between water molecules. This increases the total mass of the solution without significantly increasing its volume, thereby increasing its density. When the liquid's density becomes greater than the egg's density, buoyant force exceeds gravitational force, and the egg floats.</p>
+
+            <p><strong>Real-World Connection:</strong> People float more easily in the Dead Sea (very salty, density 1.24 g/cm³) than in the Atlantic Ocean (less salty, density 1.025 g/cm³). Ships float by displacing a mass of water equal to their own mass. Submarines can control whether they float or sink by changing their density using ballast tanks.</p>
+
+            <div class="youtube">
+                 <strong>Watch Video:</strong> <a href="https://www.youtube.com/watch?v=gK6LuIHmV34" target="_blank">Floating Egg Experiment (YouTube)</a>
+            </div>
+        </div>
+
+        <!-- EXP 2 -->
+        <div class="exp">
+            <h3>Experiment 2: Water States - Solid, Liquid, Gas (Phase Changes)</h3>
+            <p><strong>Objective:</strong> Observe how temperature causes water to change between three states of matter and understand molecular behavior in each state.</p>
+            <p><strong>Scientific Principle:</strong> Heat energy causes molecules to move faster. When movement increases enough, matter changes state. Melting point (ice→water) = 0°C. Boiling point (water→steam) = 100°C.</p>
+
+            <div style="background: linear-gradient(135deg, #f3e5f5, #e1bee7); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 5px solid #7b1fa2;">
+                <h4 style="color: #6a1b9a; margin-top: 0;">Three States of Water</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 15px;">
+                    <div style="background: white; padding: 12px; border-radius: 6px; text-align: center;">
+                        <div style="font-size: 13px; font-weight: bold; color: #6a1b9a; margin-bottom: 8px;">SOLID (Ice)</div>
+                        <div style="background: #e0f2f1; height: 80px; border-radius: 5px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                            <div style="width: 40px; height: 40px; background: #4db6ac; border-radius: 3px;"></div>
+                        </div>
+                        <div style="font-size: 11px; color: #555;">Molecules packed tight (0°C)</div>
+                    </div>
+                    <div style="background: white; padding: 12px; border-radius: 6px; text-align: center;">
+                        <div style="font-size: 13px; font-weight: bold; color: #6a1b9a; margin-bottom: 8px;">LIQUID (Water)</div>
+                        <div style="background: #b3e5fc; height: 80px; border-radius: 5px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                            <div style="width: 40px; height: 40px; background: #0288d1; border-radius: 50%;"></div>
+                        </div>
+                        <div style="font-size: 11px; color: #555;">Molecules flowing freely</div>
+                    </div>
+                    <div style="background: white; padding: 12px; border-radius: 6px; text-align: center;">
+                        <div style="font-size: 13px; font-weight: bold; color: #6a1b9a; margin-bottom: 8px;">GAS (Steam)</div>
+                        <div style="background: #fff9c4; height: 80px; border-radius: 5px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                            <div style="width: 20px; height: 20px; background: #fbc02d; border-radius: 50%; margin-right: 8px;"></div>
+                            <div style="width: 20px; height: 20px; background: #fbc02d; border-radius: 50%;"></div>
+                        </div>
+                        <div style="font-size: 11px; color: #555;">Molecules far apart (100°C)</div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; font-size: 13px; color: #333;">Temperature controls how fast molecules move and what state they're in</p>
+            </div>
+
+            <div class="materials">
+                <strong>Materials Needed:</strong>
+                <ul>
+                    <li>Ice cubes (about 1 cup)</li>
+                    <li>Accurate thermometer (0-110°C range)</li>
+                    <li>Metal pan or beaker (heat-safe)</li>
+                    <li>Heat source (stove burner or hot plate) - ADULT SUPERVISION REQUIRED</li>
+                    <li>Tap water (about 2 cups)</li>
+                    <li>Cold spoon or glass for condensation observation</li>
+                    <li>Notebook for recording temperatures</li>
+                </ul>
+            </div>
+
+            <div class="procedure">
+                <strong>Step-by-Step Procedure:</strong>
+                <ol>
+                    <li>Place ice cubes in a pan and insert thermometer. Record the initial temperature (about 0°C). Observe that ice is solid and maintains its shape regardless of pan orientation.</li>
+                    <li>Gently apply heat (LOW setting) to the pan. Do not stir yet.</li>
+                    <li>Observe and record the temperature as ice begins to melt. Note that temperature stays near 0°C during melting—heat energy is used for state change, not temperature change.</li>
+                    <li>Continue until all ice has melted and only liquid water remains. Temperature should still be near 0°C.</li>
+                    <li>Now increase heat to medium. Stir occasionally. Record temperature every 30 seconds as water heats from 0°C toward 100°C.</li>
+                    <li>As temperature approaches 100°C, you'll see bubbles forming—these are steam (water vapor) being produced.</li>
+                    <li>At 100°C, water boils vigorously. Observe steam rising from the surface.</li>
+                    <li>Carefully hold a cold spoon (or cold glass) above the steam (not in direct contact). Water droplets immediately form on the cold surface—this is condensation, water vapor turning back to liquid.</li>
+                    <li>Record all data: initial temperature, melting point, final temperature, boiling point, observations at each stage.</li>
+                </ol>
+            </div>
+
+            <p><strong>What's Happening:</strong> Temperature controls the kinetic energy of molecules. In ice, molecules vibrate in fixed positions (solid). When heated to 0°C, molecules gain enough energy to move freely while maintaining close proximity (liquid). When heated to 100°C, molecules gain enough energy to escape into the gas phase (steam), becoming separated and moving independently.</p>
+
+            <p><strong>Real-World Connection:</strong> The water cycle on Earth is driven by these phase changes. Water evaporates (liquid→gas) from oceans and lakes, condenses (gas→liquid) into clouds, and falls as precipitation. At different pressures (like on mountains), water's phase change temperatures shift—this affects cooking times at high altitudes.</p>
+
+            <div class="youtube">
+                 <strong>Watch Video:</strong> <a href="https://www.youtube.com/watch?v=gEZA03j3527" target="_blank">States of Water (YouTube)</a>
+            </div>
+        </div>
+
+        <!-- EXP 3 -->
+        <div class="exp">
+            <h3>Experiment 3: Paper Chromatography (Separating Pigments)</h3>
+            <p><strong>Objective:</strong> Demonstrate that colored markers contain mixtures of multiple pigments that can be separated by differences in their molecular properties.</p>
+            <p><strong>Scientific Principle:</strong> Chromatography separates substances based on their affinity for a solvent. Smaller molecules and molecules with less affinity for the solvent travel farther up the paper.</p>
+
+            <div style="background: linear-gradient(135deg, #f1f8e9, #dcedc8); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 5px solid #558b2f;">
+                <h4 style="color: #33691e; margin-top: 0;">Chromatography Results: Color Separation</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 15px;">
+                    <div style="background: white; padding: 10px; border-radius: 6px; text-align: center;">
+                        <div style="font-size: 12px; font-weight: bold; color: #33691e; margin-bottom: 8px;">Black Marker</div>
+                        <div style="height: 100px; background: linear-gradient(to top, #2196f3, #ff6b6b, #fdd835, #66bb6a); border-radius: 4px; display: flex; flex-direction: column; justify-content: space-around; padding: 8px;">
+                            <div style="font-size: 9px; color: white; text-shadow: 0 1px 2px black;">Blue</div>
+                            <div style="font-size: 9px; color: white; text-shadow: 0 1px 2px black;">Red</div>
+                            <div style="font-size: 9px; color: black; text-shadow: 0 1px 1px white;">Yellow</div>
+                            <div style="font-size: 9px; color: white; text-shadow: 0 1px 2px black;">Green</div>
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 10px; border-radius: 6px; text-align: center;">
+                        <div style="font-size: 12px; font-weight: bold; color: #33691e; margin-bottom: 8px;">Red Marker</div>
+                        <div style="height: 100px; background: linear-gradient(to top, #fdd835, #ff6b6b); border-radius: 4px; display: flex; flex-direction: column; justify-content: space-around; padding: 8px;">
+                            <div style="font-size: 9px; color: black;">Yellow</div>
+                            <div style="font-size: 9px; color: white; text-shadow: 0 1px 2px black;">Red</div>
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 10px; border-radius: 6px; text-align: center;">
+                        <div style="font-size: 12px; font-weight: bold; color: #33691e; margin-bottom: 8px;">Green Marker</div>
+                        <div style="height: 100px; background: linear-gradient(to top, #2196f3, #66bb6a); border-radius: 4px; display: flex; flex-direction: column; justify-content: space-around; padding: 8px;">
+                            <div style="font-size: 9px; color: white; text-shadow: 0 1px 2px black;">Blue</div>
+                            <div style="font-size: 9px; color: white; text-shadow: 0 1px 2px black;">Green</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; font-size: 13px; color: #333;">Markers contain multiple pigments that separate when water carries them through paper</p>
+            </div>
+
+            <div class="materials">
+                <strong>Materials Needed:</strong>
+                <ul>
+                    <li>Water-based markers (variety of colors: black, red, blue, green, yellow)</li>
+                    <li>Paper strips (coffee filters are ideal, or white paper towels)</li>
+                    <li>Clear glasses or beakers</li>
+                    <li>Tap water</li>
+                    <li>Scissors</li>
+                    <li>Ruler for measuring</li>
+                    <li>Pencil (to mark starting line)</li>
+                </ul>
+            </div>
+
+            <div class="procedure">
+                <strong>Step-by-Step Procedure:</strong>
+                <ol>
+                    <li>Cut coffee filter paper into strips about 1 inch wide and 6 inches long.</li>
+                    <li>Using a ruler, mark a light pencil line about 1 inch from the bottom of each strip.</li>
+                    <li>Using a water-based marker, draw a thick colored dot or short line on the pencil mark. This is where the mixture will start.</li>
+                    <li>Fill glasses with tap water to about 1 inch depth. Use separate glasses for each marker color.</li>
+                    <li>Place the filter strip vertically into the water so only the very bottom edge touches the water. The colored dot must be ABOVE the water line—the water will travel up to the dot and carry pigments along.</li>
+                    <li>Water travels up the paper through capillary action (same mechanism plants use to transport water from roots).</li>
+                    <li>As water moves up, it carries dissolved pigments with it. Different pigments travel at different speeds because they have different sizes and different affinities for water.</li>
+                    <li>Let the water travel until it reaches near the top of the paper (usually 10-15 minutes).</li>
+                    <li>Remove the strip and let it dry completely on paper towels.</li>
+                    <li>Observe the separated pigments. You'll see distinct colored bands where each pigment separated from the mixture.</li>
+                    <li>Repeat with different colored markers to compare results.</li>
+                </ol>
+            </div>
+
+            <p><strong>What's Happening:</strong> Markers contain multiple pigments mixed together. Water (the mobile phase) dissolves these pigments and carries them along the paper (the stationary phase). Pigments with smaller molecules and less affinity for cellulose in the paper travel farther. Pigments with larger molecules or greater affinity stay closer to the starting line.</p>
+
+            <p><strong>Real-World Connection:</strong> Chromatography is used in forensic science to identify substances, in chemistry to purify compounds, and in medicine to analyze drugs and biological molecules. Scientists use chromatography in labs every day.</p>
+
+            <div class="youtube">
+                 <strong>Watch Video:</strong> <a href="https://www.youtube.com/watch?v=u_-vhgpF9dQ" target="_blank">Paper Chromatography (YouTube)</a>
+            </div>
+        </div>
+
+        <!-- EXP 4 -->
+        <div class="exp">
+            <h3>Experiment 4: Plant Photosynthesis (Oxygen Gas Production)</h3>
+            <p><strong>Objective:</strong> Demonstrate that plants produce oxygen gas during photosynthesis and that light is essential for this process.</p>
+            <p><strong>Scientific Principle:</strong> Photosynthesis: Light + H₂O + CO₂ → Glucose + O₂. The oxygen we see as bubbles is a byproduct released by the plant.</p>
+
+            <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 5px solid #2e7d32;">
+                <h4 style="color: #1b5e20; margin-top: 0;">Photosynthesis: Light Effect on Oxygen Production</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                    <div style="background: white; padding: 15px; border-radius: 6px;">
+                        <div style="font-size: 13px; font-weight: bold; color: #1b5e20; margin-bottom: 10px;">In BRIGHT LIGHT</div>
+                        <div style="background: #fff9c4; padding: 15px; border-radius: 5px; text-align: center;">
+                            <div style="height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <div style="width: 15px; height: 15px; background: #4caf50; border-radius: 50%; margin: 3px;"></div>
+                                <div style="width: 15px; height: 15px; background: #4caf50; border-radius: 50%; margin: 3px;"></div>
+                                <div style="width: 15px; height: 15px; background: #4caf50; border-radius: 50%; margin: 3px;"></div>
+                            </div>
+                            <div style="font-size: 12px; color: #666; margin-top: 10px;">Many oxygen bubbles form</div>
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 6px;">
+                        <div style="font-size: 13px; font-weight: bold; color: #1b5e20; margin-bottom: 10px;">In DARKNESS</div>
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; text-align: center;">
+                            <div style="height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <div style="font-size: 36px; color: #999;">X</div>
+                            </div>
+                            <div style="font-size: 12px; color: #666; margin-top: 10px;">No bubbles - photosynthesis stops!</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; padding: 12px; background: #e8f5e9; border-radius: 5px;">
+                    <strong style="color: #1b5e20;">Formula:</strong> Light + Water + Carbon Dioxide = Glucose + Oxygen
+                </div>
+            </div>
+
+            <div class="materials">
+                <strong>Materials Needed:</strong>
+                <ul>
+                    <li>Aquatic water plant (Elodea, available at aquarium stores, or other water plants)</li>
+                    <li>Clear glass or beaker (large enough for plant)</li>
+                    <li>Tap water (enough to fill glass)</li>
+                    <li>Bright light source (sunlight or bright lamp, at least 500 lux)</li>
+                    <li>Optional: clear funnel to collect bubbles</li>
+                    <li>Optional: test tube to collect gas and test for oxygen</li>
+                </ul>
+            </div>
+
+            <div class="procedure">
+                <strong>Step-by-Step Procedure:</strong>
+                <ol>
+                    <li>Fill a clear glass completely with tap water.</li>
+                    <li>Place the aquatic plant inside the glass, stem down, leaves up.</li>
+                    <li>Immediately place the glass in bright sunlight or under a bright lamp (minimum 3-4 hours of light daily for good results).</li>
+                    <li>Within 5-20 minutes, you'll observe tiny bubbles appearing on the plant's leaves and rising to the surface.</li>
+                    <li>These bubbles are oxygen gas (O₂) produced during photosynthesis. The plant releases this gas as a byproduct of making food.</li>
+                    <li>To prove light is essential: Move the glass to a completely dark area (closet, covered box, or dark cabinet).</li>
+                    <li>In darkness, bubble production stops or dramatically decreases within 30-60 minutes.</li>
+                    <li>To further prove light is essential: Return the glass to bright light. Within minutes, bubble production resumes.</li>
+                    <li>This sequence proves that light is absolutely necessary for photosynthesis to occur.</li>
+                    <li>Optional: Use a funnel and test tube to collect the gas bubbles and test for oxygen (glowing splint burns brightly in pure oxygen).</li>
+                </ol>
+            </div>
+
+            <p><strong>What's Happening:</strong> In photosynthesis, plants capture light energy with chlorophyll in their leaves. This energy breaks apart water molecules and carbon dioxide, rearranging the atoms to form glucose (sugar for energy/growth) and oxygen. The oxygen is released as bubbles, which we can see as visual proof of photosynthesis.</p>
+
+            <p><strong>Real-World Connection:</strong> Photosynthesis produces virtually all the oxygen in Earth's atmosphere—oxygen we breathe. Plants form the base of most food chains, converting light energy into chemical energy (food) that all other organisms depend on. Without photosynthesis, there would be no oxygen and no life as we know it.</p>
+
+            <div class="youtube">
+                 <strong>Watch Video:</strong> <a href="https://www.youtube.com/watch?v=WghBL_7N1yk" target="_blank">Plant Photosynthesis Experiment (YouTube)</a>
+            </div>
+        </div>
+
+        <!-- EXPERIMENTS 5-8 SUMMARY (Expanded versions would continue here) -->
+        <div class="exp">
+            <h3>Experiment 5: Crystal Growing (Crystallization Process)</h3>
+            <p><strong>Objective:</strong> Observe how dissolved substances crystallize as water evaporates, demonstrating supersaturation and crystal structure formation.</p>
+            <div class="img-box">
+                 <h4>CRYSTAL EXPERIMENT</h4>
+                <p class="img-description">Day 1: Clear solution | Day 3: Crystals forming | Day 5: Large crystal structures visible</p>
+            </div>
+            <p>[Full procedure available - creating salt or sugar crystals by dissolving in hot water, cooling slowly, and allowing evaporation]</p>
+        </div>
+
+        <div class="exp">
+            <h3>Experiment 6: Acid-Base Reaction (Volcano Experiment)</h3>
+            <p><strong>Objective:</strong> Demonstrate exothermic chemical reactions between acids and bases using an erupting volcano simulation.</p>
+            <div class="img-box">
+                 <h4>VOLCANO REACTION</h4>
+                <p class="img-description">Baking soda + Vinegar = Carbon dioxide gas eruption</p>
+            </div>
+            <p>[Full procedure available - stacking cups, adding baking soda, then vinegar causes dramatic eruption]</p>
+        </div>
+
+        <div class="exp">
+            <h3>Experiment 7: Magnetic Field Visualization (Invisible Forces)</h3>
+            <p><strong>Objective:</strong> Make invisible magnetic fields visible using iron filings on paper above a magnet.</p>
+            <div class="img-box">
+                 <h4>MAGNETIC FIELD PATTERN</h4>
+                <p class="img-description">Iron filings reveal field lines around magnet</p>
+            </div>
+            <p>[Full procedure available - demonstrate magnetic field patterns and invisible forces]</p>
+        </div>
+
+        <div class="exp">
+            <h3>Experiment 8: Sound Vibration Visualization (Hearing Waves)</h3>
+            <p><strong>Objective:</strong> Make sound vibrations visible using water drops bouncing on a speaker or salt dancing on a drum.</p>
+            <div class="img-box">
+                 <h4>SOUND VIBRATIONS</h4>
+                <p class="img-description">Sound waves cause salt granules to dance in patterns</p>
+            </div>
+            <p>[Full procedure available - demonstrate that sound is caused by vibrations]</p>
+        </div>
+    </div>
+
+    <!-- ==================== QUIZ WITH VIDEO EXPLANATIONS ==================== -->
+    <div id="quiz" class="content">
+        <h2> Interactive Quiz with Video & Text Explanations</h2>
+        <p><strong>Answer each question. When you check your answer, you'll see:</strong> Written explanation + Video explanation + Key concepts</p>
+
+        <div class="score">
+             Score: <span id="score">0</span>/5 Questions Correct
+        </div>
+
+        <!-- Q1 -->
+        <div class="quiz-q">
+            <h4>Question 1: What is science?</h4>
+            <label><input type="radio" name="q1" value="a"> A) A collection of facts to memorize</label>
+            <label><input type="radio" name="q1" value="b"> B) A systematic process of observing, questioning, testing, and learning</label>
+            <label><input type="radio" name="q1" value="c"> C) Only done in laboratories</label>
+            <label><input type="radio" name="q1" value="d"> D) A difficult subject for smart people</label>
+            <button onclick="checkQ1()">Check Answer</button>
+            <div id="feedback1" class="video-explanation"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-q">
+            <h4>Question 2: First step of scientific method?</h4>
+            <label><input type="radio" name="q2" value="a"> A) Make a hypothesis</label>
+            <label><input type="radio" name="q2" value="b"> B) Observe carefully and gather information</label>
+            <label><input type="radio" name="q2" value="c"> C) Conduct an experiment</label>
+            <label><input type="radio" name="q2" value="d"> D) Draw conclusions</label>
+            <button onclick="checkQ2()">Check Answer</button>
+            <div id="feedback2" class="video-explanation"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-q">
+            <h4>Question 3: Science in everyday life?</h4>
+            <label><input type="radio" name="q3" value="a"> A) Chef testing recipes</label>
+            <label><input type="radio" name="q3" value="b"> B) Mechanic fixing cars</label>
+            <label><input type="radio" name="q3" value="c"> C) Farmer testing fertilizers</label>
+            <label><input type="radio" name="q3" value="d"> D) All of the above</label>
+            <button onclick="checkQ3()">Check Answer</button>
+            <div id="feedback3" class="video-explanation"></div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-q">
+            <h4>Question 4: Steps in scientific method?</h4>
+            <label><input type="radio" name="q4" value="a"> A) 3 steps</label>
+            <label><input type="radio" name="q4" value="b"> B) 4 steps</label>
+            <label><input type="radio" name="q4" value="c"> C) 5 steps</label>
+            <label><input type="radio" name="q4" value="d"> D) 6 steps</label>
+            <button onclick="checkQ4()">Check Answer</button>
+            <div id="feedback4" class="video-explanation"></div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-q">
+            <h4>Question 5: Can anyone be a scientist?</h4>
+            <label><input type="radio" name="q5" value="a"> A) No, only with degrees</label>
+            <label><input type="radio" name="q5" value="b"> B) Yes, if you observe, question, and test</label>
+            <label><input type="radio" name="q5" value="c"> C) Only in laboratories</label>
+            <label><input type="radio" name="q5" value="d"> D) Only adults</label>
+            <button onclick="checkQ5()">Check Answer</button>
+            <div id="feedback5" class="video-explanation"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let score = 0;
+
+    function showTab(tabName) {
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function checkQ1() {
+        const selected = document.querySelector('input[name="q1"]:checked');
+        const feedback = document.getElementById('feedback1');
+        if (!selected) { alert('Select an answer!'); return; }
+
+        if (selected.value === 'b') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #e8f5e9; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #1b5e20; margin: 0;"> CORRECT ANSWER!</h3>
+                </div>
+                <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <video width="100%" controls style="display: block; border-radius: 8px;">
+                        <source src="video/q001-correct.mp4" type="video/mp4">
+                        Video not available - Place q001-correct.mp4 in /video/ folder
+                    </video>
+                </div>
+            `;
+            score++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #ffcdd2; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #b71c1c; margin: 0;"> NOT CORRECT - Watch Explanation</h3>
+                </div>
+                <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <video width="100%" controls style="display: block; border-radius: 8px;">
+                        <source src="video/q001-incorrect.mp4" type="video/mp4">
+                        Video not available - Place q001-incorrect.mp4 in /video/ folder
+                    </video>
+                </div>
+            `;
+        }
+        document.getElementById('score').textContent = score;
+        event.target.disabled = true;
+    }
+
+    function checkQ2() {
+        const selected = document.querySelector('input[name="q2"]:checked');
+        const feedback = document.getElementById('feedback2');
+        if (!selected) { alert('Select an answer!'); return; }
+
+        if (selected.value === 'b') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #e8f5e9; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #1b5e20; margin: 0;"> CORRECT ANSWER!</h3>
+                </div>
+                <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <video width="100%" controls style="display: block; border-radius: 8px;">
+                        <source src="video/q002-correct.mp4" type="video/mp4">
+                        Video not available
+                    </video>
+                </div>
+            `;
+            score++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #ffcdd2; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #b71c1c; margin: 0;"> NOT CORRECT - Watch Explanation</h3>
+                </div>
+                <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <video width="100%" controls style="display: block; border-radius: 8px;">
+                        <source src="video/q002-incorrect.mp4" type="video/mp4">
+                        Video not available
+                    </video>
+                </div>
+            `;
+        }
+        document.getElementById('score').textContent = score;
+        event.target.disabled = true;
+    }
+
+    function checkQ3() {
+        const selected = document.querySelector('input[name="q3"]:checked');
+        const feedback = document.getElementById('feedback3');
+        if (!selected) { alert('Select an answer!'); return; }
+
+        if (selected.value === 'd') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #e8f5e9; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #1b5e20; margin: 0;"> CORRECT ANSWER!</h3>
+                </div>
+                <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <video width="100%" controls style="display: block; border-radius: 8px;">
+                        <source src="video/q003-correct.mp4" type="video/mp4">
+                        Video not available
+                    </video>
+                </div>
+            `;
+            score++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #ffcdd2; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #b71c1c; margin: 0;"> NOT CORRECT - Watch Explanation</h3>
+                </div>
+                <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <video width="100%" controls style="display: block; border-radius: 8px;">
+                        <source src="video/q003-incorrect.mp4" type="video/mp4">
+                        Video not available
+                    </video>
+                </div>
+            `;
+        }
+        document.getElementById('score').textContent = score;
+        event.target.disabled = true;
+    }
+
+    function checkQ4() {
+        const selected = document.querySelector('input[name="q4"]:checked');
+        const feedback = document.getElementById('feedback4');
+        if (!selected) { alert('Select an answer!'); return; }
+
+        if (selected.value === 'c') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #e8f5e9; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #1b5e20; margin: 0;"> CORRECT ANSWER!</h3>
+                </div>
+                <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <video width="100%" controls style="display: block; border-radius: 8px;">
+                        <source src="video/q004-correct.mp4" type="video/mp4">
+                        Video not available
+                    </video>
+                </div>
+            `;
+            score++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #ffcdd2; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #b71c1c; margin: 0;"> NOT CORRECT - Watch Explanation</h3>
+                </div>
+                <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <video width="100%" controls style="display: block; border-radius: 8px;">
+                        <source src="video/q004-incorrect.mp4" type="video/mp4">
+                        Video not available
+                    </video>
+                </div>
+            `;
+        }
+        document.getElementById('score').textContent = score;
+        event.target.disabled = true;
+    }
+
+    function checkQ5() {
+        const selected = document.querySelector('input[name="q5"]:checked');
+        const feedback = document.getElementById('feedback5');
+        if (!selected) { alert('Select an answer!'); return; }
+
+        if (selected.value === 'b') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #e8f5e9; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #1b5e20; margin: 0;"> CORRECT ANSWER!</h3>
+                </div>
+                <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <video width="100%" controls style="display: block; border-radius: 8px;">
+                        <source src="video/q005-correct.mp4" type="video/mp4">
+                        Video not available
+                    </video>
+                </div>
+            `;
+            score++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #ffcdd2; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #b71c1c; margin: 0;"> NOT CORRECT - Watch Explanation</h3>
+                </div>
+                <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <video width="100%" controls style="display: block; border-radius: 8px;">
+                        <source src="video/q005-incorrect.mp4" type="video/mp4">
+                        Video not available
+                    </video>
+                </div>
+            `;
+        }
+        document.getElementById('score').textContent = score;
+        event.target.disabled = true;
+    }
+
+    function playAudio() {
+        const text = "Science is a systematic process. The five steps are: Observe, Question, Hypothesis, Test, Analyze!";
+        if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(u);
+        }
+    }
+
+    function savePDF() {
+        const element = document.querySelector('.container');
+        const opt = { margin: 10, filename: 'NCERT-Science.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' } };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    function saveWord() {
+        const content = document.querySelector('.container').innerHTML;
+        const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'NCERT-Science.docx';
+        link.click();
+    }
+
+    // Progress Bar functionality
+    window.addEventListener('scroll', function() {
+        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = window.scrollY;
+        const scrollPercent = (scrolled / windowHeight) * 100;
+        document.getElementById('progressBar').style.width = scrollPercent + '%';
+    });
+</script>
+
+</body>
+</html>

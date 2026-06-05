@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamTool - Professional Learning Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .navbar h1 { font-size: 28px; }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .export-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .export-btn:hover { background: #229954; }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 80px;
+            width: 280px;
+            height: calc(100vh - 80px);
+            background: white;
+            border-right: 2px solid #ecf0f1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .sidebar-item {
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: #f5f7fa;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .sidebar-item:hover {
+            background: #ecf0f1;
+            border-left-color: #2a5298;
+        }
+
+        .sidebar-item.active {
+            background: #2a5298;
+            color: white;
+            border-left-color: #27ae60;
+        }
+
+        .main-content {
+            margin-left: 300px;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 32px;
+            border-bottom: 3px solid #27ae60;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #2a5298;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #34495e;
+            font-size: 15px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #e8f4f8 0%, #f0f8ff 100%);
+            border-left: 5px solid #2a5298;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box strong {
+            color: #1e3c72;
+        }
+
+        .experiment-card {
+            background: #fff9e6;
+            border: 2px solid #f39c12;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .experiment-card h4 {
+            color: #e67e22;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .materials {
+            background: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .materials strong { color: #c0392b; }
+
+        .procedure-list {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .procedure-list li {
+            margin: 10px 0;
+            padding-left: 25px;
+            color: #2c3e50;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+            border-left: 5px solid #27ae60;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .definition-box strong {
+            color: #27ae60;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #2a5298;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #ecf0f1;
+        }
+
+        .stat-box {
+            display: inline-block;
+            background: #2a5298;
+            color: white;
+            padding: 15px 25px;
+            margin: 10px 10px 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .key-points {
+            background: #e8f5e9;
+            border-left: 5px solid #27ae60;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .key-points li {
+            margin: 10px 0;
+            color: #2e7d32;
+        }
+
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar { position: relative; width: 100%; top: 0; height: auto; border-right: none; border-bottom: 2px solid #ecf0f1; }
+            .main-content { margin-left: 0; }
+        }
+
+        @media print {
+            .navbar, .sidebar, .export-buttons { display: none; }
+            .main-content { margin-left: 0; }
+            .section { page-break-after: always; }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <h1>📚 ExamTool - Complete Learning Platform</h1>
+        <div class="export-buttons">
+            <button class="export-btn" onclick="exportPDF()">📄 Download PDF</button>
+            <button class="export-btn" onclick="exportWord()">📝 Download Word</button>
+        </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h3>📖 Content Menu</h3>
+        <div class="sidebar-item active" onclick="showSection('overview')">Overview</div>
+        <div class="sidebar-item" onclick="showSection('definitions')">Definitions</div>
+        <div class="sidebar-item" onclick="showSection('scientific-method')">Scientific Method</div>
+        <div class="sidebar-item" onclick="showSection('experiments')">Experiments</div>
+        <div class="sidebar-item" onclick="showSection('examples')">Real-World Examples</div>
+        <div class="sidebar-item" onclick="showSection('summary')">Summary & Takeaways</div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <!-- OVERVIEW -->
+        <div id="overview" class="section active">
+            <h2>📖 Chapter 1: The Wonderful World of Science</h2>
+
+            <h3>Introduction</h3>
+            <p>Science is all around us. From the moment you wake up, you're encountering science. The alarm clock that wakes you uses electrical energy and physics. The hot water in your shower comes from chemistry and thermodynamics. The food you eat is the result of agricultural science and nutrition. Your smartphone uses physics, chemistry, and computer science.</p>
+
+            <p>But what exactly is science? Science is a systematic way of investigating the natural world through observation, questioning, experimentation, and analysis. It's not just a collection of facts to memorize. It's a way of thinking about the world and solving problems.</p>
+
+            <div class="info-box">
+                <strong>💡 Key Insight:</strong> Science is not just for people in white lab coats working in laboratories. It's a way of thinking that anyone can use in their daily life.
+            </div>
+
+            <h3>Why Learn Science?</h3>
+            <ul class="key-points">
+                <li><strong>Understanding the World:</strong> Science helps us understand how things work, from the smallest atoms to the largest galaxies</li>
+                <li><strong>Solving Problems:</strong> Science provides tools and methods to solve real-world problems</li>
+                <li><strong>Critical Thinking:</strong> Science teaches us to think logically and question everything</li>
+                <li><strong>Innovation:</strong> All modern technology is based on scientific principles</li>
+                <li><strong>Decision Making:</strong> Science helps us make informed decisions about health, environment, and society</li>
+            </ul>
+
+            <h3>What Makes Science Special?</h3>
+            <p>Science is unique because it's based on evidence, not just beliefs. A scientific claim can be tested and verified. If new evidence contradicts what we thought was true, we change our mind. This is what makes science so powerful and trustworthy.</p>
+
+            <div class="stat-box">📊 2.5 million scientific papers published annually</div>
+            <div class="stat-box">🔬 Science built 99% of modern technology</div>
+            <div class="stat-box">🌍 Science helps solve global challenges</div>
+        </div>
+
+        <!-- DEFINITIONS -->
+        <div id="definitions" class="section">
+            <h2>📚 Key Definitions</h2>
+
+            <div class="definition-box">
+                <strong>Science</strong>
+                <p>A systematic way of investigating the natural world through observation, experimentation, and logical reasoning. It's based on evidence and can be tested and verified.</p>
+            </div>
+
+            <div class="definition-box">
+                <strong>Scientific Method</strong>
+                <p>A step-by-step process used by scientists to investigate questions and solve problems: Observe → Wonder → Hypothesis → Test → Analyze</p>
+            </div>
+
+            <div class="definition-box">
+                <strong>Hypothesis</strong>
+                <p>An educated guess about how something works. It must be testable and based on existing knowledge. Example: "If plants are given more sunlight, then they will grow taller."</p>
+            </div>
+
+            <div class="definition-box">
+                <strong>Observation</strong>
+                <p>Careful gathering of information using your senses (sight, hearing, touch, smell, taste) or scientific instruments. Observation is where all science begins.</p>
+            </div>
+
+            <div class="definition-box">
+                <strong>Experiment</strong>
+                <p>A controlled test designed to investigate a hypothesis. In an experiment, you change one variable and measure how it affects another variable while keeping everything else the same.</p>
+            </div>
+
+            <div class="definition-box">
+                <strong>Variable</strong>
+                <p>Something that can change or be changed in an experiment. Independent variable: what you change. Dependent variable: what you measure. Control variables: things you keep the same.</p>
+            </div>
+
+            <div class="definition-box">
+                <strong>Data</strong>
+                <p>Information collected during experiments or observations. Data can be numbers (quantitative) or descriptions (qualitative). Scientists carefully record and analyze data.</p>
+            </div>
+
+            <div class="definition-box">
+                <strong>Conclusion</strong>
+                <p>A statement about what the data shows. A good conclusion states whether the hypothesis was supported by the evidence, not just what the experimenter wanted to find.</p>
+            </div>
+
+            <div class="definition-box">
+                <strong>Curiosity</strong>
+                <p>The desire to know and understand things. Curiosity is the driving force behind science. Without curiosity, science wouldn't exist.</p>
+            </div>
+        </div>
+
+        <!-- SCIENTIFIC METHOD -->
+        <div id="scientific-method" class="section">
+            <h2>🔬 The Scientific Method - Detailed Explanation</h2>
+
+            <h3>Step 1: Observe (👀 Look Carefully)</h3>
+            <p><strong>What it means:</strong> Pay careful attention to the world around you. Notice patterns, changes, and interesting things.</p>
+            <p><strong>How to do it:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>Use your senses (sight, hearing, touch, smell, taste)</li>
+                <li>Use scientific instruments (thermometer, ruler, microscope, etc.)</li>
+                <li>Record what you observe in writing or drawings</li>
+                <li>Notice patterns and repetitions</li>
+                <li>Don't ignore things that don't match your expectations</li>
+            </ul>
+            <p><strong>Example:</strong> You observe that some plants in your classroom grow taller than others, even though they seem to get the same care.</p>
+
+            <h3>Step 2: Wonder (❓ Ask Questions)</h3>
+            <p><strong>What it means:</strong> Ask "Why?" and "How?" about what you observed. Turn observations into questions.</p>
+            <p><strong>How to do it:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>Ask open-ended questions ("Why?" "How?" "What if?")</li>
+                <li>Make sure your question is specific and testable</li>
+                <li>Avoid questions that can't be answered by testing</li>
+                <li>Write down your questions</li>
+            </ul>
+            <p><strong>Example:</strong> "Why do some plants grow taller than others?" or "What causes differences in plant growth?"</p>
+
+            <h3>Step 3: Guess (Hypothesis) (💭 Make an Educated Guess)</h3>
+            <p><strong>What it means:</strong> Make an educated guess about the answer to your question. Base your guess on what you already know.</p>
+            <p><strong>How to do it:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>Research what others have found about this topic</li>
+                <li>Think about causes that might explain what you observed</li>
+                <li>Write your hypothesis as an "if-then" statement</li>
+                <li>Make sure it's testable</li>
+            </ul>
+            <p><strong>Example:</strong> "If plants receive more sunlight, then they will grow taller because sunlight provides energy for photosynthesis."</p>
+
+            <h3>Step 4: Test (🧪 Conduct an Experiment)</h3>
+            <p><strong>What it means:</strong> Design and carry out an experiment to test your hypothesis. Collect data carefully.</p>
+            <p><strong>Key principles:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li><strong>Independent Variable:</strong> What you change (in the example: amount of sunlight)</li>
+                <li><strong>Dependent Variable:</strong> What you measure (in the example: height of plants)</li>
+                <li><strong>Control Variables:</strong> Everything you keep the same (soil type, water, temperature, pot size)</li>
+                <li><strong>Replication:</strong> Repeat your experiment multiple times</li>
+                <li><strong>Precision:</strong> Use accurate tools and take exact measurements</li>
+            </ul>
+
+            <h3>Step 5: Analyze & Conclude (📊 Look at Your Results)</h3>
+            <p><strong>What it means:</strong> Examine your data and determine whether your hypothesis was supported.</p>
+            <p><strong>How to do it:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>Organize your data in tables or charts</li>
+                <li>Look for patterns and trends</li>
+                <li>Calculate averages if appropriate</li>
+                <li>Compare your results to your hypothesis</li>
+                <li>State your conclusion based on evidence, not what you wanted</li>
+            </ul>
+            <p><strong>Types of conclusions:</strong></p>
+            <ul style="margin-left: 20px;">
+                <li>"My hypothesis was supported because..."</li>
+                <li>"My hypothesis was not supported because..."</li>
+                <li>"The results were unexpected because..."</li>
+                <li>"The data suggests that..."</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>💡 Important:</strong> Even if your hypothesis is wrong, you've still done good science! Unexpected results teach us something new.
+            </div>
+        </div>
+
+        <!-- EXPERIMENTS -->
+        <div id="experiments" class="section">
+            <h2>🧪 Hands-On Experiments</h2>
+
+            <h3>Experiment 1: The Pen Problem (Scientific Method Demonstration)</h3>
+            <div class="experiment-card">
+                <h4>🖊️ Why Does My Pen Stop Writing?</h4>
+
+                <p><strong>Time Required:</strong> 5 minutes</p>
+                <p><strong>Difficulty:</strong> Beginner</p>
+
+                <div class="materials">
+                    <strong>Materials Needed:</strong>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>A pen that stopped writing</li>
+                        <li>Screwdriver or tool to open the pen</li>
+                        <li>Paper to test the pen</li>
+                    </ul>
+                </div>
+
+                <h4>Observation:</h4>
+                <p>Your pen stopped writing when you try to use it on paper.</p>
+
+                <h4>Question:</h4>
+                <p>Why did my pen stop working?</p>
+
+                <h4>Hypothesis:</h4>
+                <p>The ink refill has run out of ink.</p>
+
+                <h4>Procedure:</h4>
+                <div class="procedure-list">
+                    <ol style="margin-left: 20px;">
+                        <li>Try to write with the pen on paper. Record what happens.</li>
+                        <li>Carefully open the pen (with adult help if needed).</li>
+                        <li>Remove the ink refill.</li>
+                        <li>Observe the ink refill. Is it empty or full?</li>
+                        <li>Look at the tip. Is it dried out?</li>
+                        <li>If empty, replace with new refill. If dried, try to clean it.</li>
+                        <li>Test if the pen works again.</li>
+                    </ol>
+                </div>
+
+                <h4>Results Table:</h4>
+                <table>
+                    <tr>
+                        <th>Step</th>
+                        <th>Observation</th>
+                        <th>Possible Cause</th>
+                    </tr>
+                    <tr>
+                        <td>Opened pen</td>
+                        <td>Refill is empty</td>
+                        <td>Ink ran out - hypothesis confirmed!</td>
+                    </tr>
+                    <tr>
+                        <td>Opened pen</td>
+                        <td>Refill has ink but tip is dry</td>
+                        <td>Pen left uncapped too long</td>
+                    </tr>
+                    <tr>
+                        <td>Opened pen</td>
+                        <td>Everything looks fine</td>
+                        <td>Mechanical problem inside pen</td>
+                    </tr>
+                </table>
+
+                <h4>Conclusion:</h4>
+                <p>Write your conclusion here based on what you found. Example: "My hypothesis was correct. The pen stopped writing because the ink refill was empty."</p>
+            </div>
+
+            <h3>Experiment 2: Plant Growth and Light</h3>
+            <div class="experiment-card">
+                <h4>🌱 How Does Light Affect Plant Growth?</h4>
+
+                <p><strong>Time Required:</strong> 2-3 weeks</p>
+                <p><strong>Difficulty:</strong> Intermediate</p>
+
+                <div class="materials">
+                    <strong>Materials Needed:</strong>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>3-4 small plant pots</li>
+                        <li>Plant seeds (beans work well)</li>
+                        <li>Potting soil</li>
+                        <li>Water</li>
+                        <li>Ruler to measure height</li>
+                        <li>Locations with different light levels (sunny window, shaded corner, dark closet)</li>
+                        <li>Notebook to record data</li>
+                    </ul>
+                </div>
+
+                <h4>Question:</h4>
+                <p>Does the amount of light affect how tall a plant grows?</p>
+
+                <h4>Hypothesis:</h4>
+                <p>Plants that receive more sunlight will grow taller than plants in shade or darkness because light is needed for photosynthesis.</p>
+
+                <h4>Variables:</h4>
+                <ul style="margin-left: 20px;">
+                    <li><strong>Independent Variable:</strong> Amount of light (full sun, partial shade, no light)</li>
+                    <li><strong>Dependent Variable:</strong> Plant height (measured in cm)</li>
+                    <li><strong>Control Variables:</strong> Same soil, same water, same pot size, same type of seed, same room temperature</li>
+                </ul>
+
+                <h4>Procedure:</h4>
+                <div class="procedure-list">
+                    <ol style="margin-left: 20px;">
+                        <li>Fill 3 pots with equal amounts of potting soil.</li>
+                        <li>Plant the same number of seeds in each pot (about 5-10 seeds).</li>
+                        <li>Water each pot with the same amount of water.</li>
+                        <li>Place Pot 1 in a sunny window (high light).</li>
+                        <li>Place Pot 2 in a partially shaded corner (medium light).</li>
+                        <li>Place Pot 3 in a dark closet or cover it with a box (no light).</li>
+                        <li>Every 2-3 days, water each pot with equal amounts of water.</li>
+                        <li>Every week, measure the height of the tallest plant in each pot.</li>
+                        <li>Record your measurements in a table.</li>
+                        <li>Continue for 3-4 weeks and observe the differences.</li>
+                    </ol>
+                </div>
+
+                <h4>Data Collection Table:</h4>
+                <table>
+                    <tr>
+                        <th>Week</th>
+                        <th>Full Sun (cm)</th>
+                        <th>Partial Shade (cm)</th>
+                        <th>Dark/No Light (cm)</th>
+                    </tr>
+                    <tr>
+                        <td>Week 1</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Week 2</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Week 3</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Week 4</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <h4>Expected Results:</h4>
+                <p>Plants in full sun should grow the tallest. Plants in partial shade should grow medium height. Plants in darkness may not grow at all or might appear pale and thin because they can't make food through photosynthesis.</p>
+
+                <h4>Conclusion:</h4>
+                <p>Based on your data, write whether your hypothesis was supported. Explain what the results show about the relationship between light and plant growth.</p>
+            </div>
+
+            <h3>Experiment 3: Water State Changes</h3>
+            <div class="experiment-card">
+                <h4>💧 How Does Temperature Affect Water States?</h4>
+
+                <p><strong>Time Required:</strong> 1-2 hours</p>
+                <p><strong>Difficulty:</strong> Beginner</p>
+
+                <div class="materials">
+                    <strong>Materials Needed:</strong>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Ice cubes</li>
+                        <li>Water (liquid)</li>
+                        <li>A pan or kettle</li>
+                        <li>Thermometer</li>
+                        <li>Heat source (stove - adult supervision required)</li>
+                        <li>Containers for observation</li>
+                    </ul>
+                </div>
+
+                <h4>Question:</h4>
+                <p>What happens to water when its temperature changes?</p>
+
+                <h4>Hypothesis:</h4>
+                <p>Water exists in three states - solid (ice), liquid (water), and gas (steam). Temperature causes water to change between these states.</p>
+
+                <h4>Procedure:</h4>
+                <div class="procedure-list">
+                    <ol style="margin-left: 20px;">
+                        <li>Place ice cubes in a container and observe. Measure the temperature (should be around 0°C).</li>
+                        <li>Slowly heat the ice and observe what happens. At what temperature does it start to melt?</li>
+                        <li>Continue heating the liquid water. Observe and measure the temperature.</li>
+                        <li>At 100°C, water boils and turns to steam (gas). Observe the steam rising.</li>
+                        <li>Record all observations and temperatures.</li>
+                        <li>If possible, cool the steam by placing a cold surface above it. Observe the water droplets forming.</li>
+                    </ol>
+                </div>
+
+                <h4>Observations Table:</h4>
+                <table>
+                    <tr>
+                        <th>Water State</th>
+                        <th>Temperature</th>
+                        <th>Observations</th>
+                        <th>Properties</th>
+                    </tr>
+                    <tr>
+                        <td>Solid (Ice)</td>
+                        <td>0°C or below</td>
+                        <td>Hard, doesn't flow, keeps shape</td>
+                        <td>Fixed shape and volume</td>
+                    </tr>
+                    <tr>
+                        <td>Liquid (Water)</td>
+                        <td>0-100°C</td>
+                        <td>Flows, takes shape of container</td>
+                        <td>Fixed volume, takes container shape</td>
+                    </tr>
+                    <tr>
+                        <td>Gas (Steam)</td>
+                        <td>Above 100°C</td>
+                        <td>Invisible gas, rises, expands</td>
+                        <td>No fixed shape or volume</td>
+                    </tr>
+                </table>
+
+                <h4>Conclusion:</h4>
+                <p>Temperature causes water to change states. This is called melting (solid to liquid), boiling (liquid to gas), and condensation (gas to liquid).</p>
+            </div>
+        </div>
+
+        <!-- EXAMPLES -->
+        <div id="examples" class="section">
+            <h2>🌍 Real-World Examples of Science</h2>
+
+            <h3>Scientists in Different Professions</h3>
+
+            <div class="info-box">
+                <strong>👨‍🍳 Chef / Cook</strong>
+                <p><strong>How they use science:</strong> Cooking is chemistry! When a chef combines ingredients, chemical reactions occur. Heat changes the structure of proteins (meat cooking), starches (bread baking), and proteins in eggs (scrambling). A chef tests recipes, observes how ingredients interact, and adjusts based on results. This is the scientific method in action!</p>
+                <p><strong>Scientific concepts:</strong> Chemistry, heat transfer, chemical reactions, measurement</p>
+            </div>
+
+            <div class="info-box">
+                <strong>🔧 Mechanic</strong>
+                <p><strong>How they use science:</strong> When a car stops working, a mechanic observes the problem, develops hypotheses about the cause, and tests different parts to find what's wrong. They understand physics (how engines work), chemistry (fuel combustion), and use systematic troubleshooting.</p>
+                <p><strong>Scientific concepts:</strong> Physics, mechanical engineering, systematic problem-solving</p>
+            </div>
+
+            <div class="info-box">
+                <strong>⚡ Electrician</strong>
+                <p><strong>How they use science:</strong> Electricians work with electricity, which follows scientific laws. They understand circuits, voltage, current, and resistance. When something electrical breaks, they use observation and testing to find the problem.</p>
+                <p><strong>Scientific concepts:</strong> Physics (electricity), circuit theory, safety procedures</p>
+            </div>
+
+            <div class="info-box">
+                <strong>🌾 Farmer</strong>
+                <p><strong>How they use science:</strong> Modern farming is based on science. Farmers observe soil quality, weather patterns, and plant health. They test different planting times, fertilizers, and techniques to maximize crop growth. Agricultural science combines biology, chemistry, and ecology.</p>
+                <p><strong>Scientific concepts:</strong> Biology, chemistry, ecology, environmental science</p>
+            </div>
+
+            <div class="info-box">
+                <strong>🏥 Doctor / Nurse</strong>
+                <p><strong>How they use science:</strong> Medicine is applied biology and chemistry. Doctors observe symptoms, form diagnoses (hypotheses), run tests (experiments), and prescribe treatments based on evidence. Everything they do is based on scientific research.</p>
+                <p><strong>Scientific concepts:</strong> Biology, chemistry, anatomy, pharmacology</p>
+            </div>
+
+            <h3>Science in Your Daily Life</h3>
+            <p>Science is happening all around you every day:</p>
+
+            <table>
+                <tr>
+                    <th>Activity</th>
+                    <th>Science Involved</th>
+                    <th>How It Works</th>
+                </tr>
+                <tr>
+                    <td>Making Toast</td>
+                    <td>Chemistry & Physics</td>
+                    <td>Heat causes bread to brown through the Maillard reaction (chemical change)</td>
+                </tr>
+                <tr>
+                    <td>Riding a Bike</td>
+                    <td>Physics</td>
+                    <td>Forces, momentum, friction, and balance keep you moving</td>
+                </tr>
+                <tr>
+                    <td>Phone Working</td>
+                    <td>Physics & Computer Science</td>
+                    <td>Electronics, digital signals, and software work together</td>
+                </tr>
+                <tr>
+                    <td>Boiling Water</td>
+                    <td>Chemistry & Physics</td>
+                    <td>Heat energy causes water molecules to separate (phase change)</td>
+                </tr>
+                <tr>
+                    <td>Growing Plants</td>
+                    <td>Biology</td>
+                    <td>Photosynthesis converts sunlight to energy for growth</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SUMMARY -->
+        <div id="summary" class="section">
+            <h2>📋 Summary & Key Takeaways</h2>
+
+            <h3>The 5 Steps of the Scientific Method (Quick Reference)</h3>
+            <table>
+                <tr>
+                    <th>Step</th>
+                    <th>What You Do</th>
+                    <th>Questions to Ask</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><strong>1. Observe</strong></td>
+                    <td>Look carefully at the world</td>
+                    <td>What do I see? What's happening?</td>
+                    <td>Some plants grow taller than others</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Wonder</strong></td>
+                    <td>Ask questions about observations</td>
+                    <td>Why? How? What if?</td>
+                    <td>Why do some plants grow taller?</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Hypothesis</strong></td>
+                    <td>Make an educated guess</td>
+                    <td>What do I think will happen?</td>
+                    <td>If more light, then plants grow taller</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Test</strong></td>
+                    <td>Do an experiment</td>
+                    <td>How can I test this?</td>
+                    <td>Grow plants in different light levels</td>
+                </tr>
+                <tr>
+                    <td><strong>5. Analyze</strong></td>
+                    <td>Look at results</td>
+                    <td>Was my hypothesis correct?</td>
+                    <td>Plants in sun grew tallest - hypothesis confirmed!</td>
+                </tr>
+            </table>
+
+            <h3>Essential Concepts</h3>
+            <ul class="key-points">
+                <li><strong>Curiosity is your superpower:</strong> The desire to understand the world is what drives all scientific discovery</li>
+                <li><strong>Science is everywhere:</strong> From cooking to sports to technology, science is part of daily life</li>
+                <li><strong>Anyone can be a scientist:</strong> You don't need special qualifications - just curiosity and a systematic approach</li>
+                <li><strong>The scientific method works:</strong> This 5-step process helps us find answers to almost any question</li>
+                <li><strong>Evidence matters:</strong> Science is based on proof, not opinions. We believe things because we have evidence</li>
+                <li><strong>Wrong results are still valuable:</strong> "Failed" experiments teach us something important</li>
+                <li><strong>Science is always evolving:</strong> As we learn more, our understanding changes and improves</li>
+            </ul>
+
+            <h3>Practice These Skills</h3>
+            <ul style="margin-left: 20px;">
+                <li>📝 Write down observations and questions</li>
+                <li>🔍 Look for patterns and connections</li>
+                <li>🧪 Design and conduct simple experiments</li>
+                <li>📊 Organize data in tables and charts</li>
+                <li>💭 Think critically about results</li>
+                <li>❓ Never stop asking "Why?"</li>
+            </ul>
+
+            <h3>Your Scientific Journey Begins Here</h3>
+            <p>This chapter is just the beginning. Science is a lifelong journey of discovery. As you progress through your education and life, you'll learn about physics, chemistry, biology, earth science, and so much more. The most important thing is to maintain your curiosity and never stop asking questions.</p>
+
+            <p>Remember: To be a wise person, you must be a "whys" person! Keep asking questions about the world around you. You never know what amazing discoveries you might make.</p>
+        </div>
+    </div>
+
+    <script>
+        function showSection(id) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+
+            // Show selected section
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function exportPDF() {
+            const element = document.querySelector('.main-content');
+            const opt = {
+                margin: 10,
+                filename: 'ExamTool_Chapter1_Science.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        function exportWord() {
+            let html = document.querySelector('.main-content').innerHTML;
+            let doctype = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+
+            let blob = new Blob([doctype + html], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement('a');
+            link.href = url;
+            link.download = 'ExamTool_Chapter1_Science.docx';
+            link.click();
+        }
+    </script>
+</body>
+</html>

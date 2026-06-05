@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamTool - Learning Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .header h1 { font-size: 40px; color: #667eea; margin-bottom: 10px; }
+        .header p { color: #666; font-size: 16px; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .stat-value { font-size: 24px; }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .tab-btn {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+            transition: all 0.3s;
+        }
+        .tab-btn:hover { background: #667eea; color: white; }
+        .tab-btn.active { background: #667eea; color: white; }
+        .content { display: none; }
+        .content.active { display: block; }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .card h2 { color: #667eea; margin-bottom: 15px; font-size: 28px; }
+        .card h3 { color: #764ba2; margin-top: 20px; margin-bottom: 10px; font-size: 20px; }
+        .card p { color: #555; line-height: 1.8; margin-bottom: 15px; }
+        .step {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+        }
+        .step strong { color: #667eea; }
+        .list { margin-left: 20px; }
+        .list li { margin: 8px 0; color: #555; }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+        .audio-player {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .audio-player h3 { color: white; margin-bottom: 15px; }
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .play-btn {
+            background: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .play-btn:hover { transform: scale(1.1); }
+        audio { width: 100%; margin-top: 10px; }
+        .question {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .question p { margin: 10px 0; }
+        .options {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            background: white;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .option:hover { border-color: #667eea; background: #f0f4ff; }
+        .option input { margin-right: 10px; }
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
+        .feedback {
+            margin-top: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+        .feedback.incorrect { background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
+        .illustration {
+            text-align: center;
+            font-size: 80px;
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .tabs { flex-direction: column; }
+            .tab-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>📚 ExamTool</h1>
+            <p>Chapter 1: The Wonderful World of Science</p>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="score">0%</div>
+                    <div>Score</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="progress">0/5</div>
+                    <div>Progress</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="streak">0</div>
+                    <div>Streak</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="level">Start</div>
+                    <div>Level</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('lessons')">📖 Lessons</button>
+            <button class="tab-btn" onclick="switchTab('videos')">🎬 Videos</button>
+            <button class="tab-btn" onclick="switchTab('audio')">🎙️ Audio</button>
+            <button class="tab-btn" onclick="switchTab('quiz')">🎯 Quiz</button>
+        </div>
+
+        <!-- LESSONS -->
+        <div id="lessons" class="content active">
+            <div class="card">
+                <h2>📖 What is Science?</h2>
+                <p>Science is a way of thinking about the world around us. It uses observation, questioning, testing, and evidence to understand how things work.</p>
+
+                <h3>🔬 The Scientific Method - 5 Simple Steps</h3>
+
+                <div class="step">
+                    <strong>Step 1: Observe 👀</strong>
+                    <p>Look carefully at something interesting. Notice what you see, hear, feel. Ask: "What am I observing?"</p>
+                </div>
+
+                <div class="step">
+                    <strong>Step 2: Wonder ❓</strong>
+                    <p>Ask questions about what you observed. "Why did this happen?" "How does this work?" "What if...?"</p>
+                </div>
+
+                <div class="step">
+                    <strong>Step 3: Guess 💭</strong>
+                    <p>Make an educated guess (hypothesis) about the answer. Base it on what you know. "I think this will happen because..."</p>
+                </div>
+
+                <div class="step">
+                    <strong>Step 4: Test 🧪</strong>
+                    <p>Do an experiment or make more observations to check your guess. Record what happens carefully.</p>
+                </div>
+
+                <div class="step">
+                    <strong>Step 5: Analyze 📊</strong>
+                    <p>Look at your results. Was your guess correct? What did you learn? What new questions do you have?</p>
+                </div>
+
+                <h3>💡 Real-Life Examples</h3>
+                <p><strong>Your Pen Stops Writing</strong></p>
+                <ul class="list">
+                    <li>Observe: The pen doesn't write</li>
+                    <li>Wonder: Why did it stop?</li>
+                    <li>Guess: Maybe the ink ran out</li>
+                    <li>Test: Open the pen and check</li>
+                    <li>Analyze: Was the ink empty? Now you know!</li>
+                </ul>
+
+                <p><strong>Plants Growing</strong></p>
+                <ul class="list">
+                    <li>Observe: Some plants grow taller than others</li>
+                    <li>Wonder: Why do some grow better?</li>
+                    <li>Guess: Maybe they get more sunlight</li>
+                    <li>Test: Put plants in different light conditions</li>
+                    <li>Analyze: Did sunlight affect growth?</li>
+                </ul>
+
+                <h3>🌟 Scientists Are Everywhere!</h3>
+                <p>A scientist is anyone who observes, questions, tests, and learns. This includes:</p>
+                <ul class="list">
+                    <li>👨‍🍳 Chefs (testing recipes)</li>
+                    <li>🔧 Mechanics (fixing cars)</li>
+                    <li>⚡ Electricians (solving problems)</li>
+                    <li>🌾 Farmers (improving crops)</li>
+                    <li>🏥 Doctors (helping patients)</li>
+                    <li>👦 You! (asking questions)</li>
+                </ul>
+
+                <h3>✨ Key Points to Remember</h3>
+                <ul class="list">
+                    <li>✓ Science is for everyone, not just "smart" people</li>
+                    <li>✓ Curiosity is the most important thing</li>
+                    <li>✓ Questions are where science begins</li>
+                    <li>✓ Testing ideas gives real answers</li>
+                    <li>✓ You can be a scientist by thinking scientifically</li>
+                    <li>✓ Science helps us understand the world</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- VIDEOS -->
+        <div id="videos" class="content">
+            <div class="card">
+                <h2>🎬 Video Lessons</h2>
+
+                <h3>Video 1: What is Science?</h3>
+                <p>Introduction to science and why it matters:</p>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/jHbR9rAONGU" allowfullscreen=""></iframe>
+                </div>
+                <p>This video explains what science is in a simple way that's easy to understand.</p>
+
+                <h3>Video 2: The Scientific Method</h3>
+                <p>Learn the 5 steps of the scientific method with real examples:</p>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/fBC3kWXnGKE" allowfullscreen=""></iframe>
+                </div>
+                <p>Watch how the scientific method works step-by-step with demonstrations.</p>
+
+                <h3>Video 3: Scientists in Real Life</h3>
+                <p>See how different people use science in their jobs:</p>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/gHBhEB-Zn8Q" allowfullscreen=""></iframe>
+                </div>
+                <p>Discover that scientists are everywhere, doing science in everyday jobs.</p>
+            </div>
+        </div>
+
+        <!-- AUDIO -->
+        <div id="audio" class="content">
+            <div class="card">
+                <h2>🎙️ Listen & Learn</h2>
+
+                <div class="audio-player">
+                    <h3>Chapter 1: The Wonderful World of Science</h3>
+                    <p>Listen to the complete chapter (16 minutes)</p>
+                    <div class="audio-controls">
+                        <button class="play-btn" onclick="playAudio()" id="playBtn">▶️</button>
+                        <div>
+                            <strong>Click play to listen</strong>
+                            <p style="font-size: 12px; margin-top: 5px;">Professional narration of the chapter</p>
+                        </div>
+                    </div>
+                    <audio id="audioFile" controls>
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                        Your browser doesn't support audio playback.
+                    </audio>
+                </div>
+
+                <h3>📖 Read Along While Listening</h3>
+                <div class="step">
+                    <strong>Part 1: What is Science? (0:00-3:00)</strong>
+                    <p>Science is a way of thinking about the world. It helps us understand everything - from tiny atoms to huge stars. We're naturally curious as humans. We ask questions like "Why is the sky blue?" and "How do things work?" This curiosity is what science is all about.</p>
+                </div>
+
+                <div class="step">
+                    <strong>Part 2: The Scientific Method (3:00-10:00)</strong>
+                    <p>Scientists follow a special method to find answers: First, they observe something. Second, they wonder and ask questions. Third, they make a guess called a hypothesis. Fourth, they test their guess through experiments. Fifth, they analyze the results. This 5-step process is called the Scientific Method.</p>
+                </div>
+
+                <div class="step">
+                    <strong>Part 3: Scientists Everywhere (10:00-16:00)</strong>
+                    <p>You might think scientists only work in laboratories. But that's not true! Chefs use science when cooking. Mechanics use science when fixing cars. Farmers use science when growing crops. Anyone who observes, questions, and tests ideas is doing science. So you can be a scientist too!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ -->
+        <div id="quiz" class="content">
+            <div class="card">
+                <h2>🎯 Test Your Knowledge</h2>
+                <p>Answer these 5 questions to see how much you've learned!</p>
+
+                <div id="quizContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "What is science?",
+                options: [
+                    { text: "Only for smart people", correct: false },
+                    { text: "A way of thinking and testing ideas", correct: true },
+                    { text: "Just memorizing facts", correct: false },
+                    { text: "Only in laboratories", correct: false }
+                ],
+                exp: "Science is a way of thinking! Anyone can do it by observing, questioning, and testing."
+            },
+            {
+                q: "What's the first step of the scientific method?",
+                options: [
+                    { text: "Testing", correct: false },
+                    { text: "Observing", correct: true },
+                    { text: "Guessing", correct: false },
+                    { text: "Analyzing", correct: false }
+                ],
+                exp: "Observation is where science starts! You notice something, then ask questions about it."
+            },
+            {
+                q: "What is a hypothesis?",
+                options: [
+                    { text: "A fact", correct: false },
+                    { text: "An educated guess you test", correct: true },
+                    { text: "A question", correct: false },
+                    { text: "An answer", correct: false }
+                ],
+                exp: "A hypothesis is an educated guess based on what you know that you can test!"
+            },
+            {
+                q: "Who can be a scientist?",
+                options: [
+                    { text: "Only in laboratories", correct: false },
+                    { text: "Only very smart people", correct: false },
+                    { text: "Anyone who thinks scientifically", correct: true },
+                    { text: "Only adults", correct: false }
+                ],
+                exp: "YOU can be a scientist! Anyone who observes, questions, and tests ideas is thinking scientifically!"
+            },
+            {
+                q: "Why is curiosity important in science?",
+                options: [
+                    { text: "It's not important", correct: false },
+                    { text: "It drives all discovery", correct: true },
+                    { text: "It slows research", correct: false },
+                    { text: "It's confusing", correct: false }
+                ],
+                exp: "Curiosity is the engine of science! Without wondering 'Why?', science wouldn't happen!"
+            }
+        ];
+
+        let score = 0, progress = 0, streak = 0, maxStreak = 0;
+
+        function switchTab(tab) {
+            document.querySelectorAll('.content').forEach(e => e.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(e => e.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+            if (tab === 'quiz') renderQuiz();
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            if (container.innerHTML) return;
+            questions.forEach((q, i) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question';
+                qDiv.innerHTML = `
+                    <p><strong>Question ${i + 1}: ${q.q}</strong></p>
+                    <div class="options">
+                        ${q.options.map((o, j) => `
+                            <label class="option">
+                                <input type="radio" name="q${i}" value="${j}"> ${o.text}
+                            </label>
+                        `).join('')}
+                    </div>
+                    <button class="btn" onclick="checkAnswer(${i})">Check Answer</button>
+                    <div class="feedback" id="f${i}"></div>
+                `;
+                container.appendChild(qDiv);
+            });
+        }
+
+        function checkAnswer(i) {
+            const r = document.querySelector(`input[name="q${i}"]:checked`);
+            if (!r) { alert('Please pick an answer!'); return; }
+            const correct = questions[i].options[parseInt(r.value)].correct;
+            const f = document.getElementById(`f${i}`);
+            f.classList.add('show', correct ? 'correct' : 'incorrect');
+            f.innerHTML = `<strong>${correct ? '✅ CORRECT!' : '❌ NOT QUITE'}</strong><br>${questions[i].exp}`;
+            if (correct) {
+                score++;
+                streak++;
+                if (streak > maxStreak) maxStreak = streak;
+            } else {
+                streak = 0;
+            }
+            progress++;
+            updateUI();
+            document.querySelectorAll(`input[name="q${i}"]`).forEach(e => e.disabled = true);
+        }
+
+        function updateUI() {
+            const pct = progress > 0 ? Math.round(score / progress * 100) : 0;
+            document.getElementById('score').textContent = pct + '%';
+            document.getElementById('progress').textContent = `${progress}/5`;
+            document.getElementById('streak').textContent = streak + '🔥';
+            let level = 'Start';
+            if (score >= 4) level = 'Expert';
+            else if (score >= 3) level = 'Advanced';
+            else if (score > 0) level = 'Learning';
+            document.getElementById('level').textContent = level;
+        }
+
+        function playAudio() {
+            const audio = document.getElementById('audioFile');
+            if (audio.paused) {
+                audio.play();
+                document.getElementById('playBtn').textContent = '⏸️';
+            } else {
+                audio.pause();
+                document.getElementById('playBtn').textContent = '▶️';
+            }
+        }
+    </script>
+</body>
+</html>

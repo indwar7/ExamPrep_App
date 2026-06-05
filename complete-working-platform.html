@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCERT Science Grade 6 - Chapter 1</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; }
+        .header { background: #1a472a; color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 28px; margin-bottom: 5px; }
+        .buttons { padding: 20px; background: #f5f5f5; border-bottom: 1px solid #ddd; display: flex; gap: 10px; flex-wrap: wrap; }
+        button { background: #1a472a; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 5px; font-weight: bold; font-size: 14px; }
+        button:hover { background: #0d2818; }
+        .tabs { display: flex; background: white; border-bottom: 2px solid #1a472a; flex-wrap: wrap; }
+        .tab { padding: 15px 20px; cursor: pointer; background: #f0f0f0; border: none; font-size: 14px; font-weight: bold; color: #666; flex: 1; text-align: center; }
+        .tab:hover { background: #e0e0e0; }
+        .tab.active { background: white; color: #1a472a; border-bottom: 3px solid #1a472a; }
+        .content { display: none; padding: 30px; background: white; }
+        .content.active { display: block; }
+        h2 { color: #1a472a; margin-bottom: 15px; border-bottom: 3px solid #d4a574; padding-bottom: 10px; font-size: 24px; }
+        h3 { color: #2d5a3d; margin: 20px 0 10px 0; font-size: 18px; }
+        p { margin-bottom: 12px; line-height: 1.7; text-align: justify; }
+        ul, ol { margin-left: 30px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; line-height: 1.6; }
+        .exp { background: #f9f9f9; padding: 20px; border-left: 5px solid #1a472a; margin: 20px 0; border-radius: 5px; }
+        .exp h3 { margin-top: 0; color: #1a472a; }
+        .mat { background: #e8f5e9; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .mat ul { margin-bottom: 0; }
+        .proc { background: #fff3e0; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .proc ol { margin-bottom: 0; }
+        .image-box { background: #e3f2fd; padding: 30px; margin: 15px 0; border-radius: 5px; text-align: center; border: 2px dashed #1a472a; }
+        .image-box p { font-size: 12px; color: #666; margin: 5px 0 0 0; }
+        .video-box { background: #f3e5f5; padding: 15px; margin: 15px 0; border-radius: 5px; border-left: 4px solid #1a472a; }
+        .video-box a { color: #1a472a; font-weight: bold; text-decoration: none; }
+        .video-box a:hover { text-decoration: underline; }
+        .quiz-q { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 5px; border-left: 4px solid #1a472a; }
+        .quiz-q label { display: block; margin: 10px 0; padding: 8px; cursor: pointer; }
+        .quiz-q label:hover { background: #e0e0e0; }
+        .quiz-q button { margin-top: 10px; }
+        .feedback { display: none; margin-top: 15px; padding: 15px; border-radius: 5px; }
+        .feedback.correct { background: #c8e6c9; color: #1b5e20; }
+        .feedback.incorrect { background: #ffcdd2; color: #b71c1c; }
+        .feedback.show { display: block; }
+        .score-display { background: #fff3e0; padding: 15px; margin: 20px 0; border-radius: 5px; font-weight: bold; color: #1a472a; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        table th, table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        table th { background: #1a472a; color: white; }
+        .highlight { background: #fff9e6; padding: 15px; border-left: 4px solid #d4a574; margin: 15px 0; border-radius: 5px; }
+        @media print {
+            .buttons, .tabs { display: none; }
+            .content { display: block !important; page-break-after: always; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- HEADER -->
+    <div class="header">
+        <h1>📚 NCERT Science - Grade 6</h1>
+        <p>Chapter 1: The Wonderful World of Science</p>
+        <p style="font-size: 14px; margin-top: 10px;">Complete Learning Platform with Lesson, Experiments, and Quiz</p>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="buttons">
+        <button onclick="savePDF()">📄 Download PDF</button>
+        <button onclick="saveWord()">📝 Download Word</button>
+        <button onclick="window.print()">🖨️ Print</button>
+        <button onclick="playAudio()">🎙️ Play Audio</button>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('lesson')">📖 Lesson</button>
+        <button class="tab" onclick="showTab('experiments')">🧪 Experiments</button>
+        <button class="tab" onclick="showTab('quiz')">🎯 Quiz</button>
+    </div>
+
+    <!-- ==================== LESSON CONTENT ==================== -->
+    <div id="lesson" class="content active">
+        <h2>📖 What is Science?</h2>
+        <p>Science is the systematic study of nature and the physical world around us through observation, experimentation, and logical reasoning. The word "science" comes from the Latin word "scientia" meaning "to know". Science is not just a collection of facts to memorize—it is a dynamic process of investigating and understanding the world.</p>
+
+        <h3>Understanding Science</h3>
+        <p>Science helps us understand the vast array of phenomena surrounding us in daily life. From the behavior of atoms to the movements of celestial bodies, from biological processes that sustain life to chemical reactions that transform matter, science provides systematic frameworks for comprehension. Every time we observe something carefully, ask questions about it, and try to find answers through investigation, we are engaging in the scientific process.</p>
+
+        <p>For example, when you wonder why leaves change color in autumn, or why salt dissolves faster in hot water than cold water, or how a bicycle maintains balance and motion, or why plants grow toward light—these are all scientific questions that can be investigated systematically. Finding answers through careful investigation and experimentation is the essence of science.</p>
+
+        <h3>Science is Everywhere in Our Daily Lives</h3>
+        <p>Science is not confined to laboratories or academic institutions. It is woven into the fabric of our everyday existence, appearing in countless forms in activities we encounter regularly:</p>
+
+        <ul>
+            <li><strong>In the Kitchen - Chemistry:</strong> Cooking food involves chemical transformations. Heat energy causes molecules to rearrange, creating new compounds with different properties. The browning of bread (Maillard reaction), the rising of cakes (baking soda reaction), and the dissolving of sugar in tea all demonstrate chemistry in action.</li>
+
+            <li><strong>In Sports - Physics:</strong> When you play cricket and hit a ball, the ball follows a curved path determined by gravity and initial velocity. A tennis player must understand angles and force. Swimmers must understand water dynamics. The trajectory of a basketball involves calculations of gravity, force, and angle. All sports fundamentally rely on understanding physics principles.</li>
+
+            <li><strong>In Gardening - Biology:</strong> When we grow plants, we apply biological knowledge. Plants require sunlight for photosynthesis (converting light to energy), water for metabolic processes, and nutrients (nitrogen, phosphorus, potassium) from soil. Understanding soil composition, plant biology, and ecological relationships helps gardens thrive.</li>
+
+            <li><strong>In Medicine - Medical Science:</strong> Doctors diagnose and treat diseases using extensive biological and chemical knowledge. Understanding how viruses invade cells, how the immune system responds, and how medicines work at molecular levels are all applications of science. Vaccines work by training the immune system through scientific understanding of immunology.</li>
+
+            <li><strong>In Transportation - Physics & Engineering:</strong> Cars, trains, and planes work based on Newton's laws of motion, aerodynamics, and mechanical principles. Understanding friction, acceleration, and energy helps engineers design efficient vehicles.</li>
+        </ul>
+
+        <h3>Branches of Science</h3>
+        <p>Science is traditionally divided into different branches based on what aspect of the natural world is being studied:</p>
+
+        <table>
+            <tr>
+                <th>Branch</th>
+                <th>Definition</th>
+                <th>Examples</th>
+            </tr>
+            <tr>
+                <td><strong>Physics</strong></td>
+                <td>Study of matter, energy, motion, and forces</td>
+                <td>Gravity, light, electricity, sound, machines</td>
+            </tr>
+            <tr>
+                <td><strong>Chemistry</strong></td>
+                <td>Study of substances and their reactions</td>
+                <td>Burning, dissolving, rusting, cooking</td>
+            </tr>
+            <tr>
+                <td><strong>Biology</strong></td>
+                <td>Study of living organisms and life processes</td>
+                <td>Growth, reproduction, photosynthesis, ecology</td>
+            </tr>
+            <tr>
+                <td><strong>Earth Science</strong></td>
+                <td>Study of Earth, rocks, weather, and resources</td>
+                <td>Earthquakes, weather, soil formation, fossils</td>
+            </tr>
+        </table>
+
+        <h3>The Scientific Method - Foundation of Science</h3>
+        <p>The scientific method is the systematic process that scientists follow to investigate questions and solve problems. It is the fundamental approach that distinguishes science from other ways of understanding the world. The scientific method has five key steps:</p>
+
+        <ol>
+            <li><strong>OBSERVE (Observation):</strong> Look carefully at the world and gather information using your senses or scientific instruments. Good observation requires paying attention to details. Scientists spend considerable time observing before proceeding further. Example: "Some plants in the classroom grow taller than others."</li>
+
+            <li><strong>QUESTION (Wondering):</strong> After observing, ask questions about what you've seen. Good scientific questions start with "Why?" "How?" or "What if?" A scientific question must be testable. Example: "Why do some plants grow taller than others?"</li>
+
+            <li><strong>HYPOTHESIS (Prediction):</strong> Form an educated guess about the answer to your question, based on existing knowledge and observations. Write it as an "if...then..." statement. Example: "If plants receive more sunlight, then they will grow taller."</li>
+
+            <li><strong>TEST (Experimentation):</strong> Design and conduct an experiment to test your hypothesis. Control variables (keep everything the same except what you're testing). Measure results carefully. Repeat the experiment to verify findings. Example: Give some plants more light while keeping water, soil, and temperature the same.</li>
+
+            <li><strong>ANALYZE (Conclusion):</strong> Examine your data, look for patterns, and determine if your hypothesis was supported. Even if wrong, you've learned something valuable. Write down what you learned and suggest improvements for future investigations.</li>
+        </ol>
+
+        <div class="highlight">
+            <strong>Important:</strong> The scientific method ensures that investigations are organized, logical, and can be verified by others. Failed hypotheses teach us as much as successful ones. Thomas Edison tried thousands of materials before finding the right filament for the light bulb.
+        </div>
+
+        <h3>Real-World Example: Why Did My Plant Die?</h3>
+        <p>Let's use the scientific method to solve a problem:</p>
+        <ol>
+            <li><strong>Observation:</strong> Your plant looks wilted and unhealthy.</li>
+            <li><strong>Question:</strong> Why is my plant dying?</li>
+            <li><strong>Hypothesis:</strong> The plant is not getting enough water.</li>
+            <li><strong>Test:</strong> Water the plant and observe for 3 days.</li>
+            <li><strong>Conclusion:</strong> If the plant recovers, your hypothesis was correct. If not, consider other factors (light, temperature, pests).</li>
+        </ol>
+
+        <h3>Scientists and Their Work</h3>
+        <p>A scientist is anyone who uses the scientific method to observe, question, test, and learn about the world. Scientists work in diverse environments and study an enormous range of phenomena. They are not only found in laboratories conducting experiments in isolation.</p>
+
+        <h4>Where Scientists Work:</h4>
+        <ul>
+            <li>Research Laboratories - Conducting controlled experiments</li>
+            <li>Universities - Teaching and conducting research</li>
+            <li>Industries - Developing new products and technologies</li>
+            <li>Field Sites - Forests, oceans, mountains where they observe nature directly</li>
+            <li>Hospitals - Developing treatments and medicines</li>
+            <li>Government Agencies - Monitoring environmental conditions and resources</li>
+        </ul>
+
+        <h4>Science in Everyday Professions:</h4>
+        <ul>
+            <li><strong>Chef:</strong> Tests recipes, observes ingredient interactions, adjusts cooking methods (Applied Chemistry)</li>
+            <li><strong>Mechanic:</strong> Observes symptoms, hypothesizes causes, tests solutions (Applied Physics)</li>
+            <li><strong>Farmer:</strong> Tests fertilizers and techniques to maximize yield (Applied Biology & Chemistry)</li>
+            <li><strong>Doctor:</strong> Observes symptoms, runs diagnostic tests, prescribes treatments (Applied Medical Science)</li>
+            <li><strong>Electrician:</strong> Understands electricity, tests circuits, solves problems (Applied Physics)</li>
+            <li><strong>Teacher:</strong> Observes learning, tests methods, evaluates effectiveness (Applied Educational Science)</li>
+        </ul>
+
+        <h3>Key Takeaways</h3>
+        <div class="highlight">
+            <strong>Remember These Important Points:</strong>
+            <ul>
+                <li>Science is a way of thinking, not just facts to memorize</li>
+                <li>The scientific method is systematic and logical</li>
+                <li>Science is everywhere in everyday life</li>
+                <li>Anyone can be a scientist by observing, questioning, and testing ideas</li>
+                <li>Failed experiments teach us valuable lessons</li>
+                <li>Observation is the foundation of all science</li>
+                <li>Science is based on evidence and proof, not opinions</li>
+                <li>Scientists work in many different places and professions</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ==================== EXPERIMENTS CONTENT ==================== -->
+    <div id="experiments" class="content">
+        <h2>🧪 Hands-On Science Experiments</h2>
+        <p>Learning science by doing! These experiments help you understand scientific concepts through practical investigation. Each demonstrates the scientific method in action. Try them at home with adult supervision where needed.</p>
+
+        <!-- EXPERIMENT 1 -->
+        <div class="exp">
+            <h3>Experiment 1: Floating Egg (Understanding Density)</h3>
+            <p><strong>Objective:</strong> Understand how density affects whether objects float or sink.</p>
+
+            <p><strong>Scientific Principle:</strong> Density is how much matter is packed into a space. When an object is less dense than water, it floats. When it's more dense, it sinks. Salt water is denser than fresh water.</p>
+
+            <div class="mat">
+                <strong>Materials You Need:</strong>
+                <ul>
+                    <li>1 raw egg (uncooked)</li>
+                    <li>2 clear glasses or jars</li>
+                    <li>Tap water</li>
+                    <li>Salt (3-4 tablespoons)</li>
+                    <li>A spoon for stirring</li>
+                    <li>Food coloring (optional, for visibility)</li>
+                </ul>
+            </div>
+
+            <div class="image-box">
+                🥚 [IMAGE: Glass with fresh water - egg sinking to bottom]<br>
+                <p>Fresh Water: Egg is more dense → SINKS</p>
+            </div>
+
+            <div class="proc">
+                <strong>Step-by-Step Procedure:</strong>
+                <ol>
+                    <li>Fill the first glass 3/4 full with plain tap water.</li>
+                    <li>Carefully place the raw egg in the glass. Observe: it sinks to the bottom because the egg is denser than fresh water.</li>
+                    <li>Fill the second glass 3/4 full with tap water.</li>
+                    <li>Add salt one tablespoon at a time, stirring well after each addition (about 3-4 tablespoons total) until the salt dissolves completely.</li>
+                    <li>Carefully transfer the egg from the fresh water glass to the salt water glass.</li>
+                    <li>Observe: the egg floats! This is because salt water is denser than the egg.</li>
+                    <li>Extension: Slowly add fresh water to the salt water glass and watch the egg gradually sink as the water becomes less dense.</li>
+                </ol>
+            </div>
+
+            <div class="image-box">
+                🥚 [IMAGE: Glass with salt water - egg floating on surface]<br>
+                <p>Salt Water: Egg is less dense → FLOATS</p>
+            </div>
+
+            <p><strong>What's Happening?</strong> Salt dissolves in water and adds mass without significantly increasing volume. This increases the density of the water. When water density exceeds the egg's density, the egg floats.</p>
+
+            <p><strong>Real-World Connection:</strong> This is why people float more easily in the Dead Sea (very salty) than in fresh water. Ships float because they displace a volume of water equal to their weight.</p>
+
+            <div class="video-box">
+                📹 <strong>Watch:</strong> <a href="https://www.youtube.com/watch?v=gK6LuIHmV34" target="_blank">Floating Egg Experiment Video</a>
+            </div>
+        </div>
+
+        <!-- EXPERIMENT 2 -->
+        <div class="exp">
+            <h3>Experiment 2: States of Water (Solid, Liquid, Gas)</h3>
+            <p><strong>Objective:</strong> Observe how temperature changes water between three states of matter.</p>
+
+            <p><strong>Scientific Principle:</strong> The same substance (water) exists in three states depending on temperature. Energy (heat) causes state changes. Molecules behave differently in each state.</p>
+
+            <div class="mat">
+                <strong>Materials You Need:</strong>
+                <ul>
+                    <li>Ice cubes</li>
+                    <li>A thermometer</li>
+                    <li>A pan or beaker</li>
+                    <li>Heat source (stove or hot plate) - Adult supervision REQUIRED</li>
+                    <li>Tap water</li>
+                    <li>A cold surface (cold spoon or glass)</li>
+                </ul>
+            </div>
+
+            <div class="image-box">
+                ❄️ [IMAGE: Ice cube being heated progressively]<br>
+                <p>0°C → 100°C: Ice → Water → Steam</p>
+            </div>
+
+            <div class="proc">
+                <strong>Step-by-Step Procedure:</strong>
+                <ol>
+                    <li>Place several ice cubes in a pan and insert a thermometer. Record the temperature (approximately 0°C). Observe that ice is solid and maintains its shape.</li>
+                    <li>Gently apply heat to the pan (adult supervision). Observe ice beginning to melt.</li>
+                    <li>Record the temperature at which ice completely melts (approximately 0°C). At this melting point, ice and water exist together briefly.</li>
+                    <li>Continue heating the water. Record temperature as it increases from 0°C to 100°C.</li>
+                    <li>At 100°C (boiling point), water begins to boil and transforms into steam (gas). Observe steam rising from the surface.</li>
+                    <li>Hold a cold spoon or cold glass above the steam. Water droplets form on the cold surface as steam condenses back into liquid water.</li>
+                    <li>Record all temperatures and observations in a table.</li>
+                </ol>
+            </div>
+
+            <div class="image-box">
+                💧 [IMAGE: Three states of water - Solid Ice, Liquid Water, Gas Steam]<br>
+                <p>Three States of Matter: Solid → Liquid → Gas</p>
+            </div>
+
+            <p><strong>What's Happening?</strong> Temperature controls the state of water:</p>
+            <ul>
+                <li><strong>Solid (Ice, ~0°C):</strong> Molecules are tightly packed and vibrate in place. Shape and volume are fixed.</li>
+                <li><strong>Liquid (Water, 0-100°C):</strong> Molecules are close together but can move freely. Volume is fixed but shape adapts to container.</li>
+                <li><strong>Gas (Steam, >100°C):</strong> Molecules move freely with large spaces between them. Both shape and volume are flexible.</li>
+            </ul>
+
+            <div class="video-box">
+                📹 <strong>Watch:</strong> <a href="https://www.youtube.com/watch?v=gEZA03j3527" target="_blank">States of Water Video</a>
+            </div>
+        </div>
+
+        <!-- EXPERIMENT 3 -->
+        <div class="exp">
+            <h3>Experiment 3: Chromatography (Separating Colors)</h3>
+            <p><strong>Objective:</strong> Discover that colors in markers are actually mixtures of multiple pigments that can be separated.</p>
+
+            <p><strong>Scientific Principle:</strong> Chromatography is a technique for separating substances based on how they move through a medium. Different pigments travel at different speeds through paper due to differences in molecular size and chemical properties.</p>
+
+            <div class="mat">
+                <strong>Materials You Need:</strong>
+                <ul>
+                    <li>Water-based markers (multiple colors: black, red, blue, green, etc.)</li>
+                    <li>Paper strips (coffee filters work best)</li>
+                    <li>Clear glasses filled with tap water (about 1 inch deep)</li>
+                    <li>Scissors</li>
+                    <li>Ruler or measuring tape</li>
+                </ul>
+            </div>
+
+            <div class="image-box">
+                🎨 [IMAGE: Paper strip showing color separation - black marker separates into multiple colors]<br>
+                <p>Black Marker Separates Into: Blue, Red, Yellow Pigments</p>
+            </div>
+
+            <div class="proc">
+                <strong>Step-by-Step Procedure:</strong>
+                <ol>
+                    <li>Cut paper coffee filters into strips approximately 1 inch wide and 6 inches long.</li>
+                    <li>Using a water-based marker, draw a small colored dot or line about 1 inch from the bottom of each strip.</li>
+                    <li>Fill glasses with plain tap water to about 1 inch depth. One glass per marker color.</li>
+                    <li>Place the filter strip vertically in the water so the bottom edge just touches the water. The colored dot must be above the water line.</li>
+                    <li>Water travels up the paper by capillary action (the same way plants drink water). As it moves, it carries pigments with it.</li>
+                    <li>Different pigments move at different speeds. Smaller molecules travel faster and farther.</li>
+                    <li>Allow the water to travel up the paper until it nearly reaches the top (about 10-15 minutes).</li>
+                    <li>Remove the strip and let it dry completely. You'll see multiple colored bands instead of just one color!</li>
+                    <li>Repeat with different colored markers and compare the results.</li>
+                </ol>
+            </div>
+
+            <div class="image-box">
+                🌈 [IMAGE: Different markers showing their separated pigments]<br>
+                <p>Red: Red+Orange | Green: Yellow+Blue | Black: All colors</p>
+            </div>
+
+            <p><strong>What's Happening?</strong> Markers contain mixtures of pigments. Water acts as a solvent carrying different pigments at different rates. Chromatography reveals the individual pigments that make up each color.</p>
+
+            <p><strong>Real-World Applications:</strong> Chromatography is used in forensic science to analyze evidence, in chemistry to identify compounds, and in medicine to analyze blood samples.</p>
+
+            <div class="video-box">
+                📹 <strong>Watch:</strong> <a href="https://www.youtube.com/watch?v=u_-vhgpF9dQ" target="_blank">Paper Chromatography Video</a>
+            </div>
+        </div>
+
+        <!-- EXPERIMENT 4 -->
+        <div class="exp">
+            <h3>Experiment 4: Plant Photosynthesis (Oxygen Production)</h3>
+            <p><strong>Objective:</strong> Demonstrate that plants produce oxygen during photosynthesis in the presence of light.</p>
+
+            <p><strong>Scientific Principle:</strong> Plants use light energy, water, and carbon dioxide to make glucose (food) and release oxygen as a byproduct. Light is essential for this process (photosynthesis).</p>
+
+            <div class="mat">
+                <strong>Materials You Need:</strong>
+                <ul>
+                    <li>An aquatic water plant (like Elodea, available at aquarium stores)</li>
+                    <li>A clear glass or beaker</li>
+                    <li>Tap water</li>
+                    <li>A bright light source (sunlight or lamp, at least 500 lux)</li>
+                    <li>Optional: A clear funnel to collect bubbles</li>
+                </ul>
+            </div>
+
+            <div class="image-box">
+                🌱 [IMAGE: Water plant with bubbles visible on leaves in light]<br>
+                <p>In Light: Oxygen bubbles form on plant leaves</p>
+            </div>
+
+            <div class="proc">
+                <strong>Step-by-Step Procedure:</strong>
+                <ol>
+                    <li>Fill a clear glass completely with tap water.</li>
+                    <li>Place the aquatic plant inside the glass, stem side down.</li>
+                    <li>Place the glass in bright sunlight or under a bright lamp (at least 3-4 hours of light daily).</li>
+                    <li>Within 5-15 minutes, observe tiny bubbles forming on the plant's leaves and rising to the surface.</li>
+                    <li>These bubbles are oxygen produced during photosynthesis! The plant is making food from light and water.</li>
+                    <li>For comparison, move the glass to a completely dark area (closet, covered box) and observe for the same time period.</li>
+                    <li>Notice that bubble production stops or greatly decreases in darkness. This proves light is essential.</li>
+                    <li>Return the glass to bright light. Within minutes, bubble production resumes.</li>
+                    <li>This experimental sequence proves that light is necessary for photosynthesis and oxygen production.</li>
+                </ol>
+            </div>
+
+            <div class="image-box">
+                🌱 [IMAGE: Same plant in darkness - no bubbles visible]<br>
+                <p>In Darkness: No oxygen bubbles - no photosynthesis</p>
+            </div>
+
+            <p><strong>What's Happening?</strong> The photosynthesis equation is:</p>
+            <p style="text-align: center; font-weight: bold; font-size: 16px; background: #f0f0f0; padding: 15px; border-radius: 5px; margin: 15px 0;">Light + Water + CO₂ → Glucose + Oxygen</p>
+
+            <p>The bubbles are oxygen gas being released by the plant. This oxygen is essential for all life on Earth, including humans. Plants are literally producing the air we breathe!</p>
+
+            <p><strong>Real-World Connection:</strong> Photosynthesis is the foundation of most food chains. Plants convert light energy into chemical energy (food), which herbivores eat, which carnivores eat. Without photosynthesis, most life on Earth would not exist.</p>
+
+            <div class="video-box">
+                📹 <strong>Watch:</strong> <a href="https://www.youtube.com/watch?v=WghBL_7N1yk" target="_blank">Plant Photosynthesis Video</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== QUIZ CONTENT ==================== -->
+    <div id="quiz" class="content">
+        <h2>🎯 Test Your Knowledge</h2>
+        <p>Answer the following questions to test your understanding of Chapter 1. Click "Check Answer" for each question.</p>
+
+        <div class="score-display">
+            Score: <span id="score">0</span>/5 Questions Correct
+        </div>
+
+        <!-- QUESTION 1 -->
+        <div class="quiz-q">
+            <h3>Question 1: What is science?</h3>
+            <label><input type="radio" name="q1" value="a"> A) A collection of facts to memorize</label>
+            <label><input type="radio" name="q1" value="b"> B) A systematic process of observing, questioning, testing, and learning</label>
+            <label><input type="radio" name="q1" value="c"> C) Only done by scientists in laboratories</label>
+            <label><input type="radio" name="q1" value="d"> D) A difficult subject only for smart people</label>
+            <button onclick="checkQ1()">Check Answer</button>
+            <div id="feedback1" class="feedback"></div>
+        </div>
+
+        <!-- QUESTION 2 -->
+        <div class="quiz-q">
+            <h3>Question 2: What is the first step of the scientific method?</h3>
+            <label><input type="radio" name="q2" value="a"> A) Make a hypothesis</label>
+            <label><input type="radio" name="q2" value="b"> B) Observe carefully and gather information</label>
+            <label><input type="radio" name="q2" value="c"> C) Conduct an experiment</label>
+            <label><input type="radio" name="q2" value="d"> D) Draw conclusions</label>
+            <button onclick="checkQ2()">Check Answer</button>
+            <div id="feedback2" class="feedback"></div>
+        </div>
+
+        <!-- QUESTION 3 -->
+        <div class="quiz-q">
+            <h3>Question 3: Which is an example of science in everyday life?</h3>
+            <label><input type="radio" name="q3" value="a"> A) A chef testing recipes (chemistry)</label>
+            <label><input type="radio" name="q3" value="b"> B) A mechanic fixing a car (physics)</label>
+            <label><input type="radio" name="q3" value="c"> C) A farmer testing fertilizers (biology)</label>
+            <label><input type="radio" name="q3" value="d"> D) All of the above</label>
+            <button onclick="checkQ3()">Check Answer</button>
+            <div id="feedback3" class="feedback"></div>
+        </div>
+
+        <!-- QUESTION 4 -->
+        <div class="quiz-q">
+            <h3>Question 4: How many steps are in the scientific method?</h3>
+            <label><input type="radio" name="q4" value="a"> A) 3 steps</label>
+            <label><input type="radio" name="q4" value="b"> B) 4 steps</label>
+            <label><input type="radio" name="q4" value="c"> C) 5 steps (Observe, Question, Hypothesis, Test, Analyze)</label>
+            <label><input type="radio" name="q4" value="d"> D) 6 steps</label>
+            <button onclick="checkQ4()">Check Answer</button>
+            <div id="feedback4" class="feedback"></div>
+        </div>
+
+        <!-- QUESTION 5 -->
+        <div class="quiz-q">
+            <h3>Question 5: Can anyone be a scientist?</h3>
+            <label><input type="radio" name="q5" value="a"> A) No, only people with science degrees</label>
+            <label><input type="radio" name="q5" value="b"> B) Yes, if you observe, question, and test ideas</label>
+            <label><input type="radio" name="q5" value="c"> C) Only people in laboratories</label>
+            <label><input type="radio" name="q5" value="d"> D) Only adults</label>
+            <button onclick="checkQ5()">Check Answer</button>
+            <div id="feedback5" class="feedback"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let totalScore = 0;
+
+    function showTab(tabName) {
+        const tabs = document.querySelectorAll('.content');
+        const buttons = document.querySelectorAll('.tab');
+
+        tabs.forEach(tab => tab.classList.remove('active'));
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        document.getElementById(tabName).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function checkQ1() {
+        const selected = document.querySelector('input[name="q1"]:checked');
+        const feedback = document.getElementById('feedback1');
+
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        if (selected.value === 'b') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = '<strong>✅ CORRECT!</strong> Science is indeed a systematic process of observing, questioning, testing, and learning.';
+            totalScore++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = '<strong>❌ INCORRECT</strong> The correct answer is B. Science is a systematic process of observing, questioning, testing, and learning.';
+        }
+
+        document.getElementById('score').textContent = totalScore;
+        event.target.disabled = true;
+    }
+
+    function checkQ2() {
+        const selected = document.querySelector('input[name="q2"]:checked');
+        const feedback = document.getElementById('feedback2');
+
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        if (selected.value === 'b') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = '<strong>✅ CORRECT!</strong> Observation is always the first step of the scientific method. You must gather information before asking questions or forming hypotheses.';
+            totalScore++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = '<strong>❌ INCORRECT</strong> The correct answer is B. Observation is the foundation of all science.';
+        }
+
+        document.getElementById('score').textContent = totalScore;
+        event.target.disabled = true;
+    }
+
+    function checkQ3() {
+        const selected = document.querySelector('input[name="q3"]:checked');
+        const feedback = document.getElementById('feedback3');
+
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        if (selected.value === 'd') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = '<strong>✅ CORRECT!</strong> Science is everywhere! Chefs, mechanics, farmers, and all professionals use science in their work.';
+            totalScore++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = '<strong>❌ INCORRECT</strong> The correct answer is D. All of the above are examples of science in everyday life!';
+        }
+
+        document.getElementById('score').textContent = totalScore;
+        event.target.disabled = true;
+    }
+
+    function checkQ4() {
+        const selected = document.querySelector('input[name="q4"]:checked');
+        const feedback = document.getElementById('feedback4');
+
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        if (selected.value === 'c') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = '<strong>✅ CORRECT!</strong> The scientific method has exactly 5 steps: Observe, Question, Hypothesis, Test, and Analyze.';
+            totalScore++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = '<strong>❌ INCORRECT</strong> The correct answer is C. There are 5 steps: Observe, Question, Hypothesis, Test, Analyze.';
+        }
+
+        document.getElementById('score').textContent = totalScore;
+        event.target.disabled = true;
+    }
+
+    function checkQ5() {
+        const selected = document.querySelector('input[name="q5"]:checked');
+        const feedback = document.getElementById('feedback5');
+
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        if (selected.value === 'b') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = '<strong>✅ CORRECT!</strong> Yes! Anyone can be a scientist if they observe, question, and test ideas. Science is a way of thinking!';
+            totalScore++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = '<strong>❌ INCORRECT</strong> The correct answer is B. Anyone can be a scientist!';
+        }
+
+        document.getElementById('score').textContent = totalScore;
+        event.target.disabled = true;
+    }
+
+    function playAudio() {
+        const text = "Science is the systematic study of nature and the physical world. The scientific method has five steps: Observe, Question, Hypothesis, Test, Analyze. Science happens everywhere in cooking, sports, gardening, and medicine. Anyone can be a scientist by observing carefully, asking questions, and testing ideas. Keep exploring the wonderful world of science!";
+
+        if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1;
+            speechSynthesis.speak(utterance);
+        }
+    }
+
+    function savePDF() {
+        const element = document.querySelector('.container');
+        const opt = {
+            margin: 10,
+            filename: 'NCERT-Science-Grade6-Chapter1.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    function saveWord() {
+        const content = document.querySelector('.container').innerHTML;
+        const doctype = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+        const blob = new Blob([doctype + content], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'NCERT-Science-Grade6-Chapter1.docx';
+        link.click();
+    }
+</script>
+
+</body>
+</html>

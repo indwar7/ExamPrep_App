@@ -1,0 +1,51 @@
+# Ignore unnecessary files for Vercel deployment
+
+# Old/duplicate HTML files - keep only the main ones
+ai-platform-no-api.html
+ai-content-platform.html
+audio-video-platform.html
+complete-ncert-platform.html
+complete-platform-final.html
+complete-platform.html
+complete-working-platform.html
+content-automation.html
+experiments-platform.html
+final-ncert-platform.html
+hologram-platform.html
+ncert-content-platform.html
+phase4-content-hub.html
+phase4-full-platform.html
+phase4-interactive-app-pro.html
+phase4-learning-platform.html
+phase4-premium-platform.html
+phase4-working.html
+quiz-with-step-by-step-videos.html
+quiz-with-videos.html
+science-adventure.html
+story-adventure.html
+ultimate-platform.html
+working-platform.html
+
+# Documentation files
+*.md
+*.txt
+DELIVERY_SUMMARY.txt
+FINAL_DELIVERY.md
+QUICKSTART.md
+RUN_AUTOMATION.md
+TODAY_DELIVERABLES.md
+VIDEO_EXPLANATION_FEATURE.md
+
+# Python files (scripts, not needed in production)
+*.py
+
+# Hidden directories
+.git
+.DS_Store
+.env
+
+# Node modules
+node_modules/
+
+# Logs
+*.log

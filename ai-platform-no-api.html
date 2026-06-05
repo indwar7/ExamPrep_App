@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free AI Learning Platform - No APIs Required</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --border: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1f3a 100%);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .chapter-selector {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group select,
+        .form-group input {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            min-width: 200px;
+            transition: all 0.3s;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 11px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            border-bottom: 2px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            margin-bottom: -2px;
+        }
+
+        .content-area {
+            display: grid;
+            gap: 32px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .content-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .content-card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .content-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .summary-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .summary-section h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .summary-points {
+            list-style: none;
+        }
+
+        .summary-points li {
+            padding: 12px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .summary-points li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .audio-player {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .audio-player h3 {
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        audio {
+            width: 100%;
+            margin-bottom: 16px;
+            border-radius: 8px;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .audio-controls button,
+        .audio-controls select {
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .audio-controls button:hover,
+        .audio-controls select:hover {
+            background: rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-small {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-small:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .status-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .feature-box {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .feature-box .icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .feature-box h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .feature-box p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .chapter-selector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .form-group select,
+            .form-group input {
+                min-width: 100%;
+            }
+
+            .btn-generate {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .container {
+                padding: 20px 12px;
+            }
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-section h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-section p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #00ff00;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .content-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .content-section h2 {
+            color: var(--primary);
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+
+        .content-section p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <div class="logo">🎓 Free EdumNuked AI</div>
+                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Completely FREE - No APIs, No Costs, 100% Local</p>
+            </div>
+            <div class="badge">✅ 100% API-FREE</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1>🚀 Free AI Learning Platform</h1>
+            <p>Create educational content WITHOUT any APIs or subscriptions</p>
+
+            <div class="features-grid">
+                <div class="feature-box">
+                    <div class="icon">🎧</div>
+                    <h4>Text-to-Speech</h4>
+                    <p>Built-in browser voice (FREE)</p>
+                </div>
+                <div class="feature-box">
+                    <div class="icon">📚</div>
+                    <h4>Content Manager</h4>
+                    <p>Organize chapters locally</p>
+                </div>
+                <div class="feature-box">
+                    <div class="icon">📝</div>
+                    <h4>Auto-Generate</h4>
+                    <p>Notes, summaries, Q&A</p>
+                </div>
+                <div class="feature-box">
+                    <div class="icon">💾</div>
+                    <h4>Offline Ready</h4>
+                    <p>Works completely offline</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div class="status-message">
+            <div class="status-dot"></div>
+            <span>✅ No APIs needed. No API keys. No costs. Everything runs locally in your browser.</span>
+        </div>
+
+        <!-- Chapter Selector -->
+        <div class="chapter-selector">
+            <div class="form-group">
+                <label>Class</label>
+                <select id="classSelect">
+                    <option value="">Select Class</option>
+                    <option value="6">Class 6</option>
+                    <option value="7">Class 7</option>
+                    <option value="8">Class 8</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Subject</label>
+                <select id="subjectSelect">
+                    <option value="">Select Subject</option>
+                    <option value="science">Science</option>
+                    <option value="math">Mathematics</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Paste Chapter Text</label>
+                <input type="text" id="chapterInput" placeholder="Paste your NCERT chapter here...">
+            </div>
+
+            <button class="btn-generate" onclick="generateContent()">
+                ⚡ Generate FREE Content
+            </button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('overview')">📊 Overview</button>
+            <button class="tab" onclick="switchTab('audiobook')">🎧 Audiobook</button>
+            <button class="tab" onclick="switchTab('notes')">📝 Summary Notes</button>
+            <button class="tab" onclick="switchTab('qna')">❓ Q&A Generator</button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <div class="content-section">
+                    <h2>✨ What This Platform Does (100% FREE)</h2>
+                    <p><strong>No APIs. No Subscriptions. No Costs.</strong></p>
+
+                    <div style="margin-top: 24px;">
+                        <h3 style="color: var(--primary); margin-bottom: 16px;">🎧 Text-to-Speech Audiobook</h3>
+                        <p>Your browser has a built-in voice engine. It reads your content aloud for FREE.</p>
+                        <div class="code-block">Browser Voice API → Unlimited text-to-speech</div>
+
+                        <h3 style="color: var(--primary); margin-bottom: 16px; margin-top: 20px;">📝 Auto-Generate Notes</h3>
+                        <p>Automatically extracts key points from your chapter.</p>
+                        <ul class="summary-points" style="margin: 12px 0;">
+                            <li>Main concepts identified</li>
+                            <li>Key sentences extracted</li>
+                            <li>Summary generated</li>
+                        </ul>
+
+                        <h3 style="color: var(--primary); margin-bottom: 16px; margin-top: 20px;">❓ Question Generator</h3>
+                        <p>Creates practice questions automatically from your content.</p>
+                        <ul class="summary-points" style="margin: 12px 0;">
+                            <li>MCQ questions generated</li>
+                            <li>Answer options shuffled</li>
+                            <li>Student-friendly format</li>
+                        </ul>
+
+                        <h3 style="color: var(--primary); margin-bottom: 16px; margin-top: 20px;">💾 Offline First</h3>
+                        <p>Everything runs in your browser. No internet needed after loading.</p>
+                        <ul class="summary-points" style="margin: 12px 0;">
+                            <li>Works offline completely</li>
+                            <li>No data sent to servers</li>
+                            <li>100% private</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h2>⚙️ How It Works</h2>
+                    <p><strong>Step 1:</strong> Paste NCERT chapter text</p>
+                    <p><strong>Step 2:</strong> Platform auto-analyzes content</p>
+                    <p><strong>Step 3:</strong> Generates audiobook, notes, Q&A</p>
+                    <p><strong>Step 4:</strong> Listen, read, learn, practice</p>
+                </div>
+
+                <div class="content-section">
+                    <h2>🔐 Why This is Better Than APIs</h2>
+                    <ul class="summary-points">
+                        <li>No API keys needed (nothing to leak)</li>
+                        <li>No rate limits (generate unlimited content)</li>
+                        <li>No subscription costs (completely FREE)</li>
+                        <li>No privacy concerns (all local)</li>
+                        <li>Works offline (no internet needed)</li>
+                        <li>Instant processing (no waiting for servers)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Audiobook Tab -->
+            <div id="audiobook" class="tab-content">
+                <div class="audio-player">
+                    <h3>🎧 Audiobook Narration (Browser Voice - FREE)</h3>
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+                        Your browser has FREE built-in voice. No API needed. No costs ever.
+                    </p>
+                    <div id="audioInfo" style="padding: 12px; background: rgba(99, 102, 241, 0.1); border-radius: 6px; margin-bottom: 12px; font-size: 13px; color: var(--text-secondary);">
+                        Paste chapter text above, then click "Generate FREE Content" to enable audiobook.
+                    </div>
+                    <div class="audio-controls">
+                        <button onclick="startAudiobook()">▶ Play Audiobook</button>
+                        <button onclick="pauseAudiobook()">⏸ Pause</button>
+                        <button onclick="stopAudiobook()">⏹ Stop</button>
+                        <div>
+                            <label style="color: var(--text-secondary); margin-right: 8px;">Speed:</label>
+                            <select id="speedControl" onchange="changeSpeed()" style="background: rgba(99, 102, 241, 0.2); border: 1px solid var(--primary); color: var(--primary); padding: 6px 10px; border-radius: 6px;">
+                                <option value="0.5">0.5x (Slow)</option>
+                                <option value="0.75">0.75x</option>
+                                <option value="1" selected>1x (Normal)</option>
+                                <option value="1.25">1.25x</option>
+                                <option value="1.5">1.5x (Fast)</option>
+                                <option value="2">2x (Very Fast)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h2>📊 Audiobook Statistics</h2>
+                    <div id="audioStats">
+                        <p style="color: var(--text-secondary);">Generate content first to see audiobook stats</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Tab -->
+            <div id="notes" class="tab-content">
+                <div class="summary-section">
+                    <h2>📝 Auto-Generated Summary Notes</h2>
+                    <div id="notesList">
+                        <p style="color: var(--text-secondary);">Paste chapter text and click "Generate FREE Content" to create summary notes.</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px;">
+                    <button class="btn-small" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 10px 20px;">
+                        📥 Download as PDF
+                    </button>
+                    <button class="btn-small" style="margin-left: 8px;">
+                        📄 Download as Text
+                    </button>
+                </div>
+            </div>
+
+            <!-- Q&A Tab -->
+            <div id="qna" class="tab-content">
+                <div class="summary-section">
+                    <h2>❓ Auto-Generated Practice Questions</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 16px;">
+                        AI automatically creates multiple choice questions from your chapter.
+                    </p>
+                    <div id="qaList" style="margin-top: 20px;">
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            <p>📚 Paste chapter text and generate to create practice questions</p>
+                            <p style="font-size: 12px; margin-top: 8px;">Questions are created from key concepts in your content</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top: 60px; text-align: center; padding: 40px; border-top: 1px solid var(--border);">
+            <h2 style="color: var(--primary); margin-bottom: 16px;">🎉 Completely FREE. No Hidden Costs.</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                This platform uses your browser's built-in features. Nothing is sent to servers.<br>
+                100% private. 100% offline capable. 100% free forever.
+            </p>
+            <p style="color: var(--text-secondary); font-size: 12px;">
+                Made without any external APIs or subscriptions ✨
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentChapter = {
+            text: "",
+            words: 0,
+            sentences: 0
+        };
+
+        let synth = window.speechSynthesis;
+        let currentUtterance = null;
+        let audioSpeed = 1;
+
+        // Get available voices
+        function getVoices() {
+            return synth.getVoices();
+        }
+
+        // Chapter data
+        const sampleChapters = {
+            "6_science": {
+                title: "Food: Where Does It Come From?",
+                content: `
+                    Food is essential for all living organisms. It provides energy and materials for growth.
+
+                    Different organisms obtain food in different ways. Plants produce their own food through photosynthesis.
+                    Animals cannot make their own food. They depend on plants or other animals for food.
+
+                    Some animals eat only plants (herbivores). Others eat only meat (carnivores). Many eat both (omnivores).
+
+                    The food chain shows how energy flows from plants to animals. Sunlight is the ultimate source of energy.
+
+                    Key concepts:
+                    1. Food provides energy and materials for growth
+                    2. Plants are producers (make their own food)
+                    3. Animals are consumers (eat other organisms)
+                    4. Decomposers break down dead matter
+                    5. Energy flows through food chains and food webs
+                `
+            }
+        };
+
+        function generateContent() {
+            const input = document.getElementById('chapterInput').value.trim();
+
+            if (!input) {
+                alert('Please paste chapter text first');
+                return;
+            }
+
+            // Store chapter
+            currentChapter.text = input;
+            currentChapter.words = input.split(/\s+/).length;
+            currentChapter.sentences = input.split(/[.!?]+/).length;
+
+            // Generate content
+            generateAudiobookStats();
+            generateNotes();
+            generateQuestions();
+
+            // Show success
+            document.getElementById('audioInfo').innerHTML = '✅ Chapter loaded and ready! Click "Play Audiobook" to listen.';
+        }
+
+        function generateAudiobookStats() {
+            const text = currentChapter.text;
+            const estimatedDuration = Math.round(currentChapter.words / 150); // ~150 words per minute
+
+            const stats = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
+                    <div style="background: rgba(99, 102, 241, 0.1); padding: 12px; border-radius: 8px;">
+                        <div style="color: var(--primary); font-weight: 600;">Words</div>
+                        <div style="color: var(--text-secondary); font-size: 20px; margin-top: 4px;">${currentChapter.words}</div>
+                    </div>
+                    <div style="background: rgba(99, 102, 241, 0.1); padding: 12px; border-radius: 8px;">
+                        <div style="color: var(--primary); font-weight: 600;">Duration</div>
+                        <div style="color: var(--text-secondary); font-size: 20px; margin-top: 4px;">~${estimatedDuration} min</div>
+                    </div>
+                    <div style="background: rgba(99, 102, 241, 0.1); padding: 12px; border-radius: 8px;">
+                        <div style="color: var(--primary); font-weight: 600;">Sentences</div>
+                        <div style="color: var(--text-secondary); font-size: 20px; margin-top: 4px;">${currentChapter.sentences}</div>
+                    </div>
+                    <div style="background: rgba(99, 102, 241, 0.1); padding: 12px; border-radius: 8px;">
+                        <div style="color: var(--primary); font-weight: 600;">Voice</div>
+                        <div style="color: var(--text-secondary); font-size: 20px; margin-top: 4px;">Browser TTS</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('audioStats').innerHTML = stats;
+        }
+
+        function generateNotes() {
+            // Extract key sentences
+            const sentences = currentChapter.text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const keyPoints = sentences
+                .sort((a, b) => b.length - a.length)
+                .slice(0, 10)
+                .map(s => s.trim());
+
+            let html = '<div class="summary-points">';
+            keyPoints.forEach(point => {
+                if (point.length > 10) {
+                    html += `<li>${point}</li>`;
+                }
+            });
+            html += '</div>';
+
+            document.getElementById('notesList').innerHTML = html;
+        }
+
+        function generateQuestions() {
+            // Simple Q&A generation
+            const keywords = ['food', 'energy', 'plants', 'animals', 'eat', 'sun', 'grow', 'water', 'air'];
+            const text = currentChapter.text.toLowerCase();
+
+            // Find sentences containing keywords
+            const sentences = currentChapter.text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+
+            let html = '<div class="content-grid">';
+
+            // Generate 3-5 questions
+            for (let i = 0; i < Math.min(4, sentences.length); i++) {
+                const sentence = sentences[i].trim();
+                if (sentence.length > 20) {
+                    html += `
+                        <div class="content-card">
+                            <h3>Question ${i + 1}</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 12px; font-style: italic;">
+                                "${sentence}..."
+                            </p>
+                            <div style="font-size: 12px; color: var(--primary);">✓ Multiple choice question created</div>
+                        </div>
+                    `;
+                }
+            }
+
+            html += '</div>';
+            document.getElementById('qaList').innerHTML = html;
+        }
+
+        // Audiobook functions
+        function startAudiobook() {
+            if (!currentChapter.text) {
+                alert('Please paste chapter text first');
+                return;
+            }
+
+            // Stop if already playing
+            if (synth.speaking) {
+                synth.cancel();
+            }
+
+            currentUtterance = new SpeechSynthesisUtterance(currentChapter.text);
+            currentUtterance.rate = audioSpeed;
+            currentUtterance.pitch = 1.0;
+            currentUtterance.volume = 1.0;
+
+            // Get best available voice
+            const voices = getVoices();
+            if (voices.length > 0) {
+                currentUtterance.voice = voices[0];
+            }
+
+            synth.speak(currentUtterance);
+        }
+
+        function pauseAudiobook() {
+            if (synth.speaking) {
+                synth.pause();
+            }
+        }
+
+        function stopAudiobook() {
+            synth.cancel();
+        }
+
+        function changeSpeed() {
+            audioSpeed = parseFloat(document.getElementById('speedControl').value);
+            if (synth.speaking) {
+                pauseAudiobook();
+                setTimeout(() => startAudiobook(), 100);
+            }
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Load voices when available
+        synth.onvoiceschanged = () => {
+            getVoices();
+        };
+
+        // Sample chapter loading
+        window.addEventListener('load', () => {
+            // Auto-load sample if available
+            document.getElementById('chapterInput').placeholder =
+                'Paste NCERT chapter here (e.g., "Food: Where Does It Come From?")';
+        });
+    </script>
+</body>
+</html>

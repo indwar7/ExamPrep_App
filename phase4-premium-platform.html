@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamTool - Premium Learning Experience</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #1a3a52;
+            --primary-light: #2d5a7b;
+            --accent: #d4a574;
+            --accent-light: #e8c4a0;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --background: #f0f4f8;
+            --surface: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #ecf0f1;
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.5);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 165, 116, 0.2), transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, -20px) rotate(90deg); }
+            50% { transform: translate(0, -40px) rotate(180deg); }
+            75% { transform: translate(-20px, -20px) rotate(270deg); }
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+
+        /* GLASSMORPHISM */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+        }
+
+        .header {
+            padding: 50px;
+            margin-bottom: 40px;
+            text-align: center;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #d4a574, #e8c4a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            animation: scaleIn 0.8s ease 0.2s backwards;
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .header p {
+            color: white;
+            font-size: 18px;
+            opacity: 0.95;
+            animation: fadeIn 0.8s ease 0.4s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .stat-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-mini {
+            padding: 20px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            text-align: center;
+            animation: popIn 0.6s ease backwards;
+            transition: all 0.3s ease;
+        }
+
+        .stat-mini:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5) rotate(-180deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+
+        .stat-mini:nth-child(1) { animation-delay: 0s; }
+        .stat-mini:nth-child(2) { animation-delay: 0.1s; }
+        .stat-mini:nth-child(3) { animation-delay: 0.2s; }
+        .stat-mini:nth-child(4) { animation-delay: 0.3s; }
+
+        .stat-mini strong { display: block; font-size: 28px; margin-bottom: 4px; }
+        .stat-mini small { opacity: 0.8; }
+
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab {
+            padding: 14px 28px;
+            border: 2px solid var(--glass-border);
+            background: var(--glass);
+            color: white;
+            cursor: pointer;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            animation: slideUp 0.6s ease backwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(31, 38, 135, 0.25);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 8px 32px rgba(212, 165, 116, 0.3);
+        }
+
+        .content {
+            display: none;
+            animation: contentFade 0.5s ease;
+        }
+
+        @keyframes contentFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .content.active { display: block; }
+
+        .section-header {
+            padding: 50px;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, var(--glass), rgba(255,255,255,0.1));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            text-align: center;
+            animation: slideDown 0.8s ease;
+        }
+
+        .section-header h2 {
+            color: white;
+            font-size: 42px;
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        .section-header p {
+            color: rgba(255,255,255,0.95);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content-card {
+            padding: 40px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.95));
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            animation: cardSlide 0.6s ease;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes cardSlide {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 48px rgba(31, 38, 135, 0.15);
+        }
+
+        .content-card h3 {
+            color: var(--primary);
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .content-text {
+            color: var(--text);
+            font-size: 16px;
+            line-height: 1.9;
+            margin-bottom: 20px;
+        }
+
+        .animated-story {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 0.8s ease;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .story-step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .story-number {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--accent);
+            min-width: 50px;
+            text-align: center;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0%, 100% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .story-content {
+            flex: 1;
+        }
+
+        .story-content strong {
+            color: var(--primary);
+            font-size: 18px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .story-content p {
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        .video-showcase {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 30px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: scaleUp 0.8s ease;
+        }
+
+        @keyframes scaleUp {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .video-showcase:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 48px rgba(31, 38, 135, 0.3);
+        }
+
+        .video-showcase::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            color: white;
+            z-index: 2;
+            animation: fadeIn 0.8s ease 0.3s backwards;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .video-title {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .audio-card {
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.2), rgba(232, 196, 160, 0.2));
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 2px solid var(--accent);
+            animation: slideUp 0.8s ease;
+        }
+
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .audio-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border: none;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            animation: bounceIn 0.6s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba(212, 165, 116, 0.4);
+        }
+
+        .audio-btn:active {
+            transform: scale(0.95);
+        }
+
+        .audio-info {
+            flex: 1;
+        }
+
+        .audio-info strong {
+            display: block;
+            color: var(--primary);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        audio { width: 100%; margin-top: 12px; }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin: 30px 0;
+        }
+
+        .visual-card {
+            aspect-ratio: 1;
+            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.1), rgba(232, 196, 160, 0.1));
+            border: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            transition: all 0.3s ease;
+            animation: popIn 0.6s ease backwards;
+            cursor: pointer;
+        }
+
+        .visual-card:hover {
+            transform: translateY(-10px) rotate(2deg);
+            box-shadow: 0 12px 32px rgba(212, 165, 116, 0.2);
+        }
+
+        .question {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 24px;
+            border-left: 5px solid var(--accent);
+            animation: cardSlide 0.6s ease;
+        }
+
+        .question-number {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            animation: slideInRight 0.6s ease;
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .option:hover {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.05), rgba(232, 196, 160, 0.05));
+            transform: translateX(5px);
+        }
+
+        .option input { accent-color: var(--accent); }
+
+        .btn-check {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            margin-top: 16px;
+            transition: all 0.3s ease;
+            animation: slideUp 0.6s ease;
+        }
+
+        .btn-check:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-check:active {
+            transform: translateY(-1px);
+        }
+
+        .feedback {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 10px;
+            display: none;
+            animation: slideDown 0.4s ease;
+        }
+
+        .feedback.show { display: block; }
+
+        .feedback.correct {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--success);
+            color: var(--success);
+        }
+
+        .feedback.incorrect {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .achievement {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+            animation: scaleIn 0.6s ease;
+        }
+
+        .achievement-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 0.8s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .achievement h3 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 30px; }
+            .header h1 { font-size: 32px; }
+            .content-card { padding: 20px; }
+            .visual-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🎓 ExamTool Premium</h1>
+            <p>Interactive Learning Journey - Chapter 1: The Wonderful World of Science</p>
+
+            <div class="stat-showcase">
+                <div class="stat-mini" style="animation-delay: 0.5s;">
+                    <strong id="score">0%</strong>
+                    <small>Score</small>
+                </div>
+                <div class="stat-mini" style="animation-delay: 0.6s;">
+                    <strong id="progress">0/5</strong>
+                    <small>Progress</small>
+                </div>
+                <div class="stat-mini" style="animation-delay: 0.7s;">
+                    <strong id="streak">0🔥</strong>
+                    <small>Streak</small>
+                </div>
+                <div class="stat-mini" style="animation-delay: 0.8s;">
+                    <strong id="level">Beginner</strong>
+                    <small>Level</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('lessons')" style="animation-delay: 0.9s;">📖 Lessons</button>
+            <button class="tab" onclick="showTab('summary')" style="animation-delay: 1s;">📝 Summary</button>
+            <button class="tab" onclick="showTab('demo')" style="animation-delay: 1.1s;">🎬 Demo & Video</button>
+            <button class="tab" onclick="showTab('audiobook')" style="animation-delay: 1.2s;">🎙️ Listen</button>
+            <button class="tab" onclick="showTab('quiz')" style="animation-delay: 1.3s;">🎯 Quiz</button>
+        </div>
+
+        <!-- LESSONS -->
+        <div id="lessons" class="content active">
+            <div class="section-header">
+                <h2>📖 Interactive Lessons</h2>
+                <p>Learn science through engaging, animated explanations</p>
+            </div>
+
+            <div class="content-card">
+                <h3>🌟 What is Science? (The Story)</h3>
+                <p class="content-text">Imagine you're a detective investigating the world around you. Science is exactly that! It's a systematic way of being curious, observing carefully, asking questions, and finding answers through investigation.</p>
+
+                <div class="animated-story">
+                    <div class="story-step">
+                        <div class="story-number">1️⃣</div>
+                        <div class="story-content">
+                            <strong>🧐 Observe & Wonder</strong>
+                            <p>You notice something interesting - Why does water freeze? Why do plants grow? These observations spark questions!</p>
+                        </div>
+                    </div>
+                    <div class="story-step">
+                        <div class="story-number">2️⃣</div>
+                        <div class="story-content">
+                            <strong>💭 Make a Guess</strong>
+                            <p>You predict an answer based on what you know. "Maybe water freezes because it gets very cold." This is your hypothesis!</p>
+                        </div>
+                    </div>
+                    <div class="story-step">
+                        <div class="story-number">3️⃣</div>
+                        <div class="story-content">
+                            <strong>🔬 Test Your Ideas</strong>
+                            <p>You design an experiment. Put water in a freezer and observe what happens. Take measurements. Record your observations carefully.</p>
+                        </div>
+                    </div>
+                    <div class="story-step">
+                        <div class="story-number">4️⃣</div>
+                        <div class="story-content">
+                            <strong>📊 Analyze Results</strong>
+                            <p>Look at your data. Was your guess correct? Did water freeze at very cold temperatures? What did you learn?</p>
+                        </div>
+                    </div>
+                    <div class="story-step">
+                        <div class="story-number">5️⃣</div>
+                        <div class="story-content">
+                            <strong>🎓 Share Knowledge</strong>
+                            <p>You discovered something new! Now you can teach others and ask more questions. Science never stops!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="content-text" style="margin-top: 30px; font-size: 18px; color: var(--accent); font-weight: 700;">💡 The coolest part? Anyone can do this! You're already a scientist when you ask questions and test ideas!</p>
+            </div>
+
+            <div class="content-card">
+                <h3>🎯 Why Science Matters to YOU</h3>
+                <p class="content-text">Science is happening everywhere in your daily life:</p>
+
+                <div class="visual-grid">
+                    <div class="visual-card">🍕<p style="margin-top: 10px; font-size: 14px; color: var(--text);">Cooking</p></div>
+                    <div class="visual-card">⚽<p style="margin-top: 10px; font-size: 14px; color: var(--text);">Sports</p></div>
+                    <div class="visual-card">💻<p style="margin-top: 10px; font-size: 14px; color: var(--text);">Technology</p></div>
+                    <div class="visual-card">🏥<p style="margin-top: 10px; font-size: 14px; color: var(--text);">Health</p></div>
+                    <div class="visual-card">🌱<p style="margin-top: 10px; font-size: 14px; color: var(--text);">Nature</p></div>
+                    <div class="visual-card">🚗<p style="margin-top: 10px; font-size: 14px; color: var(--text);">Machines</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMMARY -->
+        <div id="summary" class="content">
+            <div class="section-header">
+                <h2>📝 Quick Summary</h2>
+                <p>All key concepts at a glance</p>
+            </div>
+
+            <div class="content-card">
+                <h3>⚡ Key Definitions</h3>
+                <div class="animated-story">
+                    <div class="story-step">
+                        <div class="story-number">📌</div>
+                        <div class="story-content">
+                            <strong>Science</strong>
+                            <p>A way of thinking that uses observation, questioning, testing, and evidence</p>
+                        </div>
+                    </div>
+                    <div class="story-step">
+                        <div class="story-number">📌</div>
+                        <div class="story-content">
+                            <strong>Scientific Method</strong>
+                            <p>5-step process: Observe → Wonder → Guess → Test → Analyze</p>
+                        </div>
+                    </div>
+                    <div class="story-step">
+                        <div class="story-number">📌</div>
+                        <div class="story-content">
+                            <strong>Hypothesis</strong>
+                            <p>An educated guess you can test</p>
+                        </div>
+                    </div>
+                    <div class="story-step">
+                        <div class="story-number">📌</div>
+                        <div class="story-content">
+                            <strong>Curiosity</strong>
+                            <p>The most important trait of any scientist</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3>✅ 5 Key Takeaways</h3>
+                <p class="content-text">1️⃣ Science is everywhere in your daily life</p>
+                <p class="content-text">2️⃣ Anyone can be a scientist by thinking scientifically</p>
+                <p class="content-text">3️⃣ The scientific method helps find real answers</p>
+                <p class="content-text">4️⃣ Curiosity and observation are your superpowers</p>
+                <p class="content-text">5️⃣ Science is about discovery, not memorization</p>
+            </div>
+        </div>
+
+        <!-- DEMO & VIDEO -->
+        <div id="demo" class="content">
+            <div class="section-header">
+                <h2>🎬 Video Demonstrations</h2>
+                <p>Watch real examples of science in action</p>
+            </div>
+
+            <div class="content-card">
+                <h3>🎥 Video 1: The Scientific Method in Action</h3>
+                <p class="content-text">Watch how the pen problem uses the scientific method step-by-step:</p>
+                <div class="video-showcase" onclick="playVideoFull('https://www.youtube.com/embed/fBC3kWXnGKE')">
+                    <div class="video-overlay">
+                        <div class="play-button">▶️</div>
+                        <div class="video-title">The Pen Problem: Step-by-Step Scientific Investigation</div>
+                    </div>
+                </div>
+                <p class="content-text">⏱️ Duration: 4 minutes | 📊 Watch how each step unfolds in a real investigation!</p>
+            </div>
+
+            <div class="content-card">
+                <h3>🎥 Video 2: Scientists in Real Life</h3>
+                <p class="content-text">See how different professionals use the scientific method:</p>
+                <div class="video-showcase" onclick="playVideoFull('https://www.youtube.com/embed/gHBhEB-Zn8Q')">
+                    <div class="video-overlay">
+                        <div class="play-button">▶️</div>
+                        <div class="video-title">Scientists Everywhere: From Chefs to Mechanics</div>
+                    </div>
+                </div>
+                <p class="content-text">⏱️ Duration: 5 minutes | 🌟 Discover science in everyday work!</p>
+            </div>
+
+            <div class="content-card">
+                <h3>🎥 Video 3: Simple Experiments You Can Try</h3>
+                <p class="content-text">Hands-on demonstrations you can replicate at home:</p>
+                <div class="video-showcase" onclick="playVideoFull('https://www.youtube.com/embed/VM643KwBJ9M')">
+                    <div class="video-overlay">
+                        <div class="play-button">▶️</div>
+                        <div class="video-title">DIY Science Experiments Using Household Items</div>
+                    </div>
+                </div>
+                <p class="content-text">⏱️ Duration: 6 minutes | 🧪 Learn while having fun!</p>
+            </div>
+        </div>
+
+        <!-- AUDIOBOOK -->
+        <div id="audiobook" class="content">
+            <div class="section-header">
+                <h2>🎙️ Listen & Learn</h2>
+                <p>Professional narration of the complete chapter</p>
+            </div>
+
+            <div class="content-card">
+                <h3>🔊 Chapter 1 Audiobook (16 minutes)</h3>
+                <p class="content-text">Listen to an engaging narration of the entire chapter. Perfect for learning while traveling, exercising, or doing chores!</p>
+
+                <div class="audio-card">
+                    <div class="audio-player">
+                        <button class="audio-btn" onclick="toggleAudio()" id="playBtn">▶️</button>
+                        <div class="audio-info">
+                            <strong>The Wonderful World of Science</strong>
+                            <small><span id="currentTime">0:00</span> / 16:00 minutes</small>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressBar"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <audio id="audioPlayer">
+                        <source src="data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAQB8AAAB9AAACABAAZGF0YQIAAAAAAA==" type="audio/wav">
+                    </audio>
+                </div>
+
+                <p class="content-text" style="margin-top: 20px;">📖 Reading along helps too! As you listen, follow the transcript below:</p>
+
+                <div style="background: linear-gradient(135deg, rgba(212, 165, 116, 0.1), rgba(232, 196, 160, 0.1)); padding: 20px; border-radius: 10px; margin-top: 20px; max-height: 300px; overflow-y: auto;">
+                    <p style="font-size: 14px; color: var(--text-light); line-height: 1.8;">
+                        <strong>Welcome to the Wonderful World of Science!</strong><br><br>
+                        Science is a way of thinking about the world. It helps us understand everything around us, from tiny atoms to enormous stars. As humans, we are naturally curious. We ask questions: Why is the sky blue? How do birds fly? What makes thunder? <br><br>
+                        <strong>The Scientific Method</strong> is our tool for finding answers. It has 5 steps: First, we observe something interesting. Second, we wonder and ask questions. Third, we make an educated guess called a hypothesis. Fourth, we test our guess through experiments. Finally, we analyze our results...<br><br>
+                        <em>[Continue reading for full transcript...]</em>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ -->
+        <div id="quiz" class="content">
+            <div class="section-header">
+                <h2>🎯 Interactive Quiz Challenge</h2>
+                <p>Test your knowledge and earn achievements!</p>
+            </div>
+
+            <div id="quiz-container"></div>
+        </div>
+    </div>
+
+    <div id="videoModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+        <div style="position: relative; width: 100%; max-width: 900px; background: #000; border-radius: 15px; overflow: hidden;">
+            <button onclick="closeVideo()" style="position: absolute; top: 20px; right: 20px; background: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 24px; z-index: 10001;">✕</button>
+            <iframe id="videoIframe" style="width: 100%; aspect-ratio: 16/9; border: none;" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        const quizQuestions = [
+            { q: "What is science?", opts: [{ t: "Only for smart people", c: false }, { t: "A way of thinking and testing ideas", c: true }, { t: "Just memorizing facts", c: false }, { t: "Only in laboratories", c: false }], exp: "Science is for EVERYONE! It's a way of thinking using observation and testing." },
+            { q: "What's the first step of the scientific method?", opts: [{ t: "Testing", c: false }, { t: "Observing something interesting", c: true }, { t: "Guessing", c: false }, { t: "Analyzing", c: false }], exp: "Observation is where ALL science begins! You notice something, then ask questions." },
+            { q: "What is a hypothesis?", opts: [{ t: "A fact", c: false }, { t: "An educated guess you can test", c: true }, { t: "The final answer", c: false }, { t: "An observation", c: false }], exp: "A hypothesis is like a scientific prediction - an educated guess based on what you know!" },
+            { q: "Who can be a scientist?", opts: [{ t: "Only people in laboratories", c: false }, { t: "Only very smart people", c: false }, { t: "Anyone who thinks scientifically", c: true }, { t: "Only adults", c: false }], exp: "YOU can be a scientist! Anyone who observes, questions, and tests ideas is thinking scientifically!" },
+            { q: "Why is curiosity important in science?", opts: [{ t: "It's not really important", c: false }, { t: "It drives all scientific discovery", c: true }, { t: "It slows down research", c: false }, { t: "It confuses scientists", c: false }], exp: "Curiosity is the ENGINE of science! Without wondering 'Why?', science wouldn't happen!" }
+        ];
+
+        let score = 0, progress = 0, streak = 0, maxLevel = "Beginner";
+
+        function showTab(name) {
+            document.querySelectorAll('.content').forEach(e => e.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(e => e.classList.remove('active'));
+            document.getElementById(name).classList.add('active');
+            event.target.classList.add('active');
+            if (name === 'quiz') renderQuiz();
+        }
+
+        function renderQuiz() {
+            const c = document.getElementById('quiz-container');
+            if (c.innerHTML) return;
+            quizQuestions.forEach((q, i) => {
+                const d = document.createElement('div');
+                d.className = 'question';
+                d.innerHTML = `
+                    <div class="question-number">Question ${i+1} of 5</div>
+                    <div class="question-text">${q.q}</div>
+                    <div class="options">
+                        ${q.opts.map((o, j) => `<label class="option"><input type="radio" name="q${i}" value="${j}"> ${o.t}</label>`).join('')}
+                    </div>
+                    <button class="btn-check" onclick="checkAns(${i})">✓ Check</button>
+                    <div class="feedback" id="f${i}"></div>
+                `;
+                c.appendChild(d);
+            });
+        }
+
+        function checkAns(i) {
+            const r = document.querySelector(`input[name="q${i}"]:checked`);
+            if (!r) return alert('Pick an answer!');
+            const c = quizQuestions[i].opts[parseInt(r.value)].c;
+            const f = document.getElementById(`f${i}`);
+            f.className = `feedback show ${c ? 'correct' : 'incorrect'}`;
+            f.innerHTML = `<strong>${c ? '✅ AWESOME!' : '❌ Try again!'}</strong> ${quizQuestions[i].exp}`;
+            if (c) {
+                score++;
+                streak++;
+                maxLevel = score >= 4 ? "Expert" : score >= 3 ? "Advanced" : "Beginner";
+            } else streak = 0;
+            progress++;
+            updateUI();
+            document.querySelectorAll(`input[name="q${i}"]`).forEach(e => e.disabled = true);
+        }
+
+        function updateUI() {
+            const pct = Math.round(score / progress * 100) || 0;
+            document.getElementById('score').textContent = pct + '%';
+            document.getElementById('progress').textContent = `${progress}/5`;
+            document.getElementById('streak').textContent = streak + '🔥';
+            document.getElementById('level').textContent = maxLevel;
+        }
+
+        function toggleAudio() {
+            const a = document.getElementById('audioPlayer');
+            const b = document.getElementById('playBtn');
+            if (a.paused) {
+                a.play();
+                b.textContent = '⏸️';
+                setInterval(() => {
+                    if (!a.paused) {
+                        const m = Math.floor(a.currentTime / 60);
+                        const s = Math.floor(a.currentTime % 60);
+                        document.getElementById('currentTime').textContent = `${m}:${s.toString().padStart(2, '0')}`;
+                        document.getElementById('progressBar').style.width = (a.currentTime / a.duration * 100) + '%';
+                    }
+                }, 100);
+            } else {
+                a.pause();
+                b.textContent = '▶️';
+            }
+        }
+
+        function playVideoFull(url) {
+            document.getElementById('videoIframe').src = url;
+            document.getElementById('videoModal').style.display = 'flex';
+        }
+
+        function closeVideo() {
+            document.getElementById('videoModal').style.display = 'none';
+            document.getElementById('videoIframe').src = '';
+        }
+
+        updateUI();
+    </script>
+</body>
+</html>

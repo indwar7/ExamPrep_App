@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCERT Science Grade 6 - Chapter 1 with Quiz Videos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; }
+        .header { background: #1a472a; color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 28px; margin-bottom: 5px; }
+        .buttons { padding: 20px; background: #f5f5f5; border-bottom: 1px solid #ddd; display: flex; gap: 10px; flex-wrap: wrap; }
+        button { background: #1a472a; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 5px; font-weight: bold; font-size: 14px; }
+        button:hover { background: #0d2818; }
+        .tabs { display: flex; background: white; border-bottom: 2px solid #1a472a; flex-wrap: wrap; }
+        .tab { padding: 15px 20px; cursor: pointer; background: #f0f0f0; border: none; font-size: 14px; font-weight: bold; color: #666; flex: 1; text-align: center; }
+        .tab:hover { background: #e0e0e0; }
+        .tab.active { background: white; color: #1a472a; border-bottom: 3px solid #1a472a; }
+        .content { display: none; padding: 30px; background: white; }
+        .content.active { display: block; }
+        h2 { color: #1a472a; margin-bottom: 15px; border-bottom: 3px solid #d4a574; padding-bottom: 10px; }
+        h3 { color: #2d5a3d; margin: 20px 0 10px 0; }
+        p { margin-bottom: 12px; line-height: 1.7; }
+        .quiz-q { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 5px; border-left: 4px solid #1a472a; }
+        .quiz-q label { display: block; margin: 10px 0; padding: 8px; cursor: pointer; }
+        .quiz-q button { margin-top: 10px; }
+        .feedback { display: none; margin-top: 20px; padding: 20px; border-radius: 5px; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #c8e6c9; color: #1b5e20; }
+        .feedback.incorrect { background: #ffcdd2; color: #b71c1c; }
+        .video-player { background: #000; padding: 20px; border-radius: 8px; margin: 15px 0; text-align: center; }
+        .video-player video { width: 100%; max-width: 600px; border-radius: 8px; margin: 10px 0; }
+        .score-display { background: #fff3e0; padding: 15px; margin: 20px 0; border-radius: 5px; font-weight: bold; color: #1a472a; }
+        .exp { background: #f9f9f9; padding: 20px; margin: 20px 0; border-left: 5px solid #1a472a; }
+        .mat { background: #e8f5e9; padding: 15px; margin: 10px 0; }
+        .proc { background: #fff3e0; padding: 15px; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        table th, table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        table th { background: #1a472a; color: white; }
+        .highlight { background: #fff9e6; padding: 15px; border-left: 4px solid #d4a574; margin: 15px 0; }
+        ul, ol { margin-left: 30px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+        @media print {
+            .buttons, .tabs { display: none; }
+            .content { display: block !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- HEADER -->
+    <div class="header">
+        <h1>📚 NCERT Science - Grade 6</h1>
+        <p>Chapter 1: The Wonderful World of Science</p>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="buttons">
+        <button onclick="savePDF()">📄 Download PDF</button>
+        <button onclick="saveWord()">📝 Download Word</button>
+        <button onclick="window.print()">🖨️ Print</button>
+        <button onclick="playAudio()">🎙️ Play Audio</button>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('lesson')">📖 Lesson</button>
+        <button class="tab" onclick="showTab('experiments')">🧪 Experiments</button>
+        <button class="tab" onclick="showTab('quiz')">🎯 Quiz with Videos</button>
+    </div>
+
+    <!-- ==================== LESSON ==================== -->
+    <div id="lesson" class="content active">
+        <h2>What is Science?</h2>
+        <p>Science is the systematic study of nature and the physical world around us through observation, experimentation, and logical reasoning.</p>
+
+        <h3>Understanding Science</h3>
+        <p>Science helps us understand the vast array of phenomena surrounding us. From how plants grow to how our bodies work, from weather patterns to the stars—science explains all of these.</p>
+
+        <h3>Science in Everyday Life</h3>
+        <ul>
+            <li><strong>In the Kitchen:</strong> Cooking involves chemistry. Heat changes food texture and taste.</li>
+            <li><strong>In Sports:</strong> When you throw a ball, gravity and motion explain its path. This is physics.</li>
+            <li><strong>In Gardening:</strong> Plants need sunlight, water, and nutrients to grow. This is biology.</li>
+            <li><strong>In Medicine:</strong> Doctors use science to diagnose and treat diseases.</li>
+        </ul>
+
+        <h3>Branches of Science</h3>
+        <table>
+            <tr>
+                <th>Branch</th>
+                <th>Definition</th>
+            </tr>
+            <tr>
+                <td><strong>Physics</strong></td>
+                <td>Study of matter, energy, motion, and forces</td>
+            </tr>
+            <tr>
+                <td><strong>Chemistry</strong></td>
+                <td>Study of substances and their reactions</td>
+            </tr>
+            <tr>
+                <td><strong>Biology</strong></td>
+                <td>Study of living organisms</td>
+            </tr>
+            <tr>
+                <td><strong>Earth Science</strong></td>
+                <td>Study of Earth, rocks, weather, and resources</td>
+            </tr>
+        </table>
+
+        <h3>The Scientific Method (5 Steps)</h3>
+        <ol>
+            <li><strong>Observe:</strong> Look carefully and gather information</li>
+            <li><strong>Question:</strong> Ask "Why?" or "How?"</li>
+            <li><strong>Hypothesis:</strong> Make an educated guess</li>
+            <li><strong>Test:</strong> Design and conduct an experiment</li>
+            <li><strong>Analyze:</strong> Look at results and draw conclusions</li>
+        </ol>
+
+        <h3>Scientists and Their Work</h3>
+        <p>A scientist is anyone who uses the scientific method. Scientists work in many places: universities, industries, hospitals, and field sites. Science happens in everyday jobs too:</p>
+        <ul>
+            <li>A chef testing recipes (Chemistry)</li>
+            <li>A mechanic fixing cars (Physics)</li>
+            <li>A farmer testing fertilizers (Biology)</li>
+            <li>A doctor treating patients (Medical Science)</li>
+        </ul>
+    </div>
+
+    <!-- ==================== EXPERIMENTS ==================== -->
+    <div id="experiments" class="content">
+        <h2>🧪 Hands-On Experiments</h2>
+
+        <div class="exp">
+            <h3>Experiment 1: Floating Egg (Density)</h3>
+            <p><strong>Objective:</strong> Understand how density makes objects float or sink.</p>
+            <div class="mat">
+                <strong>Materials:</strong>
+                <ul>
+                    <li>1 raw egg</li>
+                    <li>2 glasses with water</li>
+                    <li>Salt (3-4 tablespoons)</li>
+                    <li>Spoon</li>
+                </ul>
+            </div>
+            <div class="proc">
+                <strong>Procedure:</strong>
+                <ol>
+                    <li>Fill Glass 1 with plain water and place egg in it. It sinks.</li>
+                    <li>Fill Glass 2 with water and stir in salt until dissolved.</li>
+                    <li>Move egg to Glass 2. It floats!</li>
+                    <li>Slowly add fresh water to Glass 2. Watch the egg sink as water becomes less dense.</li>
+                </ol>
+            </div>
+            <p><strong>Explanation:</strong> Salt water is denser than fresh water. When density increases, the egg floats.</p>
+        </div>
+
+        <div class="exp">
+            <h3>Experiment 2: Water States (Solid/Liquid/Gas)</h3>
+            <p><strong>Objective:</strong> Observe water changing states with temperature.</p>
+            <div class="mat">
+                <strong>Materials:</strong>
+                <ul>
+                    <li>Ice cubes</li>
+                    <li>Water</li>
+                    <li>Thermometer</li>
+                    <li>Heat source (stove)</li>
+                </ul>
+            </div>
+            <div class="proc">
+                <strong>Procedure:</strong>
+                <ol>
+                    <li>Place ice in a pan. Record temperature (~0°C).</li>
+                    <li>Heat gently. Ice melts to water at 0°C.</li>
+                    <li>Continue heating. Water temperature rises.</li>
+                    <li>At 100°C, water boils and becomes steam.</li>
+                    <li>Hold a cold surface above steam. Water droplets form (condensation).</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="exp">
+            <h3>Experiment 3: Chromatography (Color Separation)</h3>
+            <p><strong>Objective:</strong> Separate colors in markers using paper and water.</p>
+            <div class="mat">
+                <strong>Materials:</strong>
+                <ul>
+                    <li>Water-based markers</li>
+                    <li>Paper strips (coffee filters)</li>
+                    <li>Glasses with water</li>
+                    <li>Scissors</li>
+                </ul>
+            </div>
+            <div class="proc">
+                <strong>Procedure:</strong>
+                <ol>
+                    <li>Cut paper into strips about 6 inches long.</li>
+                    <li>Draw a colored dot with marker 1 inch from the bottom.</li>
+                    <li>Place strip in water so bottom touches water (dot above water).</li>
+                    <li>Water travels up the paper, carrying pigments at different speeds.</li>
+                    <li>Remove when water reaches the top. Let dry.</li>
+                    <li>You'll see multiple color bands instead of one color!</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="exp">
+            <h3>Experiment 4: Plant Photosynthesis (Oxygen)</h3>
+            <p><strong>Objective:</strong> Prove plants produce oxygen in light.</p>
+            <div class="mat">
+                <strong>Materials:</strong>
+                <ul>
+                    <li>Water plant (like Elodea)</li>
+                    <li>Glass or beaker</li>
+                    <li>Water</li>
+                    <li>Sunlight or bright lamp</li>
+                </ul>
+            </div>
+            <div class="proc">
+                <strong>Procedure:</strong>
+                <ol>
+                    <li>Fill glass with water and place plant inside.</li>
+                    <li>Put in bright light.</li>
+                    <li>Within minutes, tiny bubbles form on the plant leaves!</li>
+                    <li>These are oxygen bubbles from photosynthesis.</li>
+                    <li>Move to dark area. Bubbles stop forming.</li>
+                    <li>Return to light. Bubbles resume. Light is necessary!</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== QUIZ WITH VIDEOS ==================== -->
+    <div id="quiz" class="content">
+        <h2>🎯 Interactive Quiz with Video Answers</h2>
+        <p><strong>Answer each question. Check your answer to see VIDEO EXPLANATION!</strong></p>
+
+        <div class="score-display">
+            Score: <span id="score">0</span>/5 Correct
+        </div>
+
+        <!-- QUESTION 1 -->
+        <div class="quiz-q">
+            <h3>Question 1: What is science?</h3>
+            <label><input type="radio" name="q1" value="a"> A) A collection of facts to memorize</label>
+            <label><input type="radio" name="q1" value="b"> B) A systematic process of observing, questioning, testing, and learning</label>
+            <label><input type="radio" name="q1" value="c"> C) Only done in laboratories</label>
+            <label><input type="radio" name="q1" value="d"> D) A difficult subject for smart people</label>
+            <button onclick="checkQ1()">Check Answer</button>
+            <div id="feedback1" class="feedback"></div>
+        </div>
+
+        <!-- QUESTION 2 -->
+        <div class="quiz-q">
+            <h3>Question 2: First step of scientific method?</h3>
+            <label><input type="radio" name="q2" value="a"> A) Make a hypothesis</label>
+            <label><input type="radio" name="q2" value="b"> B) Observe carefully and gather information</label>
+            <label><input type="radio" name="q2" value="c"> C) Conduct an experiment</label>
+            <label><input type="radio" name="q2" value="d"> D) Draw conclusions</label>
+            <button onclick="checkQ2()">Check Answer</button>
+            <div id="feedback2" class="feedback"></div>
+        </div>
+
+        <!-- QUESTION 3 -->
+        <div class="quiz-q">
+            <h3>Question 3: Science in everyday life?</h3>
+            <label><input type="radio" name="q3" value="a"> A) Chef testing recipes</label>
+            <label><input type="radio" name="q3" value="b"> B) Mechanic fixing cars</label>
+            <label><input type="radio" name="q3" value="c"> C) Farmer testing fertilizers</label>
+            <label><input type="radio" name="q3" value="d"> D) All of the above</label>
+            <button onclick="checkQ3()">Check Answer</button>
+            <div id="feedback3" class="feedback"></div>
+        </div>
+
+        <!-- QUESTION 4 -->
+        <div class="quiz-q">
+            <h3>Question 4: Steps in scientific method?</h3>
+            <label><input type="radio" name="q4" value="a"> A) 3 steps</label>
+            <label><input type="radio" name="q4" value="b"> B) 4 steps</label>
+            <label><input type="radio" name="q4" value="c"> C) 5 steps</label>
+            <label><input type="radio" name="q4" value="d"> D) 6 steps</label>
+            <button onclick="checkQ4()">Check Answer</button>
+            <div id="feedback4" class="feedback"></div>
+        </div>
+
+        <!-- QUESTION 5 -->
+        <div class="quiz-q">
+            <h3>Question 5: Can anyone be a scientist?</h3>
+            <label><input type="radio" name="q5" value="a"> A) No, only with degrees</label>
+            <label><input type="radio" name="q5" value="b"> B) Yes, if you observe, question, and test</label>
+            <label><input type="radio" name="q5" value="c"> C) Only in laboratories</label>
+            <label><input type="radio" name="q5" value="d"> D) Only adults</label>
+            <button onclick="checkQ5()">Check Answer</button>
+            <div id="feedback5" class="feedback"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let totalScore = 0;
+
+    function showTab(tabName) {
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function checkQ1() {
+        const selected = document.querySelector('input[name="q1"]:checked');
+        const feedback = document.getElementById('feedback1');
+
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        if (selected.value === 'b') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = `
+                <h4>✅ CORRECT!</h4>
+                <p>Science is a systematic process of observing, questioning, testing, and learning.</p>
+                <div class="video-player">
+                    <h4>📹 Video Explanation:</h4>
+                    <video width="100%" controls>
+                        <source src="video/q001-correct.mp4" type="video/mp4">
+                        Your browser doesn't support video playback.
+                    </video>
+                </div>
+            `;
+            totalScore++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = `
+                <h4>❌ INCORRECT</h4>
+                <p>Your answer: ${selected.value.toUpperCase()} | Correct answer: B</p>
+                <div class="video-player">
+                    <h4>📹 Video Explanation:</h4>
+                    <video width="100%" controls>
+                        <source src="video/q001-incorrect.mp4" type="video/mp4">
+                        Your browser doesn't support video playback.
+                    </video>
+                </div>
+            `;
+        }
+        document.getElementById('score').textContent = totalScore;
+        event.target.disabled = true;
+    }
+
+    function checkQ2() {
+        const selected = document.querySelector('input[name="q2"]:checked');
+        const feedback = document.getElementById('feedback2');
+
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        if (selected.value === 'b') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = `
+                <h4>✅ CORRECT!</h4>
+                <p>Observation is always the first step of the scientific method.</p>
+                <div class="video-player">
+                    <h4>📹 Video Explanation:</h4>
+                    <video width="100%" controls>
+                        <source src="video/q002-correct.mp4" type="video/mp4">
+                        Your browser doesn't support video playback.
+                    </video>
+                </div>
+            `;
+            totalScore++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = `
+                <h4>❌ INCORRECT</h4>
+                <p>Your answer: ${selected.value.toUpperCase()} | Correct answer: B</p>
+                <div class="video-player">
+                    <h4>📹 Video Explanation:</h4>
+                    <video width="100%" controls>
+                        <source src="video/q002-incorrect.mp4" type="video/mp4">
+                        Your browser doesn't support video playback.
+                    </video>
+                </div>
+            `;
+        }
+        document.getElementById('score').textContent = totalScore;
+        event.target.disabled = true;
+    }
+
+    function checkQ3() {
+        const selected = document.querySelector('input[name="q3"]:checked');
+        const feedback = document.getElementById('feedback3');
+
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        if (selected.value === 'd') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = `
+                <h4>✅ CORRECT!</h4>
+                <p>Science is everywhere! All of these are examples of science in everyday life.</p>
+                <div class="video-player">
+                    <h4>📹 Video Explanation:</h4>
+                    <video width="100%" controls>
+                        <source src="video/q003-correct.mp4" type="video/mp4">
+                        Your browser doesn't support video playback.
+                    </video>
+                </div>
+            `;
+            totalScore++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = `
+                <h4>❌ INCORRECT</h4>
+                <p>Your answer: ${selected.value.toUpperCase()} | Correct answer: D</p>
+                <div class="video-player">
+                    <h4>📹 Video Explanation:</h4>
+                    <video width="100%" controls>
+                        <source src="video/q003-incorrect.mp4" type="video/mp4">
+                        Your browser doesn't support video playback.
+                    </video>
+                </div>
+            `;
+        }
+        document.getElementById('score').textContent = totalScore;
+        event.target.disabled = true;
+    }
+
+    function checkQ4() {
+        const selected = document.querySelector('input[name="q4"]:checked');
+        const feedback = document.getElementById('feedback4');
+
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        if (selected.value === 'c') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = `
+                <h4>✅ CORRECT!</h4>
+                <p>The scientific method has 5 steps: Observe, Question, Hypothesis, Test, Analyze.</p>
+                <div class="video-player">
+                    <h4>📹 Video Explanation:</h4>
+                    <video width="100%" controls>
+                        <source src="video/q004-correct.mp4" type="video/mp4">
+                        Your browser doesn't support video playback.
+                    </video>
+                </div>
+            `;
+            totalScore++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = `
+                <h4>❌ INCORRECT</h4>
+                <p>Your answer: ${selected.value.toUpperCase()} | Correct answer: C</p>
+                <div class="video-player">
+                    <h4>📹 Video Explanation:</h4>
+                    <video width="100%" controls>
+                        <source src="video/q004-incorrect.mp4" type="video/mp4">
+                        Your browser doesn't support video playback.
+                    </video>
+                </div>
+            `;
+        }
+        document.getElementById('score').textContent = totalScore;
+        event.target.disabled = true;
+    }
+
+    function checkQ5() {
+        const selected = document.querySelector('input[name="q5"]:checked');
+        const feedback = document.getElementById('feedback5');
+
+        if (!selected) { alert('Please select an answer!'); return; }
+
+        if (selected.value === 'b') {
+            feedback.classList.add('show', 'correct');
+            feedback.innerHTML = `
+                <h4>✅ CORRECT!</h4>
+                <p>Yes! Anyone can be a scientist if they observe, question, and test ideas.</p>
+                <div class="video-player">
+                    <h4>📹 Video Explanation:</h4>
+                    <video width="100%" controls>
+                        <source src="video/q005-correct.mp4" type="video/mp4">
+                        Your browser doesn't support video playback.
+                    </video>
+                </div>
+            `;
+            totalScore++;
+        } else {
+            feedback.classList.add('show', 'incorrect');
+            feedback.innerHTML = `
+                <h4>❌ INCORRECT</h4>
+                <p>Your answer: ${selected.value.toUpperCase()} | Correct answer: B</p>
+                <div class="video-player">
+                    <h4>📹 Video Explanation:</h4>
+                    <video width="100%" controls>
+                        <source src="video/q005-incorrect.mp4" type="video/mp4">
+                        Your browser doesn't support video playback.
+                    </video>
+                </div>
+            `;
+        }
+        document.getElementById('score').textContent = totalScore;
+        event.target.disabled = true;
+    }
+
+    function playAudio() {
+        const text = "Science is the study of nature through observation and testing. The five steps are: Observe, Question, Hypothesis, Test, Analyze!";
+        if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(utterance);
+        }
+    }
+
+    function savePDF() {
+        const element = document.querySelector('.container');
+        const opt = {
+            margin: 10,
+            filename: 'NCERT-Science.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    function saveWord() {
+        const content = document.querySelector('.container').innerHTML;
+        const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'NCERT-Science.docx';
+        link.click();
+    }
+</script>
+
+</body>
+</html>

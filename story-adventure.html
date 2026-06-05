@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Science Quest - Amazing Adventure!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .page {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideIn 0.5s ease;
+        }
+        .page.active { display: block; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            font-size: 40px;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 28px;
+            color: #764ba2;
+            margin: 20px 0;
+        }
+        .character {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .character-emoji {
+            font-size: 60px;
+            min-width: 60px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .character-speech {
+            flex: 1;
+            font-size: 16px;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        .illustration {
+            text-align: center;
+            font-size: 100px;
+            margin: 30px 0;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #34495e;
+            margin: 15px 0;
+        }
+        .section {
+            background: #fff9e6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #f39c12;
+        }
+        .experiment {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+        }
+        .step {
+            background: #fff;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #2ecc71;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .quiz-question {
+            background: #f0f4ff;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+        }
+        .option {
+            background: white;
+            border: 2px solid #bdc3c7;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        .option input { margin-right: 8px; }
+        .feedback {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback.correct {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        .feedback.show { display: block; }
+        .stats {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .stat-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value { font-size: 24px; font-weight: bold; }
+        .stat-label { font-size: 12px; margin-top: 5px; }
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        audio { width: 100%; margin: 15px 0; }
+        ul { margin-left: 20px; margin-top: 10px; }
+        li { margin: 8px 0; }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: WELCOME -->
+<div class="page active" id="page1">
+    <div class="illustration">🚀🌟🔬</div>
+    <h1>🎉 Welcome to Science Quest!</h1>
+    <p style="text-align: center; font-size: 18px; color: #667eea; margin: 15px 0;">Your Amazing Adventure Begins Now! 🚀</p>
+
+    <div class="character">
+        <div class="character-emoji">🧑‍🔬</div>
+        <div class="character-speech">
+            <strong>Hello Future Scientist! 👋</strong><br>
+            I'm Professor Curious! Welcome to the most amazing journey - exploring the wonderful world of SCIENCE!
+            Are you ready to discover amazing secrets? Let's go! 🌟
+        </div>
+    </div>
+
+    <div class="section">
+        <strong>📖 On This Adventure, You'll Learn:</strong>
+        <ul>
+            <li>✨ What is Science? (You'll be shocked!)</li>
+            <li>🔍 The 5-Step Magic of the Scientific Method</li>
+            <li>🧪 Cool Experiments to Try at Home</li>
+            <li>🌍 Real Scientists Everywhere!</li>
+            <li>📊 A Challenge Quiz to Test Your Skills</li>
+            <li>📄 Download Everything as PDF or Word!</li>
+        </ul>
+    </div>
+
+    <audio id="mainAudio" controls style="margin: 20px 0;"></audio>
+    <button onclick="speakText('Hello! Welcome to Science Quest. I am Professor Curious. Let us explore the wonderful world of science together!'); goToPage('page2')">
+        🎤 Listen & Continue →
+    </button>
+</div>
+
+<!-- PAGE 2: WHAT IS SCIENCE -->
+<div class="page" id="page2">
+    <div class="illustration">🔬💡🌎✨</div>
+    <h1>🌍 What is Science?</h1>
+
+    <div class="character">
+        <div class="character-emoji">🧑‍🔬</div>
+        <div class="character-speech">
+            <strong>Great Question!</strong><br>
+            Science is like being a DETECTIVE! 🕵️ You look for clues, ask questions, and discover amazing truths about our world!
+        </div>
+    </div>
+
+    <div class="content">
+        <p><strong>🔍 Science is:</strong></p>
+        <ul>
+            <li>✓ Asking questions about how things work</li>
+            <li>✓ Observing the world carefully</li>
+            <li>✓ Testing ideas with experiments</li>
+            <li>✓ Using REAL EVIDENCE, not just guesses</li>
+            <li>✓ Learning from mistakes</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <strong>💡 AMAZING FACT:</strong><br>
+        Science is EVERYWHERE in your life RIGHT NOW!
+        <ul>
+            <li>🍳 Cooking food? That's CHEMISTRY!</li>
+            <li>🚴 Riding a bike? That's PHYSICS!</li>
+            <li>🌱 Plants growing? That's BIOLOGY!</li>
+            <li>📱 Using your phone? That's COMPUTER SCIENCE!</li>
+            <li>⚽ Playing sports? That's PHYSICS!</li>
+        </ul>
+    </div>
+
+    <button onclick="speakText('Science is everywhere! When you cook, ride a bike, or use your phone, science is happening. Science helps us understand how everything works.')">
+        🔊 Hear More
+    </button>
+
+    <div class="buttons">
+        <button onclick="goToPage('page1')">← Back</button>
+        <button onclick="goToPage('page3')">Next: Scientific Method →</button>
+    </div>
+</div>
+
+<!-- PAGE 3: SCIENTIFIC METHOD -->
+<div class="page" id="page3">
+    <div class="illustration">1️⃣2️⃣3️⃣4️⃣5️⃣</div>
+    <h1>🔬 The 5 Magical Steps</h1>
+
+    <div class="character">
+        <div class="character-emoji">🧑‍🔬</div>
+        <div class="character-speech">
+            <strong>This is the SUPERPOWER!</strong><br>
+            Every scientist uses these 5 steps. Once you learn them, you can solve ANY mystery!
+        </div>
+    </div>
+
+    <div class="step" style="background: #e8f5e9;">
+        <h3>1️⃣ OBSERVE 👀</h3>
+        <p>Look carefully at something. What do you see? What patterns do you notice? Write down what you find.</p>
+    </div>
+
+    <div class="step" style="background: #e3f2fd;">
+        <h3>2️⃣ WONDER ❓</h3>
+        <p>Ask questions! "Why?" "How?" "What if...?" Turn your observations into questions.</p>
+    </div>
+
+    <div class="step" style="background: #fff3e0;">
+        <h3>3️⃣ GUESS (Make a Hypothesis) 💭</h3>
+        <p>Make an educated guess. Based on what you know, what do you think will happen? Write it as: "If... then..."</p>
+    </div>
+
+    <div class="step" style="background: #f3e5f5;">
+        <h3>4️⃣ TEST 🧪</h3>
+        <p>Do an experiment! Test your guess. Be careful. Measure. Record everything. Repeat it multiple times!</p>
+    </div>
+
+    <div class="step" style="background: #fce4ec;">
+        <h3>5️⃣ ANALYZE 📊</h3>
+        <p>Look at your results. Was your guess correct? What did you learn? Even "wrong" answers teach us!</p>
+    </div>
+
+    <div class="section">
+        <strong>📖 Real Example: The Pen Problem!</strong><br>
+        Your pen stops writing. ✍️<br>
+        Step 1: You observe it doesn't write.<br>
+        Step 2: You ask "Why?"<br>
+        Step 3: You guess "The ink is empty!"<br>
+        Step 4: You open the pen and check.<br>
+        Step 5: You discover the ink WAS empty! 🎉
+    </div>
+
+    <button onclick="speakText('The scientific method has 5 steps. Observe, wonder, guess, test, and analyze. This method helps scientists solve mysteries and answer questions.')">
+        🔊 Hear More
+    </button>
+
+    <div class="buttons">
+        <button onclick="goToPage('page2')">← Back</button>
+        <button onclick="goToPage('page4')">Next: Experiments →</button>
+    </div>
+</div>
+
+<!-- PAGE 4: EXPERIMENTS -->
+<div class="page" id="page4">
+    <div class="illustration">🌱💧🧪⚡</div>
+    <h1>🧪 Awesome Experiments!</h1>
+
+    <div class="character">
+        <div class="character-emoji">🧑‍🔬</div>
+        <div class="character-speech">
+            <strong>NOW IT'S YOUR TURN!</strong><br>
+            Try these cool experiments at home using things you already have!
+        </div>
+    </div>
+
+    <div class="experiment">
+        <h2>🌱 Experiment 1: Plant Growth & Light</h2>
+        <p><strong>Question:</strong> Do plants grow taller with more sunlight?</p>
+
+        <p><strong>You Need:</strong></p>
+        <ul>
+            <li>3 pots with soil</li>
+            <li>Plant seeds (beans work!)</li>
+            <li>Water</li>
+            <li>Ruler for measuring</li>
+            <li>Different light spots (sunny, shade, dark)</li>
+        </ul>
+
+        <p><strong>Steps:</strong></p>
+        <div class="step">1. Plant same seeds in 3 pots with same soil & water</div>
+        <div class="step">2. Put Pot 1 in sunny window ☀️</div>
+        <div class="step">3. Put Pot 2 in shady corner 🌤️</div>
+        <div class="step">4. Put Pot 3 in dark closet 🌑</div>
+        <div class="step">5. Water equally every 2-3 days</div>
+        <div class="step">6. Measure height every week for 4 weeks</div>
+        <div class="step">7. Compare your results!</div>
+
+        <p><strong>🎯 What Will Happen:</strong> Sunny plants grow tallest! Dark plants don't grow much. Why? Plants need light for energy!</p>
+    </div>
+
+    <div class="experiment">
+        <h2>💧 Experiment 2: Water State Changes!</h2>
+        <p><strong>Question:</strong> What happens when water gets hot?</p>
+
+        <p><strong>Steps:</strong></p>
+        <div class="step">1. Put ice in a cup 🧊 (SOLID - hard & cold)</div>
+        <div class="step">2. Heat it slowly - watch ice melt 💧 (LIQUID - flows!)</div>
+        <div class="step">3. Keep heating - see steam rise ☁️ (GAS - invisible!)</div>
+
+        <p><strong>🎯 Amazing Discovery:</strong> Water changes form! Cold = solid, warm = liquid, hot = gas!</p>
+    </div>
+
+    <button onclick="speakText('Try these amazing experiments at home. First, see how sunlight affects plant growth. Second, watch water change from ice to liquid to steam as temperature changes.')">
+        🔊 Hear More
+    </button>
+
+    <div class="buttons">
+        <button onclick="goToPage('page3')">← Back</button>
+        <button onclick="goToPage('page5')">Next: Real Scientists →</button>
+    </div>
+</div>
+
+<!-- PAGE 5: REAL SCIENTISTS -->
+<div class="page" id="page5">
+    <div class="illustration">👨‍🍳🔧⚡🌾🏥</div>
+    <h1>🌍 Scientists Everywhere!</h1>
+
+    <div class="character">
+        <div class="character-emoji">🧑‍🔬</div>
+        <div class="character-speech">
+            <strong>SECRET TIME! 🤫</strong><br>
+            You don't need a lab coat to be a scientist! Look around - scientists are EVERYWHERE doing amazing work!
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>👨‍🍳 Chefs & Cooks</h3>
+        <p>Cooking is CHEMISTRY! 🍳 When you mix ingredients and heat them, amazing reactions happen!
+        Chefs test recipes and improve them. That's science!</p>
+    </div>
+
+    <div class="section">
+        <h3>🔧 Mechanics</h3>
+        <p>Car won't start? Mechanics use science! 🚗 They observe the problem, test parts, and find the fix.
+        That's the scientific method!</p>
+    </div>
+
+    <div class="section">
+        <h3>⚡ Electricians</h3>
+        <p>Electricity is PHYSICS! ⚡ Electricians understand circuits and use science to solve electrical problems safely.</p>
+    </div>
+
+    <div class="section">
+        <h3>🌾 Farmers</h3>
+        <p>Growing food is AGRICULTURE SCIENCE! 🌱 Farmers test different methods to grow better, healthier crops.</p>
+    </div>
+
+    <div class="section">
+        <h3>🏥 Doctors & Nurses</h3>
+        <p>Medicine is BIOLOGY & CHEMISTRY! 💊 Doctors use science to help people get healthy and stay well.</p>
+    </div>
+
+    <div class="section" style="background: #fffde7;">
+        <h3>💡 And YOU?</h3>
+        <p><strong>YOU are ALREADY a scientist!</strong> Whenever you ask questions, test ideas, and learn from results,
+        you're doing science! 🎉</p>
+    </div>
+
+    <button onclick="speakText('Scientists are everywhere! Chefs, mechanics, farmers, doctors, and many others use science every day. You can be a scientist too by asking questions and testing ideas.')">
+        🔊 Hear More
+    </button>
+
+    <div class="buttons">
+        <button onclick="goToPage('page4')">← Back</button>
+        <button onclick="goToPage('page6')">Next: Challenge Quiz! →</button>
+    </div>
+</div>
+
+<!-- PAGE 6: QUIZ -->
+<div class="page" id="page6">
+    <h1>🎯 CHALLENGE QUIZ!</h1>
+    <p style="text-align: center; color: #667eea; font-size: 16px;">Test your amazing new science knowledge! 📖✨</p>
+
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-value" id="score">0/5</div>
+            <div class="stat-label">SCORE</div>
+        </div>
+    </div>
+
+    <div class="quiz-question">
+        <h3>Question 1: What is science?</h3>
+        <label class="option">
+            <input type="radio" name="q1" value="a"> A) Only for smart people in labs
+        </label>
+        <label class="option">
+            <input type="radio" name="q1" value="b"> B) A way of thinking and testing ideas
+        </label>
+        <label class="option">
+            <input type="radio" name="q1" value="c"> C) Just memorizing facts
+        </label>
+        <button onclick="checkAnswer(1, 'q1', 'b', '✅ CORRECT! Science is for EVERYONE who asks questions!')">✓ Check</button>
+        <div class="feedback" id="f1"></div>
+    </div>
+
+    <div class="quiz-question">
+        <h3>Question 2: What's the first step of the scientific method?</h3>
+        <label class="option">
+            <input type="radio" name="q2" value="a"> A) Test an experiment
+        </label>
+        <label class="option">
+            <input type="radio" name="q2" value="b"> B) Observe something
+        </label>
+        <label class="option">
+            <input type="radio" name="q2" value="c"> C) Make a guess
+        </label>
+        <button onclick="checkAnswer(2, 'q2', 'b', '✅ RIGHT! You must OBSERVE before anything else!')">✓ Check</button>
+        <div class="feedback" id="f2"></div>
+    </div>
+
+    <div class="quiz-question">
+        <h3>Question 3: What helps plants grow?</h3>
+        <label class="option">
+            <input type="radio" name="q3" value="a"> A) Only water
+        </label>
+        <label class="option">
+            <input type="radio" name="q3" value="b"> B) Only soil
+        </label>
+        <label class="option">
+            <input type="radio" name="q3" value="c"> C) Sunlight, water, AND soil
+        </label>
+        <button onclick="checkAnswer(3, 'q3', 'c', '✅ AWESOME! Plants need all three to grow big and strong!')">✓ Check</button>
+        <div class="feedback" id="f3"></div>
+    </div>
+
+    <div class="quiz-question">
+        <h3>Question 4: What happens when you heat ice?</h3>
+        <label class="option">
+            <input type="radio" name="q4" value="a"> A) It stays ice forever
+        </label>
+        <label class="option">
+            <input type="radio" name="q4" value="b"> B) It becomes liquid water
+        </label>
+        <label class="option">
+            <input type="radio" name="q4" value="c"> C) It disappears
+        </label>
+        <button onclick="checkAnswer(4, 'q4', 'b', '✅ PERFECT! Heat changes ice to water - this is melting!')">✓ Check</button>
+        <div class="feedback" id="f4"></div>
+    </div>
+
+    <div class="quiz-question">
+        <h3>Question 5: Who can be a scientist?</h3>
+        <label class="option">
+            <input type="radio" name="q5" value="a"> A) Only people in laboratories
+        </label>
+        <label class="option">
+            <input type="radio" name="q5" value="b"> B) Only very smart people
+        </label>
+        <label class="option">
+            <input type="radio" name="q5" value="c"> C) Anyone who asks questions and tests ideas!
+        </label>
+        <button onclick="checkAnswer(5, 'q5', 'c', '✅ INCREDIBLE! YOU are a scientist when you think scientifically!')">✓ Check</button>
+        <div class="feedback" id="f5"></div>
+    </div>
+
+    <div class="buttons">
+        <button onclick="goToPage('page7')">Next: Download Your Certificate! →</button>
+        <button onclick="goToPage('page5')">← Back</button>
+    </div>
+</div>
+
+<!-- PAGE 7: DOWNLOAD & CERTIFICATE -->
+<div class="page" id="page7">
+    <div class="illustration">🏆📄🎉</div>
+    <h1>🎓 Congratulations!</h1>
+
+    <div class="success">
+        <h2>🌟 You Completed Science Quest! 🌟</h2>
+        <p style="font-size: 18px; margin: 15px 0;">You've learned amazing things about science!</p>
+        <p>📖 You understand what science is</p>
+        <p>🔬 You know the 5-step scientific method</p>
+        <p>🧪 You learned cool experiments</p>
+        <p>🌍 You discovered scientists are everywhere</p>
+    </div>
+
+    <div class="character">
+        <div class="character-emoji">🧑‍🔬</div>
+        <div class="character-speech">
+            <strong>I'm SO PROUD of you!</strong><br>
+            You're now ready to explore the scientific world. Keep asking questions, testing ideas, and never stop being curious!
+            Remember: You ARE a scientist! 🚀
+        </div>
+    </div>
+
+    <div class="section" style="margin-top: 30px;">
+        <h3>📥 Download Your Complete Study Material:</h3>
+        <p style="margin: 15px 0;">Get everything as PDF or Word document to study later:</p>
+
+        <button onclick="exportPDF()" style="background: #27ae60; margin: 10px 5px;">
+            📄 Download as PDF
+        </button>
+
+        <button onclick="exportWord()" style="background: #3498db; margin: 10px 5px;">
+            📝 Download as Word
+        </button>
+    </div>
+
+    <div class="section">
+        <h3>📚 What You Learned:</h3>
+        <ul>
+            <li>✓ Science is a way of thinking used by everyone</li>
+            <li>✓ The 5-step Scientific Method (Observe, Wonder, Guess, Test, Analyze)</li>
+            <li>✓ How to design and conduct experiments</li>
+            <li>✓ Scientists work in many different jobs</li>
+            <li>✓ YOU can be a scientist!</li>
+        </ul>
+    </div>
+
+    <div class="buttons">
+        <button onclick="goToPage('page1')">← Start Over</button>
+    </div>
+</div>
+
+<script>
+    let quizScore = 0;
+
+    function goToPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    function speakText(text) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            speechSynthesis.speak(utterance);
+        } else {
+            alert('Audio not supported in your browser');
+        }
+    }
+
+    function checkAnswer(num, qName, correctVal, correctMsg) {
+        const selected = document.querySelector(`input[name="${qName}"]:checked`);
+        if (!selected) {
+            alert('Please select an answer!');
+            return;
+        }
+
+        const feedback = document.getElementById('f' + num);
+        if (selected.value === correctVal) {
+            feedback.className = 'feedback correct show';
+            feedback.innerHTML = correctMsg;
+            quizScore++;
+            speakText(correctMsg);
+        } else {
+            feedback.className = 'feedback incorrect show';
+            feedback.innerHTML = '❌ Not quite right. ' + correctMsg;
+            speakText('Not correct. ' + correctMsg);
+        }
+
+        document.querySelectorAll(`input[name="${qName}"]`).forEach(r => r.disabled = true);
+        document.getElementById('score').textContent = quizScore + '/5';
+    }
+
+    function exportPDF() {
+        const html = `
+            <h1>Chapter 1: The Wonderful World of Science</h1>
+            <h2>What You Learned:</h2>
+            <h3>1. What is Science?</h3>
+            <p>Science is a way of thinking about the world. It involves observing, questioning, testing ideas, and using real evidence.</p>
+
+            <h3>2. The 5-Step Scientific Method:</h3>
+            <p>Step 1: OBSERVE - Look carefully</p>
+            <p>Step 2: WONDER - Ask questions</p>
+            <p>Step 3: GUESS - Make a hypothesis</p>
+            <p>Step 4: TEST - Do an experiment</p>
+            <p>Step 5: ANALYZE - Look at results</p>
+
+            <h3>3. Experiments:</h3>
+            <p>• Plant Growth & Light</p>
+            <p>• Water State Changes (Ice to Water to Steam)</p>
+
+            <h3>4. Scientists Everywhere:</h3>
+            <p>Chefs, mechanics, farmers, doctors, electricians - all use science!</p>
+
+            <h3>5. Key Points:</h3>
+            <p>• Science is for everyone</p>
+            <p>• Curiosity drives discovery</p>
+            <p>• You can be a scientist</p>
+        `;
+
+        const element = document.createElement('div');
+        element.innerHTML = html;
+
+        const opt = {
+            margin: 10,
+            filename: 'Science_Quest_Chapter1.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+        };
+
+        html2pdf().set(opt).from(element).save();
+        alert('PDF downloaded! 📄');
+    }
+
+    function exportWord() {
+        const content = `
+            CHAPTER 1: THE WONDERFUL WORLD OF SCIENCE
+
+            WHAT YOU LEARNED:
+
+            1. WHAT IS SCIENCE?
+            Science is a way of thinking about the world. It involves observing carefully, asking questions, testing ideas, and using real evidence. Science is not just for smart people - it's for everyone!
+
+            2. THE 5-STEP SCIENTIFIC METHOD:
+
+            Step 1: OBSERVE (Look Carefully)
+            Pay attention to the world. Notice patterns and interesting things.
+
+            Step 2: WONDER (Ask Questions)
+            Ask "Why?" "How?" "What if?" about what you observed.
+
+            Step 3: GUESS (Make a Hypothesis)
+            Make an educated guess about the answer based on what you know.
+
+            Step 4: TEST (Do an Experiment)
+            Design and conduct an experiment to test your guess.
+
+            Step 5: ANALYZE (Look at Results)
+            Examine your results. Was your hypothesis correct? What did you learn?
+
+            3. COOL EXPERIMENTS YOU CAN TRY:
+
+            Experiment 1: Plant Growth and Light
+            - Question: Do plants grow taller with more sunlight?
+            - Materials: Pots, soil, seeds, water, ruler
+            - Steps: Plant seeds in 3 pots, put in different light locations, water equally, measure weekly
+            - Result: Plants in sunlight grow tallest!
+
+            Experiment 2: Water State Changes
+            - Question: What happens when water gets hot?
+            - Observation: Ice (solid) → Water (liquid) → Steam (gas)
+            - Learning: Temperature changes water's state
+
+            4. SCIENTISTS EVERYWHERE:
+            - Chefs: Cooking is chemistry!
+            - Mechanics: Use science to fix cars
+            - Farmers: Test methods to grow better crops
+            - Doctors: Use biology and chemistry to help people
+            - Electricians: Work with electricity
+            - YOU: Can be a scientist by thinking scientifically!
+
+            5. KEY TAKEAWAYS:
+            ✓ Science is a way of thinking
+            ✓ Anyone can be a scientist
+            ✓ Curiosity is important
+            ✓ Testing ideas gives real answers
+            ✓ Science helps us understand the world
+            ✓ Even "wrong" results teach us something
+
+            CONGRATULATIONS! You've completed Science Quest!
+        `;
+
+        const blob = new Blob([content], { type: 'application/msword' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'Science_Quest_Chapter1.docx';
+        link.click();
+        alert('Word document downloaded! 📝');
+    }
+</script>
+
+</body>
+</html>
