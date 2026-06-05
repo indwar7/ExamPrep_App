@@ -1,34 +1,7 @@
 {
   "name": "ncert-science-platform",
-  "version": 2,
-  "builds": [
-    {
-      "src": "intro-science.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "phase4-interactive-app.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/intro-science.html",
-      "dest": "/intro-science.html"
-    },
-    {
-      "src": "/phase4-interactive-app.html",
-      "dest": "/phase4-interactive-app.html"
-    },
-    {
-      "src": "/video/(.*)",
-      "dest": "/video/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
+  "buildCommand": "",
+  "outputDirectory": ".",
   "env": {
     "NODE_ENV": "production"
   }
